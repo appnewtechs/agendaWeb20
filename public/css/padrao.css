@@ -1,0 +1,378 @@
+/* --------------------- */
+/*       Body CSS        */
+/* --------------------- */  
+body {
+    font-size: 0.9rem;
+    padding-bottom: 35px;
+}
+
+
+/* --------------------- */
+/*      Botões CSS       */
+/* --------------------- */  
+.fas {
+    color:black;
+}
+
+i {
+    line-height: 1.5rem;
+}
+
+
+.btn-light {
+    padding-top: .25rem;
+    padding-left: .5rem;
+    font-size: 1rem;
+    border-color: #ced4da;
+}
+
+.btn-secondary {
+    line-height: 1rem;
+    font-weight: bolder;
+    font-family: "Nunito";
+    width: 85px;
+    color: white;
+    background-color: steelblue;
+}
+
+.btn-cabec {
+    height: 27px;
+    padding-right: 0.5rem; 
+    padding-left:  0.5rem;
+    padding-top:    0.15rem;
+    padding-bottom: 0.15rem;
+}
+
+
+.linhaMestra {
+    font-size: 1.0rem;
+    height: 28px;  
+    padding-top: 0; 
+    color:black;
+    font-weight: bolder;
+}
+
+
+
+/* --------------------- */
+/*   Form Control CSS    */
+/* --------------------- */  
+
+.col-form-label{
+    padding-top   : 0.40rem;
+    padding-bottom: 0.10rem;
+    font-family: "Nunito";
+    font-weight: bold;
+}
+
+.form-row {
+    margin-left: 0;
+}
+
+.form-control {
+    height: 32px;  
+    padding-left: 0.45rem;
+    padding-right:0.45rem;
+    font-family: "Nunito";
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: black;
+    
+}   
+
+.form-control:focus {
+    border-color: #383636;
+    box-shadow: 0 0px 3px black;
+}
+
+.form-group {
+    margin-bottom: 0.3rem;  
+}   
+
+.thead-dark{
+    background-color: #343a40;
+    line-height: 1rem;
+}
+
+
+.table
+td {
+    vertical-align: middle;
+    line-height: 1.3rem;
+    padding-top:    0.25rem;
+    padding-bottom: 0.20rem;
+    font-family: "Nunito";
+    font-weight: bolder;
+}
+
+th {
+    font-family: "Nunito";
+    font-weight: bolder;
+}
+
+.divider {
+    height: 1px;
+    width:100%;
+    display:block; /* for use on default inline elements like span */
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+ }
+
+
+.col,
+.col-md-12 {
+    padding-right: 0px;
+    padding-left:  0px;
+}
+
+.row {
+    margin-left:  0px;
+    margin-right: 0px;
+}
+
+
+
+/* --------------------- */
+/*      Links CSS        */
+/* --------------------- */  
+
+a {
+    color: black;
+    vertical-align: middle;
+    font-family: "Nunito";
+    font-weight: bolder;
+    font-size: 1.0rem;
+    padding-bottom: 0.10rem;
+}
+
+a:hover {
+    color: #76767e;
+}
+
+
+a,
+.fa-search-dollar {
+    padding-right: 0.2rem;
+}
+
+
+.linktd {
+    color: white;
+    vertical-align: middle;
+    font-family: "Nunito";
+    font-weight: bolder;
+    font-size: 0.9rem;
+}
+.linktd:hover {
+    color: white;
+}
+
+.slideWhite{
+    line-height: 27x; 
+    height: 27px;  
+    padding-top: 0; 
+    color:white;
+    vertical-align: middle;
+    font-family: "Nunito";
+    font-weight: bolder;
+    font-size: 0.9rem;
+}
+
+
+
+/* --------------- */
+/*   Inputs CSS    */
+/* --------------- */  
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type="number"] { 
+    text-align: right; 
+}
+
+input[type="date"] { 
+    padding-bottom: 0.20rem; 
+}
+
+input[type="checkbox"] { 
+    padding-top: 0.15rem; 
+}
+
+
+select {
+    padding-top: 0.25rem !important;
+}
+
+select[readonly] {
+    pointer-events: none;
+    touch-action: none;
+}
+
+select,
+option {
+    font-family: "Nunito";
+    font-weight: bold;
+}
+
+
+.inputrow {
+    line-height: 1.2rem; 
+    height: 27px; 
+    color:black;    
+    font-family: "Nunito";
+    font-weight: bold;
+    font-size: 0.9rem;
+}   
+
+.selectrow {
+    line-height: 1.2rem; 
+    height: 27px; 
+    color:black;    
+    font-family: "Nunito";
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding-top: 0.1rem !important;
+}   
+
+.input-group-sm>.custom-select, 
+.input-group-sm>.form-control:not(textarea) {
+    line-height: 27px;
+    height: 27px; 
+    color:black;    
+    font-family: "Nunito";
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding-top: 0.1rem;
+}   
+
+.input-group>.custom-select:not(:first-child), 
+.input-group>.form-control:not(:first-child) {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.input-group>.input-group-append:last-child>.btn:not(:last-child):not(.dropdown-toggle), 
+.input-group>.input-group-append:last-child>.input-group-text:not(:last-child), 
+.input-group>.input-group-append:not(:last-child)>.btn, 
+.input-group>.input-group-append:not(:last-child)>.input-group-text, 
+.input-group>.input-group-prepend>.btn, 
+.input-group>.input-group-prepend>.input-group-text {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+
+.input-group-append {
+    height: 32px;  
+}   
+
+
+
+/* --------------- */
+/*   Modal  CSS    */
+/* --------------- */  
+.modal-header {
+    height: 45px;    
+    padding-top: 0.7rem; 
+    padding-left: 2rem;
+}
+
+.modal-body {
+    padding-top: 0.7rem; 
+    padding-bottom: 0.7rem; 
+    padding-right: 1.5rem; 
+    padding-left:  1.5rem; 
+    overflow: auto;
+}
+
+.modal-footer {
+    height: 45px;
+    padding-right: 2rem;
+}
+
+
+
+
+/* --------------- */
+/*   NavBar CSS    */
+/* --------------- */
+.dropdown-menu {
+    font-size: 0.9rem;
+}
+
+.navbar-brand,
+.navbar-nav li a {
+    font-family: "Nunito";
+    font-weight: bold;
+    height: 31px;
+    padding-top: 0.3rem;
+    font-size: 0.9rem;
+}        
+
+.navbar-expand-lg,
+.navbar-light,
+.bg-light {
+    padding-top   : 0.4rem;
+    padding-bottom: 0.4rem;
+    padding-left: 1.5rem;
+}
+
+.navbar-nav,
+.input-group {
+    padding-right: 0.1rem;
+}
+
+.bg-dark {
+    background-color: #1d2024 !important;
+}
+
+
+.dropdown 
+.dropdown-menu 
+.dropdown-item:active, 
+.dropdown .dropdown-menu 
+.dropdown-item:hover {background-color: rgba(0,0,0,.05)  !important;}
+
+
+/* --------------- */
+/*   Footer CSS    */
+/* --------------- */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    line-height: 1.3rem;
+}
+
+.linhaFooter {
+    font-size: 0.9rem;
+    padding-top: 0; 
+    color:white;
+    font-weight: bold;
+    font-family: "Nunito";
+    text-align: right;
+}
+
+
+
+/* --------------- */
+/*      Cards      */
+/* --------------- */
+.card {
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
+.card-header {
+    background-color: steelblue;
+    color:white;
+    font-weight: bold;
+    font-family: "Nunito";
+}
