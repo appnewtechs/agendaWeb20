@@ -17,7 +17,7 @@
             html, body {
 
                 padding-bottom: 0rem;
-                background-image: url("../imgs/telafundo.png");
+                background-image: url("imgs/telafundo.png");
 
                 background-size: cover;
                 background-repeat: no-repeat;
