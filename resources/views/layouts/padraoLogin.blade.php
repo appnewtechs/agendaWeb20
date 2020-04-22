@@ -4,12 +4,14 @@
 
         <meta charset="UTF-8">
         <title>{{ config('app.name') }} - Login</title> 
+
+        <link rel='icon' href="{{ asset('imgs/favicon.png') }}">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-        <link rel='icon' href="{{ asset('imgs/icon.png') }}">
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/padrao.css') }}">
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/custom/custom.js') }}"></script>
 
         <style>
             html, body {

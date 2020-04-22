@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class LoginController extends Controller
 {
@@ -26,7 +31,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -37,4 +42,42 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+    public function username()
+    {
+        return 'login';
+    }
+
+    protected function login(Request $data)
+    {
+
+        $this->validate($data, [
+            'login'    => ['required'],
+            'password' => ['required'],
+        ], [], [
+            'login' => 'Usuário',
+            'password' => 'Senha',
+        ]);
+
+
+
+        $usuario = DB::table('usuario')->where('login', '=', $data->login)->first();
+        if($usuario->reset_password){
+
+            if (Auth::attempt(['login' => $data->login, 'password' => $data->password])) {
+                // Success
+                return redirect()->intended('/');
+            } else {
+                // Go back on error (or do what you want)
+                return redirect()->back();
+            }
+        } else {
+
+            return redirect('password/reset')->with('usuario', $usuario);
+
+        }
+    }
+
+
 }

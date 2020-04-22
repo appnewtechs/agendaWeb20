@@ -1,17 +1,16 @@
 @include('layouts.padraoLogin')
-
 <div id="login" class="container-fluid" style="margin-top: 20vh;">
 
     <div class="row justify-content-center">
         <div class="col-md-4">
 
             <div class="card border border-dark rounded">
-
                 <form method="POST" action="{{ route('login') }}">
+                @csrf
+
                 <div class="card-header">Acesso / Login</div>
                     <div class="card-body pb-4">
 
-                        @csrf
                         <div class="form-row col-md-12 pl-5 pr-5">
                             <div class="col-md-10 offset-md-1">
                             {!! Form::label("login","Usuário" , ["class"=>"col-form-label pl-0"]) !!}
