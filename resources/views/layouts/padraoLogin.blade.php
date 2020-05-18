@@ -18,13 +18,18 @@
 
                 padding-bottom: 0rem;
                 background-image: url("imgs/telafundo.png");
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
 
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
                 background-attachment: fixed;
-                min-height: 100vh;
 
             }
         </style>   
     </head>
+
+    <body>
+    <div id="app">

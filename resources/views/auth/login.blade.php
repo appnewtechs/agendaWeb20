@@ -1,5 +1,5 @@
 @include('layouts.padraoLogin')
-<div id="login" class="container-fluid" style="margin-top: 20vh;">
+<div class="container-fluid" style="margin-top: 20vh;">
 
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -26,7 +26,7 @@
 
                             <div class="col-md-10 offset-md-1">
                             {!! Form::label("password", "Senha" , ["class"=>"col-form-label pl-0"]) !!}
-                            {!! Form::password("password", ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#login-btn');" ]) !!}
+                            {!! Form::password("password", ["class"=>"form-control", "onkeydown"=>"javascript:if(event.keyCode==13){ form.submit(); };" ]) !!}
 
                             @if ($errors->has('password'))
                                 <span colspan='12' style="color: red;">

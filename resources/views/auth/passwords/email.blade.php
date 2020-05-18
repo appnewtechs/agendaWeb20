@@ -1,5 +1,5 @@
 @include('layouts.padraoLogin')
-<div id="login" class="container-fluid" style="margin-top: 20vh;">
+<div class="container-fluid" style="margin-top: 20vh;">
 
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -8,40 +8,27 @@
                 <form method="POST" action="{{ route('password.email') }}">
                 @csrf
 
-                <div class="card-header">Refazer Senha</div>
+                <div class="card-header">Enviar Nova Senha</div>
                     <div class="card-body pb-4">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
+                        <div class="form-row col-md-12 pl-3 pr-3">
+                            <div class="col-md-12">
+                            {{ __('Será enviado para o e-mail abaixo, um link para o cadastramento da sua nova senha.') }}
+                            </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            <div class="col-md-12 pt-2">
+                            {!! Form::text("email", $usuario->email, ["class"=>"form-control pt", "readonly"]) !!}
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
+                    <div class="card-footer">
+                        <div class="col-md-4 offset-md-8 pl-0 pr-0">
+                        <button type="submit" class="btn btn-sm btn-secondary" style="width: 100px;">Enviar Senha</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-@endsection

@@ -74,7 +74,7 @@ class LoginController extends Controller
             }
         } else {
 
-            return redirect('password/reset')->with('usuario', $usuario);
+            return view('auth.passwords.email')->with('usuario', $usuario);
 
         }
     }
