@@ -44,11 +44,6 @@ class LoginController extends Controller
     }
 
 
-    public function username()
-    {
-        return 'login';
-    }
-
     protected function login(Request $data)
     {
 
@@ -67,7 +62,7 @@ class LoginController extends Controller
 
             if (Auth::attempt(['login' => $data->login, 'password' => $data->password])) {
                 // Success
-                return redirect()->intended('/');
+                return redirect()->intended('/home');
             } else {
                 // Go back on error (or do what you want)
                 return redirect()->back();

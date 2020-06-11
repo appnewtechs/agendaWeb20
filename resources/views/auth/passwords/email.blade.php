@@ -17,6 +17,7 @@
                             </div>
 
                             <div class="col-md-12 pt-2">
+                            <input type="hidden" name="login" id="login" value="{{ $usuario->login }}">
                             {!! Form::text("email", $usuario->email, ["class"=>"form-control pt", "readonly"]) !!}
                             </div>
                         </div>
