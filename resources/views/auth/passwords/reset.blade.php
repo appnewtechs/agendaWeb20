@@ -21,7 +21,7 @@
 
                             <div class="col-md-12">
                             {!! Form::label("password", "Senha" , ["class"=>"col-form-label pl-0"]) !!}
-                            {!! Form::password("password", ["class"=>"form-control",  "required",  "onkeydown"=>"setFocus(event,'#password-confirm');" ]) !!}
+                            {!! Form::password("password", ["class"=>"form-control",  "required",  "autofocus", "onkeydown"=>"setFocus(event,'#password-confirm');" ]) !!}
                             </div>
 
                             <div class="col-md-12">

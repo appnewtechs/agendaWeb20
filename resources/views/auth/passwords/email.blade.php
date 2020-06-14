@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <div class="col-md-4 offset-md-8 pl-0 pr-0">
+                        <div class="col-md-12 pl-3 pr-3">
                         <button type="submit" class="btn btn-sm btn-secondary" style="width: 100px;">Enviar Senha</button>
                         </div>
                     </div>

@@ -328,7 +328,7 @@ option {
 }
 
 .bg-dark {
-    background-color: #1d2024 !important;
+    background-color: steelblue !important;
 }
 
 
@@ -375,3 +375,4 @@ footer {
     color:white;
     font-weight: bold;
 }
+
