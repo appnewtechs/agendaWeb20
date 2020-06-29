@@ -3,15 +3,22 @@
     <head>
 
         <meta charset="UTF-8">
-        <title>{{ config('app.name') }} - Login</title> 
+        <title>{{ config('app.name') }}</title> 
 
         <link rel='icon' href="{{ asset('imgs/favicon.png') }}">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,600" type="text/css">
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' 
+            integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' 
+            crossorigin='anonymous'>
+        
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/padrao.css') }}">
+
+
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/custom/custom.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
         <style>
             html, body {
@@ -26,8 +33,8 @@
                 background-repeat: no-repeat;
                 background-position: center;
                 background-attachment: fixed;
-
             }
+
         </style>   
     </head>
-    @include('layouts.menu');
+    @include('layouts.menu')

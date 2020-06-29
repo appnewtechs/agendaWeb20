@@ -13,13 +13,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/', function () {
     return view('auth\login');
 });
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/mailMessage', function () {
+    return view('auth\mailMessage');
+});
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+// Rotas de Cadastros - Perfil do Usuario
+Route::group(['prefix' => 'perfilUsuario'], function () {
+    Route::get('/'        , 'perfilUsuarioController@index');
+    Route::post('create'  , 'perfilUsuarioController@create');
+    Route::delete('delete', 'perfilUsuarioController@delete');
+});
+
+
+// Rotas de Cadastros - Perfil do Usuario
+Route::group(['prefix' => 'usuario'], function () {
+    Route::get('/'        , 'usuarioController@index');
+    Route::post('create'  , 'usuarioController@create');
+    Route::delete('delete', 'usuarioController@delete');
+});

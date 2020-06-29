@@ -8,4 +8,4 @@
         </div>
     </div>
 </div>
-
+@include('layouts.footerClear')

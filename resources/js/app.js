@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+window.Jquery = require('jquery');
 
 /**
  * The following block of code may be used to automatically register your

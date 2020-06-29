@@ -33,7 +33,7 @@
                     </div>
                     
                     <div class="card-footer">
-                        <div class="col-md-4 offset-md-8">
+                        <div class="col-md-12 pl-5 pr-5">
                         <button type="submit" class="btn btn-sm btn-secondary" style="width: 100px;">Recadastrar</button>
                         </div>
                     </div>

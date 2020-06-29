@@ -23,5 +23,13 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
-
+    
+    
+    protected function sendResetLinkResponse(Request $request, $response)
+    {
+    
+        return $request->wantsJson()
+                    ? new JsonResponse(['message' => trans($response)], 200)
+                    : redirect('/mailMessage')->with('status', trans($response));
+    }
 }

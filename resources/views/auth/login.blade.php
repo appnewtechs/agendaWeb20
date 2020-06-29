@@ -41,8 +41,12 @@
                     <div class="card-footer">
                         <div class="col-md-12 pl-5 pr-5">
                         <button type="submit" class="btn btn-sm btn-secondary" id="login-btn">Login</button>
+                        {{--
+                        <a class="btn btn-link" href="{{ route('password.request') }}">{{ __('Esqueceu sua Senha?') }}</a>
+                        --}}
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

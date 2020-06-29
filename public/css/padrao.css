@@ -11,7 +11,7 @@ body {
 /*      Botões CSS       */
 /* --------------------- */  
 .fas {
-    color:black;
+    color: steelblue;
 }
 
 i {
@@ -48,7 +48,7 @@ i {
     font-size: 1.0rem;
     height: 28px;  
     padding-top: 0; 
-    color:black;
+    color: darkslateblue;
     font-weight: bolder;
 }
 
@@ -63,6 +63,7 @@ i {
     padding-bottom: 0.10rem;
     font-family: "Nunito";
     font-weight: bold;
+    color: darkslateblue;
 }
 
 .form-row {
@@ -76,12 +77,12 @@ i {
     font-family: "Nunito";
     font-weight: bold;
     font-size: 0.9rem;
-    color: black;
+    color: darkslateblue;
     
 }   
 
 .form-control:focus {
-    border-color: #383636;
+    border-color: steelblue;
     box-shadow: 0 0px 3px black;
 }
 
@@ -95,6 +96,11 @@ i {
 }
 
 
+.table .thead-dark th {
+    background-color: steelblue;
+    border-color: steelblue;
+}
+
 .table
 td {
     vertical-align: middle;
@@ -103,6 +109,7 @@ td {
     padding-bottom: 0.20rem;
     font-family: "Nunito";
     font-weight: bolder;
+    color: darkslateblue;
 }
 
 th {
@@ -317,8 +324,8 @@ option {
 .navbar-expand-lg,
 .navbar-light,
 .bg-light {
-    padding-top   : 0.4rem;
-    padding-bottom: 0.4rem;
+    padding-top   : 0.5rem;
+    padding-bottom: 0.3rem;
     padding-left: 1.5rem;
 }
 
