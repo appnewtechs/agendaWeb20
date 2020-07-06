@@ -34,9 +34,9 @@
             <table class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
                 <thead class="thead-dark">
                 <tr>
-                    <th><a class="linktd" >Código</a></th>
-                    <th><a class="linktd" >Nome</a></th>
-                    <th><a class="linktd" >Descrição</a></th>
+                    <th><a class="linktd">Código</a></th>
+                    <th><a class="linktd">Nome</a></th>
+                    <th><a class="linktd">Descrição</a></th>
                     <th class="text-right"></th>
                 </tr>
                 </thead>
@@ -48,13 +48,13 @@
                         <td>{{ $perfis->nome }}</td>
                         <td>{{ $perfis->descricao }}</td>
                         <td class="text-right" style="vertical-align: middle">
-                        <form id="frm_delete_{{ $perfis->id_perfil }}" action="{{ url('perfil/delete') }}" method="post">
+                        <form id="frm_delete_{{ $perfis->id_perfil }}" action="{{ url('perfilUsuario/delete') }}" method="post">
 
                             <input name="id_perfil" id="id_perfil" value="{{ $perfis->id_perfil }}" type="hidden"></input>                
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
-                            <a class='fas fa-eraser' title="Deletar" href="#delete" data-toggle="modal" data-codmodo ="{{ $perfis->id_perfil }}"
-                                                                                                        data-descmodo="{{ $perfis->nome }}"></a>
+                            <a class='fas fa-eraser' title="Deletar" href="#delete" data-toggle="modal" data-codigo   ="{{ $perfis->id_perfil }}"
+                                                                                                        data-descricao="{{ $perfis->nome }}"></a>
                         </form>
                         </td>
                     </tr>
@@ -68,27 +68,27 @@
 
 
 
+@include('layouts.delete')
 @include('layouts.footerPadrao')
-
 
 
 <script type='text/javascript'>
 
-    document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $perfil->count() }}";
-    document.getElementById("valorTotal").textContent="";
+    $(document).ready(function(){
 
-    $('#search').focus();
+        $('#search').focus();
+        document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $perfil->count() }}";
+        document.getElementById("valorTotal").textContent="";
 
-    $('#insert').on('shown.bs.modal', function(e) {
-        $('#insert').find("#i_descModalidade").focus();
+
+        $('#delete').on('show.bs.modal', function(e) {
+
+            var codigo   = $(e.relatedTarget).data("codigo");
+            var descricao= $(e.relatedTarget).data("descricao");
+
+            $('#delete').find("#description").html('Perfil de Usuário: '+codigo+' - '+descricao);
+            $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_delete_"+codigo+"').submit()");
+        });    
     });
 
-    
-    $('#delete').on('shown.bs.modal', function(e) {
-        var codModo  = $(e.relatedTarget).data("codmodo");
-        var descModo = $(e.relatedTarget).data("descmodo");
-
-        $('#delete').find("#description").html('Modalidade de Venda: '+codModo+' - '+descModo);
-        $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_delete_"+codModo+"').submit()");
-    });    
 </script>

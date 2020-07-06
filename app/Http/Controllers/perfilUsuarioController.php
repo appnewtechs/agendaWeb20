@@ -69,15 +69,13 @@ class perfilUsuarioController extends Controller
     {
         try {
 
-            DB::table('capasAvulsas')->where([
-                        ['codEmpresa','=', Session::get('codEmpresa')],
-                        ['codCapa', '=', $request->codCapa],
-                        ])->delete();
+            DB::table('perfil')->where('id_perfil', '=', $request->id_perfil)->delete();
 
         } catch (\Exception $e) {
+            log::Debug($e);
             session::put('erros', "Esse registro já está sendo usado por outro cadastro e não pode ser excluído!"); 
         }
-        return redirect($request->header('referer'));
+        return redirect($request->header('referer'))->with('errors', $e->getMessage());
     }    
     
 }

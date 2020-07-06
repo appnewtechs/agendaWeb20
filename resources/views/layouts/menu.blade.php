@@ -28,16 +28,6 @@
                            <a class="dropdown-item" href=" {{ action('usuarioController@index') }}">Usuários</a>
                            <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="#">Empresas do Grupo</a>
-                        </ul>
-                     </li>
-                     @break
-                  @case(2)
-                     <li class="nav-item active dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
-                           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $rotina->nome }}</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                           <a class="dropdown-item" href="#">Tipo de Cliente</a>
-                           <a class="dropdown-item" href="#">Clientes</a>
                            <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="#">Tipo de Evento</a>
                            <a class="dropdown-item" href="#">Tipo de Serviço</a>

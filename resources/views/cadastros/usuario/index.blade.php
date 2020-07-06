@@ -24,8 +24,8 @@
                     <input id="search" class="form-control" name="search" value="{{ request('search') }}" type="text" 
                         placeholder="Pesquisar..." onkeydown="javascript:if(event.keyCode==13){ $('#search_btn').click(); };" aria-label="Search"/>
                         <button type="submit" id="search_btn" class="btn btn-sm btn-light"><i class="fas fa-search"></i></button>
-                        <input type="hidden" value="{{request('field')}}"  name="field"/>
-                        <input type="hidden" value="{{request('sort')}}"   name="sort"/>
+                        <input type="hidden" value="{{request('field')}}" id="field" name="field"/>
+                        <input type="hidden" value="{{request('sort')}}"  id="sort"  name="sort"/>
                     </div>
                 </div>
         </ul>
@@ -38,13 +38,13 @@
 <div id="main" class="container-fluid pt-2 pb-5">
     <div id="list" class="row border border-dark rounded pb-1" style='background: white'>
         <div class="table-responsive col-md-12">
-            <table class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
+            <table class="table table-hover table-sm table-striped tablesorter mb-0" cellspacing="0" cellpadding="0">
                 <thead class="thead-dark">
                 <tr>
-                    <th><a class="linktd">Código</a></th>
-                    <th><a class="linktd">Login</a></th>
-                    <th><a class="linktd">Nome</a></th>
-                    <th><a class="linktd">Empresa</a></th>
+                    <th><a class="linktd" href='#' onClick="tablesorter('id_usuario'  );">Código</a></th>
+                    <th><a class="linktd" href='#' onClick="tablesorter('login'       );">Login</a></th>
+                    <th><a class="linktd" href='#' onClick="tablesorter('nome'        );">Nome</a></th>
+                    <th><a class="linktd" href='#' onClick="tablesorter('razao_social');">Empresa</a></th>
                     <th><a class="linktd">E-mail</a></th>
                     <th><a class="linktd">Telefone</a></th>
                     <th><a class="linktd">Status</a></th>
@@ -87,9 +87,6 @@
 
 
 @include('layouts.footerPadrao')
-
-
-
 <script type='text/javascript'>
 
     document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $usuarios->count() }}";

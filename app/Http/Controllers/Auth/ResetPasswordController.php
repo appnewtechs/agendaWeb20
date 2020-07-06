@@ -70,7 +70,7 @@ class ResetPasswordController extends Controller
             // redirect them back to where they came from with their error message.
             return $response == Password::PASSWORD_RESET
                         ? $this->sendResetResponse($request, $response)
-                        : $this->sendResetFailedResponse($request, $response);        //$user->password = Hash::make($password);
+                        : $this->sendResetFailedResponse($request, $response);        
         }
     }
 

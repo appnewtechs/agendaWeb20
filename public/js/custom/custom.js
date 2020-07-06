@@ -49,4 +49,12 @@ function masktest($val, $mask)
 	return $maskared; 
 }
 
- 
+
+function tablesorter( $field ){
+
+	$sort = $('#sort').val();
+	$('#field').val($field);
+	$('#sort').val( $sort=='asc'?'desc':'asc' );
+	$('#search_btn').click();
+}
+

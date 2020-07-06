@@ -66,18 +66,6 @@ class LoginController extends Controller
     protected function login(Request $request)
     {
 
-        /*
-        if (Auth::attempt(['login' => $data->login, 'senha' => $data->password])) {
-            // Success
-            return redirect()->intended('/home');
-        } else {
-            // Go back on error (or do what you want)
-            return redirect()->back();
-        }
-
-        */
-
-
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
