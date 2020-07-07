@@ -32,35 +32,43 @@ class perfilUsuarioController extends Controller
         $search = $request->get('search');
         $field  = $request->get('field')  != '' ? $request->get('field') : 'nome';
         $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
-        
+
+ 
         $perfil  = DB::table('perfil')
                    ->where('nome', 'like', '%' . $search . '%')
                    ->orwhere('descricao' , 'like', '%' . $search . '%')                
                    ->orderBy($field, $sort)
                    ->get();
-                    
-        return view("cadastros.perfil.index")->with('perfil', $perfil);
+
+        $testes = DB::table('rotina')->orderBy('id_rotina', 'asc')->get();
+        return view("cadastros.perfil.index")->with('perfil', $perfil)
+                                             ->with('testes', $testes);
     }
 
 
     public function create(Request $request)
     {
-        try {
 
-            $count = (DB::table('capasAvulsas')->where('codEmpresa', '=', Session::get('codEmpresa'))
-                    ->orderBy('codCapa', 'desc')->value('codCapa'))+1;
+        $validator = Validator::make($request->all(), [
+            'nome'     => ['required'],
+            'descricao'=> ['required'],
+            ], [], [
+                'nome'      => 'Nome',
+                'descricao' => 'Descrição',
+            ]);
 
-            $capas = new capasAvulsas();
-            $capas->codEmpresa = Session::get('codEmpresa');
-            $capas->codCapa    = $count;
-            $capas->codProduto = $request->codProduto;
-            $capas->codStatus  = $request->codStatus;
-            $capas->save();
 
-        } catch (\Exception $e) {
-            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        } else {  
+
+            $perfil = new perfil();
+            $perfil->id_perfil = perfil::getId();
+            $perfil->nome      = $request->nome;
+            $perfil->descricao = $request->descricao;
+            $perfil->save();
+            return redirect($request->header('referer'));
         }        
-        return redirect($request->header('referer'));
     }
   
 
@@ -70,12 +78,12 @@ class perfilUsuarioController extends Controller
         try {
 
             DB::table('perfil')->where('id_perfil', '=', $request->id_perfil)->delete();
+            return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
             log::Debug($e);
-            session::put('erros', "Esse registro já está sendo usado por outro cadastro e não pode ser excluído!"); 
+            return redirect($request->header('referer'))->with('errors', $e->getMessage());
         }
-        return redirect($request->header('referer'))->with('errors', $e->getMessage());
     }    
     
 }

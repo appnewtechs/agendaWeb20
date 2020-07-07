@@ -287,13 +287,14 @@ option {
     height: 45px;    
     padding-top: 0.7rem; 
     padding-left: 2rem;
+    font-weight: 600 !important;
 }
 
 .modal-body {
     padding-top: 0.7rem; 
     padding-bottom: 0.7rem; 
     padding-right: 1.5rem; 
-    padding-left:  2rem; 
+    padding-left:  1.5rem; 
     overflow: auto;
 }
 
@@ -338,7 +339,7 @@ option {
 
 .bg-dark {
     background-color: steelblue !important;
-    font-weight: 600 !important;
+    text-shadow: black 0px 0px 0px;
 }
 
 

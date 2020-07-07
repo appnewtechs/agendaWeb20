@@ -29,6 +29,7 @@ class ComposerServiceProvider extends ServiceProvider
         // Composers diversos
         view()->composer(['cadastros.perfil.index',
                           'cadastros.usuario.index',
+                          'cadastros.empresas.index',
                           'home'],
                           'App\Http\Views\GeneralViewComposer@menu');
     }

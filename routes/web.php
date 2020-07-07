@@ -34,9 +34,17 @@ Route::group(['prefix' => 'perfilUsuario'], function () {
 });
 
 
-// Rotas de Cadastros - Perfil do Usuario
+// Rotas de Cadastros - Usuarios
 Route::group(['prefix' => 'usuario'], function () {
     Route::get('/'        , 'usuarioController@index');
     Route::post('create'  , 'usuarioController@create');
     Route::delete('delete', 'usuarioController@delete');
+});
+
+
+// Rotas de Cadastros - Empresas
+Route::group(['prefix' => 'empresa'], function () {
+    Route::get('/'        , 'empresaController@index');
+    Route::post('create'  , 'empresaController@create');
+    Route::delete('delete', 'empresaController@delete');
 });

@@ -24,10 +24,10 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $rotina->nome }}</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                           <a class="dropdown-item" href=" {{ action('perfilUsuarioController@index') }}">Perfil de Usuário</a>
-                           <a class="dropdown-item" href=" {{ action('usuarioController@index') }}">Usuários</a>
+                           <a class="dropdown-item" href="{{ action('perfilUsuarioController@index') }}">Perfil de Usuário</a>
+                           <a class="dropdown-item" href="{{ action('usuarioController@index') }}">Usuários</a>
                            <div class="dropdown-divider"></div>
-                           <a class="dropdown-item" href="#">Empresas do Grupo</a>
+                           <a class="dropdown-item" href="{{ action('empresaController@index') }}">Empresas do Grupo</a>
                            <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="#">Tipo de Evento</a>
                            <a class="dropdown-item" href="#">Tipo de Serviço</a>
