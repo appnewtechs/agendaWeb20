@@ -1,10 +1,10 @@
 <div class="modal fade" id="delete">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" role='document'>
-            <div class="modal-header">
+            <div class="modal-header pl-4">
                 <span class="linhaMestra" class="modal-title" id="modal-title">Exclusão de Registro!</span>
             </div>
-            <div class="modal-body">
+            <div class="modal-body pl-4">
                 <div class="row col-md-12" id="intro">
                     Você tem certeza que deseja excluir o registro?
                 </div>

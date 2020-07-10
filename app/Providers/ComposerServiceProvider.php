@@ -24,13 +24,14 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        // Composers para view de alimentação de Combos 
-
         // Composers diversos
         view()->composer(['cadastros.perfil.index',
                           'cadastros.usuario.index',
                           'cadastros.empresas.index',
+                          'cadastros.tipoServico.index',
+                          'cadastros.tipoAgenda.index',
                           'home'],
+
                           'App\Http\Views\GeneralViewComposer@menu');
     }
 }

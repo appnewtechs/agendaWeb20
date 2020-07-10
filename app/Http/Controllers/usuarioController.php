@@ -50,8 +50,18 @@ class usuarioController extends Controller
                     })
                    ->orderBy($field, $sort)
                    ->get();
-                    
-        return view("cadastros.usuario.index")->with('usuarios', $usuarios);
+        
+        $perfis   = DB::table('perfil')->orderBy('id_perfil','asc')->get();
+        $empresas = DB::table('empresa')->orderBy('razao_social','asc')->get();
+        $empresasCombo    = DB::table('empresa')->orderBy('razao_social','asc')->pluck('razao_social','id_empresa');
+        $tipoServicoCombo = DB::table('linha_produto')->orderBy('descricao','asc')->pluck('descricao','id_linha_produto');
+
+
+        return view("cadastros.usuario.index")->with('usuarios', $usuarios)
+                                              ->with('perfis',   $perfis)
+                                              ->with('empresas', $empresas)
+                                              ->with('empresasCombo', $empresasCombo)
+                                              ->with('tipoServicoCombo', $tipoServicoCombo);
     }
 
 

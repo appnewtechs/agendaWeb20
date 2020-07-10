@@ -71,8 +71,8 @@
                                                                                                         data-email  ="{{ $usuario->email }}"></a>
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
-                            <a class='fas fa-eraser' title="Deletar" href="#delete" data-toggle="modal" data-codigo ="{{ $usuario->id_usuario }}"
-                                                                                                        data-nome   ="{{ $usuario->nome }}"></a>
+                            <a class='fas fa-eraser' title="Deletar" href="#delete" data-toggle="modal" data-codigo   ="{{ $usuario->id_usuario }}"
+                                                                                                        data-descricao="{{ $usuario->nome }}"></a>
                         </form>
                         </td>
                     </tr>
@@ -85,9 +85,13 @@
 </div> 
 
 
-
+@include('layouts.delete')
 @include('layouts.footerPadrao')
+@include('cadastros.usuario.insert')
+
+
 <script type='text/javascript'>
+$(document).ready(function(){
 
     document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $usuarios->count() }}";
     document.getElementById("valorTotal").textContent="";
@@ -95,15 +99,16 @@
     $('#search').focus();
 
     $('#insert').on('shown.bs.modal', function(e) {
-        $('#insert').find("#i_descModalidade").focus();
+        $('#insert').find("#i_nome").focus();
     });
 
     
-    $('#delete').on('shown.bs.modal', function(e) {
-        var codModo  = $(e.relatedTarget).data("codmodo");
-        var descModo = $(e.relatedTarget).data("descmodo");
+    $('#delete').on('show.bs.modal', function(e) {
+        var codigo   = $(e.relatedTarget).data("codigo");
+        var descricao= $(e.relatedTarget).data("descricao");
 
-        $('#delete').find("#description").html('Modalidade de Venda: '+codModo+' - '+descModo);
-        $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_delete_"+codModo+"').submit()");
-    });    
+        $('#delete').find("#description").html('Usuário: '+codigo+' - '+descricao);
+        $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_del_usuario_"+codigo+"').submit()");
+    });   
+});
 </script>

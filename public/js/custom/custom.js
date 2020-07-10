@@ -31,25 +31,6 @@ return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
 }
 
 
-function masktest($val, $mask)
-{
-
-	$maskared = '';
-	$k = 0;
-	for($i = 0; $i<=$mask.length-1; $i++)
-	{
-		if($mask[$i] == '#')
-		{
-			$maskared = $maskared+$val[$k++];
-			
-		} else {
-			$maskared = $maskared+$mask[$i];
-		}
-	}
-	return $maskared; 
-}
-
-
 function tablesorter( $field ){
 
 	$sort = $('#sort').val();

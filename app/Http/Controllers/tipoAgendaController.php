@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Session;
 
-use App\Models\perfil;    
-class perfilUsuarioController extends Controller
+use App\Models\tipoAgenda;    
+class tipoAgendaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,32 +30,24 @@ class perfilUsuarioController extends Controller
     {
 
         $search = $request->get('search');
-        $field  = $request->get('field')  != '' ? $request->get('field') : 'nome';
+        $field  = $request->get('field')  != '' ? $request->get('field') : 'descricao';
         $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
 
- 
-        $perfil  = DB::table('perfil')
-                   ->where('nome', 'like', '%' . $search . '%')
-                   ->orwhere('descricao' , 'like', '%' . $search . '%')                
-                   ->orderBy($field, $sort)
-                   ->get();
-
-        $testes = DB::table('rotina')->orderBy('id_rotina', 'asc')->get();
-        return view("cadastros.perfil.index")->with('perfil', $perfil)
-                                             ->with('testes', $testes);
+        $tiposAgenda = DB::table('trabalho')
+                        ->orwhere('descricao' , 'like', '%' . $search . '%')                
+                        ->orderBy($field, $sort)
+                        ->get();
+        return view("cadastros.tipoAgenda.index")->with('tiposAgenda', $tiposAgenda);
     }
 
 
     public function create(Request $request)
     {
-        log::debug($request);
-        $perfil = new perfil();
-        $perfil->id_perfil = perfil::getId();
-        $perfil->nome      = $request->nome;
-        $perfil->descricao = $request->descricao;
-        $perfil->save();
+        $tipoAgenda = new tipoAgenda();
+        $tipoAgenda->id_trabalho = tipoAgenda::getId();
+        $tipoAgenda->descricao   = $request->descricao;
+        $tipoAgenda->save();
         return redirect($request->header('referer'));
-
     }
   
 
@@ -64,11 +56,10 @@ class perfilUsuarioController extends Controller
     {
         try {
 
-            DB::table('perfil')->where('id_perfil', '=', $request->id_perfil)->delete();
+            DB::table('trabalho')->where('id_trabalho', '=', $request->id_trabalho)->delete();
             return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
-            log::Debug($e);
             return redirect($request->header('referer'))->with('errors', $e->getMessage());
         }
     }    

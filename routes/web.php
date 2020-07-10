@@ -41,6 +41,21 @@ Route::group(['prefix' => 'usuario'], function () {
     Route::delete('delete', 'usuarioController@delete');
 });
 
+// Rotas de Cadastros - Linha de Produto
+Route::group(['prefix' => 'tipoServico'], function () {
+    Route::get('/'        , 'tipoServicoController@index');
+    Route::post('create'  , 'tipoServicoController@create');
+    Route::delete('delete', 'tipoServicoController@delete');
+});
+
+// Rotas de Cadastros - Trabalho
+Route::group(['prefix' => 'tipoAgenda'], function () {
+    Route::get('/'        , 'tipoAgendaController@index');
+    Route::post('create'  , 'tipoAgendaController@create');
+    Route::delete('delete', 'tipoAgendaController@delete');
+});
+
+
 
 // Rotas de Cadastros - Empresas
 Route::group(['prefix' => 'empresa'], function () {
@@ -48,3 +63,4 @@ Route::group(['prefix' => 'empresa'], function () {
     Route::post('create'  , 'empresaController@create');
     Route::delete('delete', 'empresaController@delete');
 });
+
