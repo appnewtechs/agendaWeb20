@@ -2,10 +2,10 @@
 {{ csrf_field() }}
 
 <div class="modal fade" id="insert">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal">
         <div class="modal-content" role='document'>
             <div class="modal-header">
-                <span class="linhaMestra" class="modal-title font-weight-bold" id="modal-title">Inserir tipo de Serviço</span>
+                <span class="linhaMestra" class="modal-title font-weight-bold" id="modal-title">Inserir Tipo de Serviço</span>
             </div>
 
             <div class="modal-body">

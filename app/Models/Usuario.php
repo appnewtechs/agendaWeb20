@@ -40,4 +40,10 @@ class Usuario extends Authenticatable
     }
     
 
+    public static function getId(){
+        return (DB::table('usuario')
+                ->orderBy('id_usuario', 'desc')->value('id_usuario'))+1;
+
+    }
+
 }

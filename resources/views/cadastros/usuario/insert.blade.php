@@ -87,7 +87,7 @@
                                 @foreach($perfis as $perfil)
                                 <tr>
                                     <td>{{ $perfil->nome }}</td>
-                                    <td><input name="checkSel[]"  id="checkSel"   type="checkbox" class="form-control" style="height: 17px; color:black;"></input>
+                                    <td><input name="checkSel[]"  id="checkSel"   type="checkbox" class="form-control inputrow"></input>
                                         <input name="codRotina[]" id="codRotina"  value="{{ $perfil->id_perfil }}" type="hidden"></input>
                                     </td>                            
                                 </tr>
@@ -109,7 +109,7 @@
                                 @foreach($empresas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->razao_social }}</td>
-                                    <td><input name="email[]"     id="email"     type="email"  class="form-control"></input>
+                                    <td><input name="email[]"     id="email"     type="email"  class="form-control inputrow"></input>
                                         <input name="idEmpresa[]" id="idEmpresa" type="hidden" value="{{ $empresa->id_empresa }}"></input>
                                     </td>                            
                                 </tr>

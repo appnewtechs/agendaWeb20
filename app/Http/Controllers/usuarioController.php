@@ -35,13 +35,16 @@ class usuarioController extends Controller
         $status = $request->get('status') != '' ? $request->get('status'): '0';
         
         $usuarios  = DB::table('usuario')
-                   ->select('usuario.*', 'empresa.razao_social') 
+                   ->select('usuario.*', 'empresa.razao_social', 'linha_produto.descricao')
                    ->join('empresa', 'usuario.id_empresa','=', 'empresa.id_empresa')
+                   ->join('linha_produto', 'usuario.id_linha_produto','=', 'linha_produto.id_linha_produto')
                    ->where(function ($query) use ($search) {
                     $query->where([
                             ['nome', 'like' , '%' . $search . '%'],
                         ])->orWhere([
                             ['usuario.email', 'like', '%' . $search . '%'],
+                        ])->orWhere([
+                            ['linha_produto.descricao', 'like', '%' . $search . '%'],
                         ]);
                     })->where(function ($query) use ($status) {
                         if ($status!='2'){
@@ -67,12 +70,30 @@ class usuarioController extends Controller
 
     public function create(Request $request)
     {
+
+        $usuario = new usuario();
+        $usuario->id_trabalho = usuario::getId();
+        $usuario->nome   = $request->i_nome;
+        $usuario->email  = $request->i_email;
+        $usuario->login  = $request->i_login;
+        $usuario->senha  = Hash::make($request->i_senha);
+        $usuario->status = $request->i_status;
+        $usuario->telefone  = $request->i_telefone;
+        $usuario->id_empresa= $request->i_id_empresa;
+        $usuario->linha_produto = $request->i_id_linha_produto;
+        $usuario->especialidade = $request->i_especialidade;
+        $usuario->data_nascimento = $request->i_data_nascimento;
+        $usuario->save();
+        return redirect($request->header('referer'));
+
     }
   
 
 
     public function delete(Request $request)
     {
+        DB::table('usuario_perfil')->where('id_usuario', '=', $request->id_usuario)->delete();
+        DB::table('usuario')->where('id_usuario', '=', $request->id_usuario)->delete();
         return redirect($request->header('referer'));
     }    
     

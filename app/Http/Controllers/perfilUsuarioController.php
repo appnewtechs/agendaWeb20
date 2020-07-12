@@ -68,7 +68,6 @@ class perfilUsuarioController extends Controller
             return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
-            log::Debug($e);
             return redirect($request->header('referer'))->with('errors', $e->getMessage());
         }
     }    

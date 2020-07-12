@@ -5,7 +5,7 @@
 
             <li class="nav-item active">
                <a class="navbar brand" style="padding-top: 0px;">
-               <img src="/imgs/logo-new.png" class="rounded" height='30' style="background-color: white">
+               <img src="imgs/logo-new.png" class="rounded" height='30' style="background-color: white">
                </a>
             </li>
 
@@ -29,7 +29,14 @@
                            <a class="dropdown-item" href="{{ action('usuarioController@index') }}">Usuários</a>
                            <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="{{ action('empresaController@index') }}">Empresas do Grupo</a>
-                           <div class="dropdown-divider"></div>
+                        </ul>
+                     </li>
+                     @break
+                  @case(2)
+                     <li class="nav-item active dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+                           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $rotina->nome }}</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                            <a class="dropdown-item"  href="{{ action('tipoAgendaController@index') }}">Tipo de Agenda</a>
                         </ul>
                      </li>

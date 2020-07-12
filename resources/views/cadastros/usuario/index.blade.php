@@ -45,6 +45,7 @@
                     <th><a class="linktd" href='#' onClick="tablesorter('login'       );">Login</a></th>
                     <th><a class="linktd" href='#' onClick="tablesorter('nome'        );">Nome</a></th>
                     <th><a class="linktd" href='#' onClick="tablesorter('razao_social');">Empresa</a></th>
+                    <th><a class="linktd" href='#' onClick="tablesorter('linha_produto.descricao');">Tipo de Serviço/Atuação</a></th>
                     <th><a class="linktd">E-mail</a></th>
                     <th><a class="linktd">Telefone</a></th>
                     <th><a class="linktd">Status</a></th>
@@ -59,6 +60,7 @@
                         <td>{{ $usuario->login }}</td>
                         <td>{{ $usuario->nome }}</td>
                         <td>{{ $usuario->razao_social }}</td>
+                        <td>{{ $usuario->descricao }}</td>
                         <td>{{ $usuario->email }}</td>
                         <td>{{ $usuario->telefone }}</td>
                         <td>{{ $usuario->status=='1' ? "Inativo" : "Ativo" }}</td>
