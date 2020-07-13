@@ -29,6 +29,14 @@ class usuarioController extends Controller
     public function index(Request $request)
     {
 
+        /*
+        // Ajuste perfil.
+        $usuarios  = DB::table('usuario')->get();
+
+        */
+
+
+
         $search = $request->get('search');
         $field  = $request->get('field')  != '' ? $request->get('field') : 'nome';
         $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
@@ -54,15 +62,16 @@ class usuarioController extends Controller
                    ->orderBy($field, $sort)
                    ->get();
         
-        $perfis   = DB::table('perfil')->orderBy('id_perfil','asc')->get();
-        $empresas = DB::table('empresa')->orderBy('razao_social','asc')->get();
+
+        $empresas         = DB::table('empresa')->orderBy('razao_social','asc')->get();
+        $perfisCombo      = DB::table('perfil')->orderBy('id_perfil','asc')->pluck('nome','id_perfil');
         $empresasCombo    = DB::table('empresa')->orderBy('razao_social','asc')->pluck('razao_social','id_empresa');
         $tipoServicoCombo = DB::table('linha_produto')->orderBy('descricao','asc')->pluck('descricao','id_linha_produto');
 
 
         return view("cadastros.usuario.index")->with('usuarios', $usuarios)
-                                              ->with('perfis',   $perfis)
                                               ->with('empresas', $empresas)
+                                              ->with('perfisCombo',   $perfisCombo)
                                               ->with('empresasCombo', $empresasCombo)
                                               ->with('tipoServicoCombo', $tipoServicoCombo);
     }
@@ -72,7 +81,7 @@ class usuarioController extends Controller
     {
 
         $usuario = new usuario();
-        $usuario->id_trabalho = usuario::getId();
+        $usuario->id_usuario = usuario::getId();
         $usuario->nome   = $request->i_nome;
         $usuario->email  = $request->i_email;
         $usuario->login  = $request->i_login;
@@ -80,10 +89,14 @@ class usuarioController extends Controller
         $usuario->status = $request->i_status;
         $usuario->telefone  = $request->i_telefone;
         $usuario->id_empresa= $request->i_id_empresa;
+        $usuario->id_perfil = $request->i_id_perfil;
         $usuario->linha_produto = $request->i_id_linha_produto;
         $usuario->especialidade = $request->i_especialidade;
         $usuario->data_nascimento = $request->i_data_nascimento;
         $usuario->save();
+
+
+
         return redirect($request->header('referer'));
 
     }

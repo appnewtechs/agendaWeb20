@@ -95,9 +95,26 @@ $(document).ready(function(){
 
 
 function markAllRotinas() {
+
     $("input[name='codRotina[]']").each(function(){
         i = this.parentNode.parentNode.rowIndex;
         $("#checkSel"+i).prop("checked", !document.getElementById("checkSel"+i).checked);
+    });
+    selRotinas();
+
+}
+
+function selRotinas() {
+
+    $("input[name='codRotina[]']").each(function(){
+
+        i = this.parentNode.parentNode.rowIndex;
+        if(document.getElementById("checkSel"+i).checked==true){
+            $("#idSelect"+i).val("1");
+        } else {
+            $("#idSelect"+i).val("0");
+        }
+
     });
 }
 

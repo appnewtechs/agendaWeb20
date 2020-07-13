@@ -35,14 +35,18 @@
                         </tr>
                         </thead>
 
-                        <tbody>     
+                        <tbody>    
+                            @php ($numRows = 1) 
                             @foreach($testes as $item)
                             <tr>
                                 <td>{{ $item->nome }}</td>
-                                <td><input name="checkSel[]"  id="checkSel"   value="off" type="checkbox" class="form-control" style="height: 17px; color:black;"></input>
-                                    <input name="codRotina[]" id="codRotina"  value="{{ $item->id_rotina }}" type="hidden"></input>
+                                <td><input name="checkSel[]"  id="checkSel{{ $numRows }}"  type="checkbox" class="form-control" onclick='selRotinas();' style="height: 20px; color:black;"></input>
+                                    <input name="codRotina[]" id="codRotina{{ $numRows }}" value="{{ $item->id_rotina }}" type="hidden"></input>
+                                    <input name="idSelect[]"  id="idSelect{{ $numRows }}"  value="0"                      type="hidden"></input>
                                 </td>                            
                             </tr>
+
+                            @php ($numRows++)
                             @endforeach
                         </tbody>
                     </table>

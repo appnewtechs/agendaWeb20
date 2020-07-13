@@ -99,7 +99,6 @@ $(document).ready(function(){
     document.getElementById("valorTotal").textContent="";
 
     $('#search').focus();
-
     $('#insert').on('shown.bs.modal', function(e) {
         $('#insert').find("#i_nome").focus();
     });
@@ -113,4 +112,19 @@ $(document).ready(function(){
         $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_del_usuario_"+codigo+"').submit()");
     });   
 });
+
+
+function selPerfil() {
+
+    $("input[name='codRotina[]']").each(function(){
+        i = this.parentNode.parentNode.rowIndex;
+        if(document.getElementById("checkSel"+i).checked==true){
+            $("#idSelect"+i).val("1");
+        } else {
+            $("#idSelect"+i).val("0");
+        }
+    });
+}
+
+
 </script>

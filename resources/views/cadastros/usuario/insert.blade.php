@@ -12,9 +12,14 @@
                 <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
                         
                     <div class="form-row col-md-12 pl-3 pr-3">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                         {!! Form::label("i_nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("i_nome",  null,   ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_data_nascimento');" ]) !!}
+                        {!! Form::text("i_nome",  null,   ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_telefone');" ]) !!}
+                        </div>
+
+                        <div class="col-md-2">
+                        {!! Form::label("i_telefone", "Telefone", ["class"=>"col-form-label pl-0"]) !!}
+                        {!! Form::text("i_telefone",  null,       ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_data_nascimento');" ]) !!}
                         </div>
 
                         <div class="col-md-2">
@@ -48,12 +53,14 @@
 
                         <div class="col-md-4">
                         {!! Form::label("i_email", "E-mail Principal", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::email("i_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_telefone');" ]) !!}
+                        {!! Form::email("i_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_perfil');" ]) !!}
                         </div>
 
-                        <div class="col-md-2">
-                        {!! Form::label("i_telefone", "Telefone", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("i_telefone",  null,       ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_linha_produto');" ]) !!}
+
+                        <div class="col-md-3">
+                        {!! Form::label("i_id_perfil",  "Perfil", ["class"=>"col-form-label pl-0"]) !!}
+                        {!! Form::select("i_id_perfil", $perfisCombo, null, ['placeholder'=>'Selecione o Perfil', 
+                            "class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_linha_produto');" ]) !!}
                         </div>
 
                         <div class="col-md-3">
@@ -62,7 +69,7 @@
                             "class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_especialidade');" ]) !!}
                         </div>
 
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                         {!! Form::label("i_especialidade", "Especialidade", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::text("i_especialidade",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
                         </div>
@@ -73,30 +80,7 @@
 
                 <div class="dropdown-divider"></div>
                 <div class="row">
-                    <div class="col-md-2 border border-dark rounded pl-0 pr-0 pt-0 pb-0">
-                        <table class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>Rotinas</th>
-                                <th class="text-right"><input name="checkTodos" id="checkTodos" type="checkbox" 
-                                    class="form-control" onclick='markAllRotinas();' style="height: 17px; color:black;"></input></th>
-                            </tr>
-                            </thead>
-
-                            <tbody>     
-                                @foreach($perfis as $perfil)
-                                <tr>
-                                    <td>{{ $perfil->nome }}</td>
-                                    <td><input name="checkSel[]"  id="checkSel"   type="checkbox" class="form-control inputrow"></input>
-                                        <input name="codRotina[]" id="codRotina"  value="{{ $perfil->id_perfil }}" type="hidden"></input>
-                                    </td>                            
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>  
-
-                    <div class="col-md-9 offset-md-1 border border-dark rounded pl-0 pr-0 pt-0 pb-0">
+                    <div class="col-md-12 border border-dark rounded pl-0 pr-0 pt-0 pb-0">
                         <table class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
                             <thead class="thead-dark">
                             <tr>
@@ -106,6 +90,7 @@
                             </thead>
 
                             <tbody>     
+                                @php ($numRows=1)
                                 @foreach($empresas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->razao_social }}</td>
@@ -113,6 +98,7 @@
                                         <input name="idEmpresa[]" id="idEmpresa" type="hidden" value="{{ $empresa->id_empresa }}"></input>
                                     </td>                            
                                 </tr>
+                                @php ($numRows++)
                                 @endforeach
                             </tbody>
                         </table>

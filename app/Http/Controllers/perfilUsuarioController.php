@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Session;
 
 use App\Models\perfil;    
+use App\Models\perfilRotina;    
 class perfilUsuarioController extends Controller
 {
     /**
@@ -48,12 +49,27 @@ class perfilUsuarioController extends Controller
 
     public function create(Request $request)
     {
-        log::debug($request);
+
+        $id_perfil = perfil::getId();
         $perfil = new perfil();
-        $perfil->id_perfil = perfil::getId();
+
+        $perfil->id_perfil = $id_perfil;
         $perfil->nome      = $request->nome;
         $perfil->descricao = $request->descricao;
         $perfil->save();
+
+        for ($i = 0; $i < count($request->codRotina); $i++) { 
+
+            if($request->idSelect[$i]=="1"){
+                $rotina = new perfilRotina();
+                $rotina->id_perfil = $id_perfil;
+                $rotina->id_rotina = $request->codRotina[$i];
+                $rotina->edicao       = 0;
+                $rotina->visualizacao = 0;
+                $rotina->save();
+            }
+        }
+
         return redirect($request->header('referer'));
 
     }
@@ -64,6 +80,7 @@ class perfilUsuarioController extends Controller
     {
         try {
 
+            DB::table('perfil_rotina')->where('id_perfil', '=', $request->id_perfil)->delete();
             DB::table('perfil')->where('id_perfil', '=', $request->id_perfil)->delete();
             return redirect($request->header('referer'));
 
