@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Session;
 
 use App\Models\usuario;    
+use App\Models\usuarioEmpresa;
 class usuarioController extends Controller
 {
     /**
@@ -80,23 +82,35 @@ class usuarioController extends Controller
     public function create(Request $request)
     {
 
+        log::debug($request);
         $usuario = new usuario();
         $usuario->id_usuario = usuario::getId();
         $usuario->nome   = $request->i_nome;
         $usuario->email  = $request->i_email;
         $usuario->login  = $request->i_login;
-        $usuario->senha  = Hash::make($request->i_senha);
+        $usuario->senha  = Hash::make("123456");
         $usuario->status = $request->i_status;
         $usuario->telefone  = $request->i_telefone;
         $usuario->id_empresa= $request->i_id_empresa;
         $usuario->id_perfil = $request->i_id_perfil;
-        $usuario->linha_produto = $request->i_id_linha_produto;
-        $usuario->especialidade = $request->i_especialidade;
-        $usuario->data_nascimento = $request->i_data_nascimento;
+        $usuario->id_linha_produto = $request->i_id_linha_produto;
+        $usuario->especialidade    = $request->i_especialidade;
+        $usuario->data_nascimento  = $request->i_data_nascimento;
+        $usuario->imagem = "";
         $usuario->save();
 
 
-
+        
+        for ($i = 0; $i < count($request->i_arr_empresa); $i++) { 
+            if($request->i_arr_email[$i]){
+                $empresa = new usuarioEmpresa();
+                $empresa->id_usuario = $usuario;
+                $empresa->id_empresa = $request->i_arr_empresa[$i];
+                $empresa->email      = $request->i_arr_email[$i];
+                $empresa->save();
+            }
+        }
+        
         return redirect($request->header('referer'));
 
     }
@@ -105,7 +119,7 @@ class usuarioController extends Controller
 
     public function delete(Request $request)
     {
-        DB::table('usuario_perfil')->where('id_usuario', '=', $request->id_usuario)->delete();
+        DB::table('usuario_empresa')->where('id_usuario', '=', $request->id_usuario)->delete();
         DB::table('usuario')->where('id_usuario', '=', $request->id_usuario)->delete();
         return redirect($request->header('referer'));
     }    

@@ -97,10 +97,12 @@ $(document).ready(function(){
 
     document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $usuarios->count() }}";
     document.getElementById("valorTotal").textContent="";
+    
 
     $('#search').focus();
     $('#insert').on('shown.bs.modal', function(e) {
         $('#insert').find("#i_nome").focus();
+        $('#i_telefone').mask('(00) 00000-0000');
     });
 
     

@@ -35,14 +35,9 @@
                     </div>
 
                     <div class="form-row col-md-12 pl-3 pr-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                         {!! Form::label("i_login", "Login", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("i_login",     null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_senha');" ]) !!}
-                        </div>
-
-                        <div class="col-md-2">
-                        {!! Form::label("i_senha", "Senha", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::password("i_senha", ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_empresa');" ]) !!}
+                        {!! Form::text("i_login",     null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_empresa');" ]) !!}
                         </div>
 
                         <div class="col-md-4">
@@ -51,9 +46,10 @@
                             "class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_email');" ]) !!}
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                         {!! Form::label("i_email", "E-mail Principal", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::email("i_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_perfil');" ]) !!}
+                        {!! Form::email("i_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_perfil');",
+                            "onfocusout"=>"preencherEmail();" ]) !!}
                         </div>
 
 
@@ -94,8 +90,8 @@
                                 @foreach($empresas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->razao_social }}</td>
-                                    <td><input name="email[]"     id="email"     type="email"  class="form-control inputrow"></input>
-                                        <input name="idEmpresa[]" id="idEmpresa" type="hidden" value="{{ $empresa->id_empresa }}"></input>
+                                    <td><input name="i_arr_email[]"   id="i_arr_email"   type="email"  class="form-control inputrow"></input>
+                                        <input name="i_arr_empresa[]" id="i_arr_empresa" type="hidden" value="{{ $empresa->id_empresa }}"></input>
                                     </td>                            
                                 </tr>
                                 @php ($numRows++)
