@@ -43,13 +43,32 @@ class tipoAgendaController extends Controller
 
     public function create(Request $request)
     {
-        $tipoAgenda = new tipoAgenda();
-        $tipoAgenda->id_trabalho = tipoAgenda::getId();
-        $tipoAgenda->descricao   = $request->descricao;
-        $tipoAgenda->save();
-        return redirect($request->header('referer'));
+
+        session::put('id_modal','insert');
+        $validator = Validator::make($request->all(), [
+                     'descricao' => ['required'],
+                     ], [], [
+                     'descricao' => 'Descrição',
+                     ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        } else {  
+
+            try {
+
+                $tipoAgenda = new tipoAgenda();
+                $tipoAgenda->id_trabalho = tipoAgenda::getId();
+                $tipoAgenda->descricao   = $request->descricao;
+                $tipoAgenda->save();
+                
+            } catch (\Exception $e) {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            }
+
+            return redirect($request->header('referer'));
+        }
     }
-  
 
 
     public function delete(Request $request)

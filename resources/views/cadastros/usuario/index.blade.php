@@ -35,6 +35,18 @@
 {!! Form::close() !!}
 
 
+@if(Session::has('errors'))
+<script type='text/javascript'>
+    $(document).ready(function(){
+
+        console.log("{{ Session('id_modal') }}");
+        var nomeModal = "{{ Session('id_modal') }}";
+        $('#'+nomeModal).modal('show');
+    });
+</script>
+@endif
+
+
 <div id="main" class="container-fluid pt-2 pb-5">
     <div id="list" class="row border border-dark rounded pb-1" style='background: white'>
         <div class="table-responsive col-md-12">
@@ -68,9 +80,18 @@
                         <form id="frm_delete_{{ $usuario->id_usuario }}" action="{{ url('usuario/delete') }}" method="post">
 
                             <input name="id_usuario" id="id_usuario" value="{{ $usuario->id_usuario }}" type="hidden"></input>                
-                            <a class='fas fa-edit'   title="Alterar" href="#update" data-toggle="modal" data-codigo ="{{ $usuario->id_usuario }}" 
-                                                                                                        data-nome   ="{{ $usuario->nome  }}"
-                                                                                                        data-email  ="{{ $usuario->email }}"></a>
+                            <a class='fas fa-edit'   title="Alterar" href="#update" data-toggle="modal" data-usuario ="{{ $usuario->id_usuario }}" 
+                                                                                                        data-nome    ="{{ $usuario->nome  }}"
+                                                                                                        data-email   ="{{ $usuario->email }}"
+                                                                                                        data-status  ="{{ $usuario->status }}"
+                                                                                                        data-empresa ="{{ $usuario->id_empresa }}"
+                                                                                                        data-login   ="{{ $usuario->login }}"
+                                                                                                        data-telefone ="{{ $usuario->telefone }}"
+                                                                                                        data-perfil   ="{{ $usuario->id_perfil }}"
+                                                                                                        data-datanasc ="{{ $usuario->data_nascimento }}"
+                                                                                                        data-linhaprod  ="{{ $usuario->id_linha_produto }}"
+                                                                                                        data-especialid ="{{ $usuario->especialidade }}"
+                                                                                                        ></a>
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                             <a class='fas fa-eraser' title="Deletar" href="#delete" data-toggle="modal" data-codigo   ="{{ $usuario->id_usuario }}"
@@ -87,9 +108,11 @@
 </div> 
 
 
-@include('layouts.delete')
 @include('layouts.footerPadrao')
+@include('layouts.delete')
+
 @include('cadastros.usuario.insert')
+@include('cadastros.usuario.update')
 
 
 <script type='text/javascript'>
@@ -101,11 +124,41 @@ $(document).ready(function(){
 
     $('#search').focus();
     $('#insert').on('shown.bs.modal', function(e) {
-        $('#insert').find("#i_nome").focus();
+        $("#i_nome").focus();
         $('#i_telefone').mask('(00) 00000-0000');
     });
 
-    
+    $('#update').on('shown.bs.modal', function(e) {
+        var usuario  = "{{ old('u_id_usuario') }}"  ? "{{ old('u_id_usuario') }}"  : $(e.relatedTarget).data("usuario");
+        var nome     = "{{ old('u_nome') }}"        ? "{{ old('u_nome') }}"        : $(e.relatedTarget).data("nome");
+        var email    = "{{ old('u_email') }}"       ? "{{ old('u_email') }}"       : $(e.relatedTarget).data("email");
+        var status   = "{{ old('u_status') }}"      ? "{{ old('u_status') }}"      : $(e.relatedTarget).data("status");
+        var empresa  = "{{ old('u_id_empresa') }}"  ? "{{ old('u_id_empresa') }}"  : $(e.relatedTarget).data("empresa");
+        var login    = "{{ old('u_login') }}"       ? "{{ old('u_login') }}"       : $(e.relatedTarget).data("login");
+        var telefone = "{{ old('u_telefone') }}"    ? "{{ old('u_telefone') }}"    : $(e.relatedTarget).data("telefone");
+        var perfil   = "{{ old('u_id_perfil') }}"   ? "{{ old('u_id_perfil') }}"   : $(e.relatedTarget).data("perfil");
+        var datanasc   = "{{ old('u_data_nascimento') }}"    ? "{{ old('u_data_nascimento') }}"  : $(e.relatedTarget).data("datanasc");
+        var linhaprod  = "{{ old('u_id_linha_produto') }}"   ? "{{ old('u_id_linha_produto') }}" : $(e.relatedTarget).data("linhaprod");
+        var especialid = "{{ old('u_especialidade') }}"      ? "{{ old('u_especialidade') }}"    : $(e.relatedTarget).data("especialid");
+
+        var modal = $(this);
+        modal.find('#u_id_usuario').val(usuario);
+        modal.find('#u_nome').val(nome);
+        modal.find('#u_email').val(email);
+        modal.find('#u_status').val(status);
+        modal.find('#u_id_empresa').val(empresa);
+        modal.find('#u_login').val(login);
+        modal.find('#u_telefone').val(telefone);
+        modal.find('#u_id_perfil').val(perfil);
+        modal.find('#u_data_nascimento').val(datanasc);
+        modal.find('#u_id_linha_produto').val(linhaprod);
+        modal.find('#u_especialidade').val(especialid);
+
+        $("#u_nome").focus();
+        $('#u_telefone').mask('(00) 00000-0000');
+    });
+
+
     $('#delete').on('show.bs.modal', function(e) {
         var codigo   = $(e.relatedTarget).data("codigo");
         var descricao= $(e.relatedTarget).data("descricao");

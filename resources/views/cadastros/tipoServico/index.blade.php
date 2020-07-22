@@ -28,6 +28,17 @@
 {!! Form::close() !!}
 
 
+
+@if(Session::has('errors'))
+<script type='text/javascript'>
+    $(document).ready(function(){
+        var nomeModal = "{{ Session('id_modal') }}";
+        $('#'+nomeModal).modal('show');
+    });
+</script>
+@endif
+
+
 <div id="main" class="container-fluid pt-2 pb-2">
 <div class="row">
     <div id="list" class="col-md-12 border border-dark rounded pb-0 pl-0 pr-0" style='background: white'>

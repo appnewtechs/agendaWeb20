@@ -9,13 +9,17 @@
             </div>
 
             <div class="modal-body">
-            <div class="row">    
-
-                <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
+            <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
                         
+                <div class="form-row col-md-12">
                     <div class="col-md-12">
                     {!! Form::label("descricao", "Descrição", ["class"=>"col-form-label pl-0"]) !!}
                     {!! Form::text("descricao",  null,        ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
+                    @if ($errors->has('descricao'))
+                        <span colspan='12' style="color: red;">
+                            {{ $errors->first('descricao') }}
+                        </span>
+                    @endif
                     </div>
 
                 </div>  

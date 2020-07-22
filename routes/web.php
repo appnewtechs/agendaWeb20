@@ -38,7 +38,10 @@ Route::group(['prefix' => 'perfilUsuario'], function () {
 Route::group(['prefix' => 'usuario'], function () {
     Route::get('/'        , 'usuarioController@index');
     Route::post('create'  , 'usuarioController@create');
-    Route::delete('delete', 'usuarioController@delete');
+    Route::post('update'  , 'usuarioController@update');
+
+    Route::get('update-user', 'usuarioController@updateUser');
+    Route::delete('delete'  , 'usuarioController@delete');
 });
 
 // Rotas de Cadastros - Linha de Produto

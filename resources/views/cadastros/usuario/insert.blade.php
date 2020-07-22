@@ -15,11 +15,21 @@
                         <div class="col-md-6">
                         {!! Form::label("i_nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::text("i_nome",  null,   ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_telefone');" ]) !!}
+                        @if ($errors->has('i_nome'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_nome') }}
+                            </span>
+                        @endif
                         </div>
 
                         <div class="col-md-2">
                         {!! Form::label("i_telefone", "Telefone", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::text("i_telefone",  null,       ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_data_nascimento');" ]) !!}
+                        @if ($errors->has('i_telefone'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_telefone') }}
+                            </span>
+                        @endif
                         </div>
 
                         <div class="col-md-2">
@@ -38,18 +48,33 @@
                         <div class="col-md-3">
                         {!! Form::label("i_login", "Login", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::text("i_login",     null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_empresa');" ]) !!}
+                        @if ($errors->has('i_login'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_login') }}
+                            </span>
+                        @endif
                         </div>
 
                         <div class="col-md-4">
                         {!! Form::label("i_id_empresa", "Empresa Principal", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::select("i_id_empresa", $empresasCombo, null, ['placeholder'=>'Selecione a Empresa', 
                             "class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_email');" ]) !!}
+                        @if ($errors->has('i_id_empresa'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_id_empresa') }}
+                            </span>
+                        @endif
                         </div>
 
                         <div class="col-md-5">
                         {!! Form::label("i_email", "E-mail Principal", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::email("i_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_perfil');",
                             "onfocusout"=>"preencherEmail();" ]) !!}
+                        @if ($errors->has('i_email'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_email') }}
+                            </span>
+                        @endif
                         </div>
 
 
@@ -57,12 +82,22 @@
                         {!! Form::label("i_id_perfil",  "Perfil", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::select("i_id_perfil", $perfisCombo, null, ['placeholder'=>'Selecione o Perfil', 
                             "class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_linha_produto');" ]) !!}
+                        @if ($errors->has('i_id_perfil'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_id_perfil') }}
+                            </span>
+                        @endif
                         </div>
 
                         <div class="col-md-3">
                         {!! Form::label("i_id_linha_produto", "Linha de Serviço/Atuação", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::select("i_id_linha_produto", $tipoServicoCombo, null, ['placeholder'=>'Selecione a Linha de Serviço', 
                             "class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_especialidade');" ]) !!}
+                        @if ($errors->has('i_id_linha_produto'))
+                            <span colspan='12' style="color: red;">
+                                {{ $errors->first('i_id_linha_produto') }}
+                            </span>
+                        @endif
                         </div>
 
                         <div class="col-md-6">

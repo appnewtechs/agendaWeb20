@@ -1,4 +1,7 @@
 @include('layouts.padraoMain')
+<script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2@2.0.0/dist/spectrum.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2@2.0.0/dist/spectrum.min.css">
+
 {!! Form::open(['method'=>'get']) !!}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">    
     
@@ -26,6 +29,16 @@
     </div>
 </nav>
 {!! Form::close() !!}
+
+
+@if(Session::has('errors'))
+<script type='text/javascript'>
+    $(document).ready(function(){
+        var nomeModal = "{{ Session('id_modal') }}";
+        $('#'+nomeModal).modal('show');
+    });
+</script>
+@endif
 
 
 <div id="main" class="container-fluid pt-2 pb-2">
@@ -80,6 +93,14 @@ $(document).ready(function(){
     $('#search').focus();
     document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $tiposAgenda->count() }}";
     document.getElementById("valorTotal").textContent="";
+
+    $('#color').spectrum({
+            type: "component",
+            showInput: "true",
+            showAlpha: "false",
+            showButtons: "false",
+            allowEmpty: "false"
+    });
 
     $('#insert').on('shown.bs.modal', function(e) {
         $('#insert').find("#descricao").focus();

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Validator;
 use Session;
 
 use App\Models\tipoServico;    
@@ -43,11 +44,31 @@ class tipoServicoController extends Controller
 
     public function create(Request $request)
     {
-        $linha = new tipoServico();
-        $linha->id_linha_produto = tipoServico::getId();
-        $linha->descricao = $request->descricao;
-        $linha->save();
-        return redirect($request->header('referer'));
+
+        session::put('id_modal','insert');
+        $validator = Validator::make($request->all(), [
+                     'descricao' => ['required'],
+                     ], [], [
+                     'descricao' => 'Descrição',
+                     ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        } else {  
+
+            try {
+
+                $linha = new tipoServico();
+                $linha->id_linha_produto = tipoServico::getId();
+                $linha->descricao = $request->descricao;
+                $linha->save();
+
+            } catch (\Exception $e) {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            }
+
+            return redirect($request->header('referer'));
+        }
     }
   
 
