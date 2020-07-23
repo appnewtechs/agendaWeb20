@@ -28,6 +28,16 @@
 {!! Form::close() !!}
 
 
+@if(Session::has('errors'))
+<script type='text/javascript'>
+    $(document).ready(function(){
+        var nomeModal = "{{ Session('id_modal') }}";
+        $('#'+nomeModal).modal('show');
+    });
+</script>
+@endif
+
+
 <div id="main" class="container-fluid pt-2 pb-2">
     <div id="list" class="row border border-dark rounded pb-0" style='background: white'>
         <div class="table-responsive col-md-12">
@@ -55,6 +65,20 @@
                         <form id="frm_delete_{{ $empresa->id_empresa }}" action="{{ url('empresa/delete') }}" method="post">
 
                             <input name="id_empresa" id="id_empresa" value="{{ $empresa->id_empresa }}" type="hidden"></input>                
+                            <a class='fas fa-edit' title="Alterar" href="#update" data-toggle="modal" 
+                                                                                  data-codempresa     ="{{ $empresa->codEmpresa }}"
+                                                                                  data-razaosocial    ="{{ $empresa->razaoSocial }}"
+                                                                                  data-nomefantasia   ="{{ $empresa->nomeFantasia }}"
+                                                                                  data-tipopessoa     ="{{ $empresa->tipoPessoa }}"
+                                                                                  data-cpfcnpj        ="{{ $empresa->cpfCnpj }}"
+                                                                                  data-endereco       ="{{ $empresa->enderecoEmpresa }}"
+                                                                                  data-bairro         ="{{ $empresa->bairroEmpresa }}"
+                                                                                  data-cepempresa     ="{{ $empresa->cepEmpresa }}"
+                                                                                  data-contato        ="{{ $empresa->contatoEmpresa }}"
+                                                                                  data-telefone       ="{{ $empresa->numeroTelefone }}"
+                                                                                  data-codestado      ="{{ $empresa->codEstado }}"
+                                                                                  data-codmunicipio   ="{{ $empresa->codMunicipio }}"
+                                                                                  ></a>
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                             <a class='fas fa-eraser' title="Deletar" href="#delete" data-toggle="modal" data-codigo   ="{{ $empresa->id_empresa }}"
@@ -74,6 +98,10 @@
 
 @include('layouts.delete')
 @include('layouts.footerPadrao')
+
+@include('cadastros.empresas.insert')
+@include('cadastros.empresas.update')
+
 
 
 <script type='text/javascript'>

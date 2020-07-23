@@ -37,3 +37,14 @@
         </style>   
     </head>
     @include('layouts.menu')
+    @include('layouts.infoone')
+
+    @if(Session::get('erros')!='') 
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                $('#infoone').find("#description").html('{{ Session::get('erros') }}');
+                $('#infoone').modal('show');
+            });
+        </script>
+        {!! Session::put('erros',''); !!}
+    @endif

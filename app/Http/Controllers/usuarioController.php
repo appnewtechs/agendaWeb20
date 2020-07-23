@@ -32,11 +32,21 @@ class usuarioController extends Controller
     public function index(Request $request)
     {
 
-        /*
+        
         // Ajuste perfil.
         $usuarios  = DB::table('usuario')->get();
+        foreach ($usuarios as $usuario) {
 
-        */
+            $perfil = DB::table('usuario_perfil')->where('id_usuario', '=', $usuario->id_usuario)->first();
+
+            if ($perfil){
+                DB::table('usuario')
+                ->where('id_usuario', '=', $usuario->id_usuario)
+                ->update([
+                    'id_perfil' => $perfil->id_perfil,
+                ]);
+            }
+        }
 
 
 
@@ -169,6 +179,7 @@ class usuarioController extends Controller
             return redirect()->back()->withInput()->with('errors', $validator->messages());
         } else {  
 
+            log::Debug($request);
             try {
 
                 DB::table('usuario')

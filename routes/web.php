@@ -64,6 +64,7 @@ Route::group(['prefix' => 'tipoAgenda'], function () {
 Route::group(['prefix' => 'empresa'], function () {
     Route::get('/'        , 'empresaController@index');
     Route::post('create'  , 'empresaController@create');
+    Route::post('update'  , 'empresaController@update');
     Route::delete('delete', 'empresaController@delete');
 });
 

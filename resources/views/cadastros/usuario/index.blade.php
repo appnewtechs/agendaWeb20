@@ -38,8 +38,6 @@
 @if(Session::has('errors'))
 <script type='text/javascript'>
     $(document).ready(function(){
-
-        console.log("{{ Session('id_modal') }}");
         var nomeModal = "{{ Session('id_modal') }}";
         $('#'+nomeModal).modal('show');
     });
@@ -120,6 +118,7 @@ $(document).ready(function(){
 
     document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $usuarios->count() }}";
     document.getElementById("valorTotal").textContent="";
+    $('#u_telefone').mask('(00) 00000-0000');
     
 
     $('#search').focus();
@@ -128,7 +127,7 @@ $(document).ready(function(){
         $('#i_telefone').mask('(00) 00000-0000');
     });
 
-    $('#update').on('shown.bs.modal', function(e) {
+    $('#update').on('show.bs.modal', function(e) {
         var usuario  = "{{ old('u_id_usuario') }}"  ? "{{ old('u_id_usuario') }}"  : $(e.relatedTarget).data("usuario");
         var nome     = "{{ old('u_nome') }}"        ? "{{ old('u_nome') }}"        : $(e.relatedTarget).data("nome");
         var email    = "{{ old('u_email') }}"       ? "{{ old('u_email') }}"       : $(e.relatedTarget).data("email");
@@ -155,7 +154,6 @@ $(document).ready(function(){
         modal.find('#u_especialidade').val(especialid);
 
         $("#u_nome").focus();
-        $('#u_telefone').mask('(00) 00000-0000');
     });
 
 
