@@ -1,50 +1,41 @@
-@include('layouts.padraoMain')
-{!! Form::open(['method'=>'get']) !!}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">    
-    
-    <a class='fas fa-plus' title="Adicionar Registro" id="addRegister" href="#" onclick="$('#insert').modal('show')"></a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+@extends('layouts.layoutPadrao')
+@section('header')
 
-        <ul class="navbar-nav mr-auto font-weight-bold pl-2">
-            <li><span class="linhaMestra">Usuários</span></li>                
-        </ul>
+    @include('layouts.erros')
+    {!! Form::open(['method'=>'get']) !!}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">    
+        <a class='fas fa-plus' title="Adicionar Registro" id="addRegister" href="#" onclick="$('#insert').modal('show')"></a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto font-weight-bold pl-2">
+                <li><span class="linhaMestra">Usuários</span></li>                
+            </ul>
 
-        <form class="form-inline my-2 my-lg-2">
-        <ul class="navbar-nav input-group input-group-sm col-md-6">
-    
-                <div class="input-group">
-
-                    {!! Form::label("status" , "Status",["class"=>"col-form-label col-md-2 offset-md-2 text-right"]) !!}
-                    {!! Form::select('status', ['0'=>'Ativo', '1'=>'Inativo', '2'=>'Ambos'], request('status') ? request('status') :'0', 
-                            ['class'=>'form-control col-md-2', 
-                            'style'=>"border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem;", 
-                            "onchange"=>"$('#search_btn').click();" ]) !!}
-                    <div class="input-group-append col-md-6 pr-0">
+            <form class="form-inline my-2 my-lg-2">
+            <ul class="navbar-nav input-group input-group-sm col-md-6">
+                {!! Form::label("status" , "Status",["class"=>"col-form-label col-md-2 offset-md-2 text-right"]) !!}
+                {!! Form::select('status', ['0'=>'Ativo', '1'=>'Inativo', '2'=>'Ambos'], request('status') ? request('status') :'0', 
+                    ['class'=>'form-control col-md-2', 
+                    'style'=>"border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem;", 
+                    "onchange"=>"$('#search_btn').click();" ]) !!}
+                <div class="input-group-append col-md-6 pr-0">
 
                     <input id="search" class="form-control" name="search" value="{{ request('search') }}" type="text" 
-                        placeholder="Pesquisar..." onkeydown="javascript:if(event.keyCode==13){ $('#search_btn').click(); };" aria-label="Search"/>
-                        <button type="submit" id="search_btn" class="btn btn-sm btn-light"><i class="fas fa-search"></i></button>
-                        <input type="hidden" value="{{request('field')}}" id="field" name="field"/>
-                        <input type="hidden" value="{{request('sort')}}"  id="sort"  name="sort"/>
-                    </div>
+                    placeholder="Pesquisar..." onkeydown="javascript:if(event.keyCode==13){ $('#search_btn').click(); };" aria-label="Search"/>
+                    <button type="submit" id="search_btn" class="btn btn-sm btn-light"><i class="fas fa-search"></i></button>
+                    <input type="hidden" value="{{request('field')}}" id="field" name="field"/>
+                    <input type="hidden" value="{{request('sort')}}"  id="sort"  name="sort"/>
                 </div>
-        </ul>
-        </form>
-    </div>
-</nav>
-{!! Form::close() !!}
+            </ul>
+            </form>
+        </div>
+    </nav>
+    {!! Form::close() !!}
+
+@include('layouts.delete')
+@endsection
 
 
-@if(Session::has('errors'))
-<script type='text/javascript'>
-    $(document).ready(function(){
-        var nomeModal = "{{ Session('id_modal') }}";
-        $('#'+nomeModal).modal('show');
-    });
-</script>
-@endif
-
-
+@section('content')
 <div id="main" class="container-fluid pt-2 pb-5">
     <div id="list" class="row border border-dark rounded pb-1" style='background: white'>
         <div class="table-responsive col-md-12">
@@ -75,7 +66,7 @@
                         <td>{{ $usuario->telefone }}</td>
                         <td>{{ $usuario->status=='1' ? "Inativo" : "Ativo" }}</td>
                         <td class="text-right" style="vertical-align: middle">
-                        <form id="frm_delete_{{ $usuario->id_usuario }}" action="{{ url('usuario/delete') }}" method="post">
+                        <form id="frm_del_usuario_{{ $usuario->id_usuario }}" action="{{ url('usuario/delete') }}" method="post">
 
                             <input name="id_usuario" id="id_usuario" value="{{ $usuario->id_usuario }}" type="hidden"></input>                
                             <a class='fas fa-edit'   title="Alterar" href="#update" data-toggle="modal" data-usuario ="{{ $usuario->id_usuario }}" 
@@ -105,10 +96,6 @@
     </div> 
 </div> 
 
-
-@include('layouts.footerPadrao')
-@include('layouts.delete')
-
 @include('cadastros.usuario.insert')
 @include('cadastros.usuario.update')
 
@@ -116,18 +103,16 @@
 <script type='text/javascript'>
 $(document).ready(function(){
 
-    document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $usuarios->count() }}";
-    document.getElementById("valorTotal").textContent="";
     $('#u_telefone').mask('(00) 00000-0000');
-    
-
     $('#search').focus();
+   
     $('#insert').on('shown.bs.modal', function(e) {
         $("#i_nome").focus();
         $('#i_telefone').mask('(00) 00000-0000');
     });
 
-    $('#update').on('show.bs.modal', function(e) {
+    $('#update').on('shown.bs.modal', function(e) {
+
         var usuario  = "{{ old('u_id_usuario') }}"  ? "{{ old('u_id_usuario') }}"  : $(e.relatedTarget).data("usuario");
         var nome     = "{{ old('u_nome') }}"        ? "{{ old('u_nome') }}"        : $(e.relatedTarget).data("nome");
         var email    = "{{ old('u_email') }}"       ? "{{ old('u_email') }}"       : $(e.relatedTarget).data("email");
@@ -139,6 +124,7 @@ $(document).ready(function(){
         var datanasc   = "{{ old('u_data_nascimento') }}"    ? "{{ old('u_data_nascimento') }}"  : $(e.relatedTarget).data("datanasc");
         var linhaprod  = "{{ old('u_id_linha_produto') }}"   ? "{{ old('u_id_linha_produto') }}" : $(e.relatedTarget).data("linhaprod");
         var especialid = "{{ old('u_especialidade') }}"      ? "{{ old('u_especialidade') }}"    : $(e.relatedTarget).data("especialid");
+        carregaEmpresas(usuario);
 
         var modal = $(this);
         modal.find('#u_id_usuario').val(usuario);
@@ -167,17 +153,41 @@ $(document).ready(function(){
 });
 
 
-function selPerfil() {
-
-    $("input[name='codRotina[]']").each(function(){
-        i = this.parentNode.parentNode.rowIndex;
-        if(document.getElementById("checkSel"+i).checked==true){
-            $("#idSelect"+i).val("1");
-        } else {
-            $("#idSelect"+i).val("0");
+function preencherEmail() {
+    $("input[name='u_arr_empresa[]']").each(function(){
+        i=$(this).val();
+        codEmpresa = $("#u_arr_empresa"+i).val();
+        if( codEmpresa==$('#u_id_empresa').val() ){
+            $("#u_arr_email"+i).val( $('#u_email').val() );
         }
     });
 }
 
+function carregaEmpresas(usuario) {
+
+    $(document).ready(function(){
+        $.ajax({
+            url: '/usuario/empresas/'+usuario,
+            type: 'get',
+            dataType: 'json',
+            success: function(response){
+
+                if(response.length > 0){
+                    for(var i=0; i<response.length; i++){
+                    
+                        var email = response[i].email!=null ? response[i].email : "";
+                        newRow =  '<tr>';
+                        newRow += '<td>'+response[i].razao_social+'</td>';
+                        newRow += '<td><input name="u_arr_email[]"   id="u_arr_email'+response[i].id_empresa+'"   value="'+email+'" type="email"  class="form-control inputrow"></input>';
+                        newRow += '    <input name="u_arr_empresa[]" id="u_arr_empresa'+response[i].id_empresa+'"  value="'+response[i].id_empresa+'" type="hidden"></input>';
+                        newRow += '</td></tr>';
+                        $('#empresas tbody').append(newRow);    
+                    }
+                }
+            }
+        });
+    });
+}         
 
 </script>
+@endsection

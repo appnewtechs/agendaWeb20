@@ -34,6 +34,7 @@ class usuarioController extends Controller
 
         
         // Ajuste perfil.
+        /*
         $usuarios  = DB::table('usuario')->get();
         foreach ($usuarios as $usuario) {
 
@@ -47,7 +48,7 @@ class usuarioController extends Controller
                 ]);
             }
         }
-
+        */
 
 
         $search = $request->get('search');
@@ -77,6 +78,7 @@ class usuarioController extends Controller
         
 
         $empresas         = DB::table('empresa')->orderBy('razao_social','asc')->get();
+        $empresasUsuario  = DB::table('empresa')->orderBy('razao_social','asc')->get();
         $perfisCombo      = DB::table('perfil')->orderBy('id_perfil','asc')->pluck('nome','id_perfil');
         $empresasCombo    = DB::table('empresa')->orderBy('razao_social','asc')->pluck('razao_social','id_empresa');
         $tipoServicoCombo = DB::table('linha_produto')->orderBy('descricao','asc')->pluck('descricao','id_linha_produto');
@@ -94,24 +96,7 @@ class usuarioController extends Controller
     {
 
         session::put('id_modal','insert');
-        $validator = Validator::make($request->all(), [
-                    'i_nome'  => ['required'],
-                    'i_login' => ['required'],
-                    'i_email' => ['required'],
-                    'i_telefone'  => ['required'],
-                    'i_id_perfil' => ['required'],
-                    'i_id_empresa'=> ['required'],
-                    'i_id_linha_produto' => ['required'],
-                    ], [], [
-                        'i_nome'     => 'Nome',
-                        'i_login'    => 'Login',
-                        'i_email'    => 'E-mail',
-                        'i_telefone' => 'Telefone',
-                        'i_id_perfil' => 'Perfil',
-                        'i_id_empresa'=>'Empresa',
-                        'i_id_linha_produto' => 'Tipo de Serviço',
-                    ]);
-
+        $validator = Validator::make( $request->all(), usuario::$incRules, [], usuario::$incTranslate);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
         } else {  
@@ -157,31 +142,13 @@ class usuarioController extends Controller
     {
     
         session::put('id_modal','update');
-        $validator = Validator::make($request->all(), [
-                    'u_nome'  => ['required'],
-                    'u_login' => ['required'],
-                    'u_email' => ['required'],
-                    'u_telefone'  => ['required'],
-                    'u_id_perfil' => ['required'],
-                    'u_id_empresa'=> ['required'],
-                    'u_id_linha_produto' => ['required'],
-                    ], [], [
-                        'u_nome'     => 'Nome',
-                        'u_login'    => 'Login',
-                        'u_email'    => 'E-mail',
-                        'u_telefone' => 'Telefone',
-                        'u_id_perfil' => 'Perfil',
-                        'u_id_empresa'=>'Empresa',
-                        'u_id_linha_produto' => 'Tipo de Serviço',
-                    ]);
+        $validator = Validator::make( $request->all(), usuario::$updRules, [], usuario::$updTranslate);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
         } else {  
 
-            log::Debug($request);
             try {
-
                 DB::table('usuario')
                 ->where('id_usuario', '=', $request->u_id_usuario)
                 ->update([
@@ -196,6 +163,33 @@ class usuarioController extends Controller
                     'especialidade'    => $request->u_especialidade,
                     'data_nascimento'  => $request->u_data_nascimento,
                 ]);
+
+
+                for ($i = 0; $i < count($request->u_arr_empresa); $i++) { 
+                    if($request->u_arr_empresa[$i]){
+
+                        $mail = DB::table('usuario_empresa')->where([
+                                ['id_usuario', '=', $request->u_id_usuario],
+                                ['id_empresa', '=', $request->u_arr_empresa[$i]],
+                                ])->first();
+
+                        if (empty($mail)){
+                            $empresa = new usuarioEmpresa();
+                            $empresa->id_usuario = $request->u_id_usuario;
+                            $empresa->id_empresa = $request->u_arr_empresa[$i];
+                            $empresa->email      = $request->u_arr_email[$i];
+                            $empresa->save();
+                        } else {
+
+                            DB::table('usuario_empresa')->where([
+                                ['id_usuario', '=', $request->u_id_usuario],
+                                ['id_empresa', '=', $request->u_arr_empresa[$i]],
+                            ])->update([
+                                'email' => $request->u_arr_email[$i],
+                            ]);
+                        }
+                    }
+                }
 
              } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
@@ -212,10 +206,36 @@ class usuarioController extends Controller
         try {
             DB::table('usuario_empresa')->where('id_usuario', '=', $request->id_usuario)->delete();
             DB::table('usuario')->where('id_usuario', '=', $request->id_usuario)->delete();
+            return redirect($request->header('referer'));
         } catch (\Exception $e) {
-            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+
+            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Usuário já está sendo usada por outro cadastro'); 
+                return redirect($request->header('referer'));
+            } else {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+                return redirect($request->header('referer'))->with('errors', $e->getMessage());
+            }
         }
-        return redirect($request->header('referer'));
     }    
     
+
+
+    public function empresas($usuario){
+
+        return  DB::table('empresa')
+                ->select('empresa.id_empresa','empresa.razao_social','usuario_empresa.email')
+                ->leftJoin('usuario_empresa' , function($join) use ($usuario) {
+                    $join->on('usuario_empresa.id_empresa', '=', 'empresa.id_empresa')
+                        ->where('usuario_empresa.id_usuario', '=', $usuario);
+                    }
+                )
+                ->orderBy('empresa.razao_social', 'asc')->get();
+    }
+
+    public function updateUser(Request $request){
+
+        return view("auth.update");
+        
+    }
 }

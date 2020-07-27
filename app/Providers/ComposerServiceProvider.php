@@ -30,6 +30,7 @@ class ComposerServiceProvider extends ServiceProvider
                           'cadastros.empresas.index',
                           'cadastros.tipoServico.index',
                           'cadastros.tipoAgenda.index',
+                          'auth.update',
                           'home'],
 
                           'App\Http\Views\GeneralViewComposer@menu');

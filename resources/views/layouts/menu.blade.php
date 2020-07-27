@@ -60,7 +60,7 @@
                   {{ Auth::user()->nome }}
                </a>
                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item text-right" href="{{ action('usuarioController@updateUser') }}">Perfil</a>
+                  <a class="dropdown-item text-right" href="{{ url('/update-user') }}">Perfil</a>
                   <a class="dropdown-item text-right" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">Logout</a>
                   <form id="frm-logout"  action="{{ route('logout') }}" method="POST" style="display: none;">
                      {{ csrf_field() }}

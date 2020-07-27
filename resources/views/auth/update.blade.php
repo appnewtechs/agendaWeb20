@@ -1,24 +1,15 @@
-@extends('layouts.app')
-<link rel="stylesheet" href="{{ asset('css/padrao.css') }}">
-
+@extends('layouts.layoutPadrao')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header" style="background-color:#043154; color: white;">Parâmetros do Portal</div>
 
+<div class="container-fluid" style="margin-top: 20vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+
+            <div class="card border border-dark rounded">
+    
+                <div class="card-header">Perfil de Usuário</div>
                 <div class="card-body">
                     
-                <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
-                    <div class="form-row col-md-12 pl-3 pr-3">
-                        <div class="col-md-12">
-                        {!! Form::label("url2", "URL WS Boletos", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("url2",  'https://protege-aed.totvs.com.br/wsappbnteste/ppbnteste/wsdl?targetURI=urn:tempuri-org', ["class"=>"form-control"]) !!}
-                        </div>
-                    </div>
-                </div>
-
                 <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
                     <div class="form-row col-md-12 pl-3 pr-3">
                         <div class="col-md-12">
@@ -78,4 +69,6 @@
         </div>
     </div>
 </div>
+
+@include('layouts.footerClear')
 @endsection

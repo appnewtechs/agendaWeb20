@@ -113,7 +113,7 @@
                 <div class="dropdown-divider"></div>
                 <div class="row">
                     <div class="col-md-12 border border-dark rounded pl-0 pr-0 pt-0 pb-0">
-                        <table class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
+                        <table id="empresas" class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
                             <thead class="thead-dark">
                             <tr>
                                 <th>Empresa</th>
@@ -122,16 +122,6 @@
                             </thead>
 
                             <tbody>     
-                                @php ($numRows=1)
-                                @foreach($empresas as $empresa)
-                                <tr>
-                                    <td>{{ $empresa->razao_social }}</td>
-                                    <td><input name="u_arr_email[]"   id="u_arr_email"   type="email"  class="form-control inputrow"></input>
-                                        <input name="u_arr_empresa[]" id="u_arr_empresa" type="hidden" value="{{ $empresa->id_empresa }}"></input>
-                                    </td>                            
-                                </tr>
-                                @php ($numRows++)
-                                @endforeach
                             </tbody>
                         </table>
                     </div>  

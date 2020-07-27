@@ -1,43 +1,7 @@
-@include('layouts.padraoMain')
-{!! Form::open(['method'=>'get']) !!}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">    
-    
-    <a class='fas fa-plus' title="Adicionar Registro" id="addRegister" href="#" onclick="$('#insert').modal('show')"></a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+@extends('layouts.header')
 
-        <ul class="navbar-nav mr-auto font-weight-bold pl-2">
-            <li><span class="linhaMestra">Empresas do Grupo</span></li>                
-        </ul>
-
-        <form class="form-inline my-2 my-lg-2">
-        <ul class="navbar-nav input-group input-group-sm col-md-3">
-    
-            <div class="input-group">
-                <input id="search" class="form-control" name="search" value="{{ request('search') }}" type="text" 
-                       placeholder="Pesquisar..." onkeydown="javascript:if(event.keyCode==13){ $('#search_btn').click(); };" aria-label="Search"/>
-                <div class="input-group-append">
-                    <button type="submit" id="search_btn" class="btn btn-sm btn-light"><i class="fas fa-search"></i></button>
-                    <input type="hidden" value="{{request('field')}}"  name="field"/>
-                    <input type="hidden" value="{{request('sort')}}"   name="sort"/>
-                </div>
-            </div>
-        </ul>
-        </form>
-    </div>
-</nav>
-{!! Form::close() !!}
-
-
-@if(Session::has('errors'))
-<script type='text/javascript'>
-    $(document).ready(function(){
-        var nomeModal = "{{ Session('id_modal') }}";
-        $('#'+nomeModal).modal('show');
-    });
-</script>
-@endif
-
-
+@section('header-name','Empresas')
+@section('content')
 <div id="main" class="container-fluid pt-2 pb-2">
     <div id="list" class="row border border-dark rounded pb-0" style='background: white'>
         <div class="table-responsive col-md-12">
@@ -94,11 +58,6 @@
     </div> 
 </div> 
 
-
-
-@include('layouts.delete')
-@include('layouts.footerPadrao')
-
 @include('cadastros.empresas.insert')
 @include('cadastros.empresas.update')
 
@@ -108,10 +67,6 @@
 $(document).ready(function(){
 
     $('#search').focus();
-    document.getElementById("qtdeRegistros").textContent="Total Itens: {{ $empresas->count() }}";
-    document.getElementById("valorTotal").textContent="";
-
-
     $('#i_tipo_pessoa').change(function(){
         $('#i_cpf_cnpj').val('');
         $('#i_cpf_cnpj').mask( $(this).val()=="1" ? '000.000.000-00' : '00.000.000/0000-00');
@@ -235,6 +190,5 @@ var estados = [
     }
 } 
 
-
-
 </script>
+@endsection

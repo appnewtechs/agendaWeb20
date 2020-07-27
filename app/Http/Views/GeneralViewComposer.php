@@ -23,8 +23,7 @@ class GeneralViewComposer
     {
         $rotinas = DB::table('usuario')
                     ->select('perfil_rotina.id_rotina', 'rotina.nome')
-                    ->join('usuario_perfil','usuario_perfil.id_usuario', '=', 'usuario.id_usuario')
-                    ->join('perfil_rotina' ,'perfil_rotina.id_perfil'  , '=', 'usuario_perfil.id_perfil')
+                    ->join('perfil_rotina' ,'perfil_rotina.id_perfil'  , '=', 'usuario.id_perfil')
                     ->join('rotina'       ,'rotina.id_rotina'          , '=', 'perfil_rotina.id_rotina')
                     ->where('usuario.id_usuario', '=', Auth::user()->id_usuario)
                     ->groupby('perfil_rotina.id_rotina', 'rotina.nome')

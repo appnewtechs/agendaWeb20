@@ -47,27 +47,7 @@ class empresaController extends Controller
     {
 
         session::put('id_modal','insert');
-        $validator = Validator::make($request->all(), [
-                    'i_razao_social'     => ['required'],
-                    'i_nome_fantasia'    => ['required'],
-                    'i_tipo_pessoa'      => ['required'],
-                    'i_cpf_cnpj'         => ['required'],
-                    'i_estado'           => ['required','not_in:null'],
-                    'i_municipio'        => ['required'],
-                    'i_endereco'         => ['required'],
-                    'i_cep'              => ['required'],
-                    'i_telefone_fixo'    => ['required'],
-                    ], [], [
-                    'i_razao_social'     => 'Razão Social',
-                    'i_nome_fantasia'    => 'Nome Fantasia',
-                    'i_tipo_pessoa'      => 'Tipo de Empresa',
-                    'i_cpf_cnpj'         => 'CPF/CNPJ',
-                    'i_estado'           => 'Estado/UF',
-                    'i_municipio'        => 'Município',
-                    'i_endereco'         => 'Endereço',
-                    'i_cep'              => 'CEP',
-                    'i_telefone_fixo'    => 'Tel. Fixo',
-                    ]);
+        $validator = Validator::make($request->all(), empresa::$incRules, [], empresa::$incTranslate);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
@@ -101,27 +81,7 @@ class empresaController extends Controller
     public function update(Request $request) 
     {
         session::put('id_modal','update');
-        $validator = Validator::make($request->all(), [
-                    'u_razao_social'     => ['required'],
-                    'u_nome_fantasia'    => ['required'],
-                    'u_tipo_pessoa'      => ['required'],
-                    'u_cpf_cnpj'         => ['required'],
-                    'u_estado'           => ['required','not_in:null'],
-                    'u_municipio'        => ['required'],
-                    'u_endereco'         => ['required'],
-                    'u_cep'              => ['required'],
-                    'u_telefone_fixo'    => ['required'],
-                    ], [], [
-                    'u_razao_social'     => 'Razão Social',
-                    'u_nome_fantasia'    => 'Nome Fantasia',
-                    'u_tipo_pessoa'      => 'Tipo de Empresa',
-                    'u_cpf_cnpj'         => 'CPF/CNPJ',
-                    'u_estado'           => 'Estado/UF',
-                    'u_municipio'        => 'Município',
-                    'u_endereco'         => 'Endereço',
-                    'u_cep'              => 'CEP',
-                    'u_telefone_fixo'    => 'Tel. Fixo',
-                    ]);
+        $validator = Validator::make($request->all(), empresa::$updRules, [], empresa::$updTranslate);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
@@ -161,7 +121,7 @@ class empresaController extends Controller
         } catch (\Exception $e) {
 
             if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
-                session::put('erros', 'Não é possível excluir esse registro. - ERRO: Essa Empresa já está sendo usada por outro cadastro'); 
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Essa Empresa já está sendo usada por outro cadastro'); 
             } else {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
             }

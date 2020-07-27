@@ -248,7 +248,6 @@ option {
 .input-group-sm>.custom-select, 
 .input-group-sm>.form-control:not(textarea) {
     line-height: 30px;
-    height: 27px; 
     color:black;    
     font-family: "Nunito";
     font-size: 0.9rem;

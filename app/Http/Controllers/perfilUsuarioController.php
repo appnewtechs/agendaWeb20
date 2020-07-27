@@ -50,28 +50,37 @@ class perfilUsuarioController extends Controller
     public function create(Request $request)
     {
 
-        $id_perfil = perfil::getId();
-        $perfil = new perfil();
+        session::put('id_modal','insert');
+        $validator = Validator::make( $request->all(), usuario::$incRules, [], usuario::$incTranslate);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        } else {  
 
-        $perfil->id_perfil = $id_perfil;
-        $perfil->nome      = $request->nome;
-        $perfil->descricao = $request->descricao;
-        $perfil->save();
+            try {
+                
+                $id_perfil = perfil::getId();
+                $perfil = new perfil();
+                $perfil->id_perfil = $id_perfil;
+                $perfil->nome      = $request->nome;
+                $perfil->descricao = $request->descricao;
+                $perfil->save();
 
-        for ($i = 0; $i < count($request->codRotina); $i++) { 
-
-            if($request->idSelect[$i]=="1"){
-                $rotina = new perfilRotina();
-                $rotina->id_perfil = $id_perfil;
-                $rotina->id_rotina = $request->codRotina[$i];
-                $rotina->edicao       = 0;
-                $rotina->visualizacao = 0;
-                $rotina->save();
+                for ($i = 0; $i < count($request->codRotina); $i++) { 
+                    if($request->idSelect[$i]=="1"){
+                        $rotina = new perfilRotina();
+                        $rotina->id_perfil = $id_perfil;
+                        $rotina->id_rotina = $request->codRotina[$i];
+                        $rotina->edicao       = 0;
+                        $rotina->visualizacao = 0;
+                        $rotina->save();
+                    }
+                }
+            } catch (\Exception $e) {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
             }
+
+            return redirect($request->header('referer'));
         }
-
-        return redirect($request->header('referer'));
-
     }
   
 

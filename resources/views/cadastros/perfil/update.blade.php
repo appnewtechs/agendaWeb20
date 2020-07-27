@@ -14,13 +14,13 @@
                 <div class="col-md-8 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
                         
                     <div class="col-md-12">
-                    {!! Form::label("i_nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::text("i_nome",  null,   ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#descricao');" ]) !!}
+                    {!! Form::label("nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
+                    {!! Form::text("nome",  null,   ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#descricao');" ]) !!}
                     </div>
 
                     <div class="col-md-12">
-                    {!! Form::label("i_descricao", "Descrição", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::text("i_descricao",  null,        ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
+                    {!! Form::label("descricao", "Descrição", ["class"=>"col-form-label pl-0"]) !!}
+                    {!! Form::text("descricao",  null,        ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
                     </div>
 
                 </div>  

@@ -81,7 +81,13 @@ class tipoServicoController extends Controller
             return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
-            return redirect($request->header('referer'))->with('errors', $e->getMessage());
+            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Serviço já está sendo usada por outro cadastro'); 
+                return redirect($request->header('referer'));
+            } else {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+                return redirect($request->header('referer'))->with('errors', $e->getMessage());
+            }
         }
     }    
     

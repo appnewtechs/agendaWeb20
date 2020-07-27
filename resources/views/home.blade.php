@@ -1,4 +1,5 @@
-@include('layouts.padraoMain')
+@extends('layouts.layoutPadrao')
+@section('content')
 <div class="container-fluid" style="margin-top: 20vh;">
 
     <div class="row justify-content-center">
@@ -8,4 +9,4 @@
         </div>
     </div>
 </div>
-@include('layouts.footerClear')
+@endsection

@@ -48,4 +48,48 @@ class Usuario extends Authenticatable
 
     }
 
+
+
+    public static $incRules = [
+        'i_nome'  => ['required'],
+        'i_login' => ['required'],
+        'i_email' => ['required'],
+        'i_telefone'  => ['required'],
+        'i_id_perfil' => ['required'],
+        'i_id_empresa'=> ['required'],
+        'i_id_linha_produto' => ['required'],
+    ];
+
+    public static $incTranslate = [
+        'i_nome'     => 'Nome',
+        'i_login'    => 'Login',
+        'i_email'    => 'E-mail',
+        'i_telefone' => 'Telefone',
+        'i_id_perfil' => 'Perfil',
+        'i_id_empresa'=>'Empresa',
+        'i_id_linha_produto' => 'Tipo de Serviço',
+    ];
+
+
+    public static $updRules = [
+        'u_nome'  => ['required'],
+        'u_login' => ['required'],
+        'u_email' => ['required'],
+        'u_telefone'  => ['required'],
+        'u_id_perfil' => ['required'],
+        'u_id_empresa'=> ['required'],
+        'u_id_linha_produto' => ['required'],
+    ];
+    
+    
+    public static $updTranslate = [
+        'u_nome'     => 'Nome',
+        'u_login'    => 'Login',
+        'u_email'    => 'E-mail',
+        'u_telefone' => 'Telefone',
+        'u_id_perfil' => 'Perfil',
+        'u_id_empresa'=>'Empresa',
+        'u_id_linha_produto' => 'Tipo de Serviço',
+    ];
+
 }
