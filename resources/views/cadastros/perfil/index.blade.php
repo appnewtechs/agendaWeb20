@@ -53,7 +53,7 @@ $(document).ready(function(){
 
     $('#search').focus();
     $('#insert').on('shown.bs.modal', function(e) {
-        $('#insert').find("#nome").focus();
+        $('#i_nome').focus();
     });
 
 

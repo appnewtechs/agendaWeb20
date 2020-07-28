@@ -14,7 +14,7 @@
                     <div class="form-row col-md-12 pl-3 pr-3">
                         <div class="col-md-6">
                         {!! Form::label("i_nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("i_nome",  null,   ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_telefone');" ]) !!}
+                        {!! Form::text("i_nome",  null,   ["class"=>"form-control", "maxLength=200", "onkeydown"=>"setFocus(event,'#i_telefone');" ]) !!}
                         @if ($errors->has('i_nome'))
                             <span colspan='12' style="color: red;">
                                 {{ $errors->first('i_nome') }}
@@ -68,7 +68,7 @@
 
                         <div class="col-md-5">
                         {!! Form::label("i_email", "E-mail Principal", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::email("i_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#i_id_perfil');",
+                        {!! Form::email("i_email",  null, ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#i_id_perfil');",
                             "onfocusout"=>"preencherEmail();" ]) !!}
                         @if ($errors->has('i_email'))
                             <span colspan='12' style="color: red;">
@@ -102,7 +102,7 @@
 
                         <div class="col-md-6">
                         {!! Form::label("i_especialidade", "Especialidade", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("i_especialidade",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
+                        {!! Form::text("i_especialidade",  null, ["class"=>"form-control",  "maxLength=255", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
                         </div>
 
                     </div>

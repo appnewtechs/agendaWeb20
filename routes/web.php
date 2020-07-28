@@ -15,14 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/update-user', 'usuarioController@updateUser');
+
 
 Route::get('/', function () {
-    return view('auth\login');
+    return view('auth.login');
 });
-
+Route::get('/update-user', function() {
+    return view('auth.update');
+});
 Route::get('/mailMessage', function () {
-    return view('auth\mailMessage');
+    return view('auth.mailMessage');
 });
 
 
@@ -40,6 +42,7 @@ Route::group(['prefix' => 'usuario'], function () {
     Route::get('/'        , 'usuarioController@index');
     Route::post('create'  , 'usuarioController@create');
     Route::post('update'  , 'usuarioController@update');
+    Route::post('updateUser'  , 'usuarioController@updateUser');
 
     Route::delete('delete'    , 'usuarioController@delete');
     Route::get('empresas/{id}', 'usuarioController@empresas');

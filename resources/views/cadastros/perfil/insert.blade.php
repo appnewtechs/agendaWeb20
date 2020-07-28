@@ -15,7 +15,7 @@
                         
                     <div class="col-md-12">
                     {!! Form::label("i_nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::text("i_nome",  null,   ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#descricao');" ]) !!}
+                    {!! Form::text("i_nome",  null,   ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#i_descricao');" ]) !!}
                     </div>
 
                     <div class="col-md-12">

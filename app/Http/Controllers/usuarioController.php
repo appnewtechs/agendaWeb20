@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Validator;
 use Session;
@@ -233,9 +234,31 @@ class usuarioController extends Controller
                 ->orderBy('empresa.razao_social', 'asc')->get();
     }
 
+
+
     public function updateUser(Request $request){
 
-        return view("auth.update");
-        
+        $validator = Validator::make( $request->all(), usuario::$updUserRules, [], usuario::$updUserTranslate);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        } else {  
+
+            try {
+                DB::table('usuario')
+                ->where('id_usuario', '=', Auth::user()->id_usuario)
+                ->update([
+                    'nome'     => $request->nome,
+                    'email'    => $request->email,
+                    'login'    => $request->login,
+                    'telefone' => $request->telefone,
+                    'senha'    => Hash::make($request->senha),
+                ]);
+
+            } catch (\Exception $e) {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            }
+
+            return redirect('/');
+        }
     }
 }

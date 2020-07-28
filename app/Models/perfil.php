@@ -21,23 +21,24 @@ class perfil extends Model
 
 
     public static $incRules = [
-        'i_nome'  => ['required'],
-        'i_login' => ['required'],
-        'i_email' => ['required'],
-        'i_telefone'  => ['required'],
-        'i_id_perfil' => ['required'],
-        'i_id_empresa'=> ['required'],
-        'i_id_linha_produto' => ['required'],
+        'i_nome'      => ['required'],
+        'i_descricao' => ['required'],
     ];
 
     public static $incTranslate = [
-        'i_nome'     => 'Nome',
-        'i_login'    => 'Login',
-        'i_email'    => 'E-mail',
-        'i_telefone' => 'Telefone',
-        'i_id_perfil' => 'Perfil',
-        'i_id_empresa'=>'Empresa',
-        'i_id_linha_produto' => 'Tipo de Serviço',
+        'i_nome'      => 'Nome',
+        'i_descricao' => 'Descrição',
+    ];
+
+
+    public static $updRules = [
+        'u_nome'      => ['required'],
+        'u_descricao' => ['required'],
+    ];
+
+    public static $updTranslate = [
+        'u_nome'      => 'Nome',
+        'u_descricao' => 'Descrição',
     ];
 
 }

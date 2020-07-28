@@ -392,5 +392,8 @@ footer {
 .card-header {
     background-color: steelblue;
     color:white;
+    font-size: 1rem;
+    padding-top: 0.5rem; 
+    padding-bottom: 0.5rem; 
 }
 

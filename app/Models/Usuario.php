@@ -51,13 +51,13 @@ class Usuario extends Authenticatable
 
 
     public static $incRules = [
-        'i_nome'  => ['required'],
-        'i_login' => ['required'],
-        'i_email' => ['required'],
-        'i_telefone'  => ['required'],
-        'i_id_perfil' => ['required'],
-        'i_id_empresa'=> ['required'],
-        'i_id_linha_produto' => ['required'],
+        'i_nome'  => 'required',
+        'i_login' => 'required|unique:usuario',
+        'i_email' => 'required|email|unique:usuario',
+        'i_telefone'  => 'required',
+        'i_id_perfil' => 'required',
+        'i_id_empresa'=> 'required',
+        'i_id_linha_produto' => 'required',
     ];
 
     public static $incTranslate = [
@@ -72,16 +72,14 @@ class Usuario extends Authenticatable
 
 
     public static $updRules = [
-        'u_nome'  => ['required'],
-        'u_login' => ['required'],
-        'u_email' => ['required'],
-        'u_telefone'  => ['required'],
-        'u_id_perfil' => ['required'],
-        'u_id_empresa'=> ['required'],
-        'u_id_linha_produto' => ['required'],
+        'u_nome'  => 'required',
+        'u_login' => 'required',
+        'u_email' => 'required|email',
+        'u_telefone'  => 'required',
+        'u_id_perfil' => 'required',
+        'u_id_empresa'=> 'required',
+        'u_id_linha_produto' => 'required',
     ];
-    
-    
     public static $updTranslate = [
         'u_nome'     => 'Nome',
         'u_login'    => 'Login',
@@ -90,6 +88,20 @@ class Usuario extends Authenticatable
         'u_id_perfil' => 'Perfil',
         'u_id_empresa'=>'Empresa',
         'u_id_linha_produto' => 'Tipo de Serviço',
+    ];
+
+
+    public static $updUserRules = [
+        'nome'  => 'required',
+        'telefone' => 'required',
+        'senha'    => 'required', 
+        'senhaConfirm' => 'required|same:senha' 
+    ];
+    public static $updUserTranslate = [
+        'nome'     => 'Nome',
+        'telefone' => 'Telefone',
+        'senha'    => 'Senha',
+        'senhaConfirm' => 'Confirmação de Senha',
     ];
 
 }
