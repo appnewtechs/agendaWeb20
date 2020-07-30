@@ -69,7 +69,7 @@
                         <div class="col-md-5">
                         {!! Form::label("i_email", "E-mail Principal", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::email("i_email",  null, ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#i_id_perfil');",
-                            "onfocusout"=>"preencherEmail();" ]) !!}
+                            "onfocusout"=>"preencherEmail('insert');" ]) !!}
                         @if ($errors->has('i_email'))
                             <span colspan='12' style="color: red;">
                                 {{ $errors->first('i_email') }}
@@ -125,8 +125,8 @@
                                 @foreach($empresas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->razao_social }}</td>
-                                    <td><input name="i_arr_email[]"   id="i_arr_email"   type="email"  class="form-control inputrow"></input>
-                                        <input name="i_arr_empresa[]" id="i_arr_empresa" type="hidden" value="{{ $empresa->id_empresa }}"></input>
+                                    <td><input name="i_arr_email[]"   id="i_arr_email{{ $empresa->id_empresa }}"   type="email"  class="form-control inputrow"></input>
+                                        <input name="i_arr_empresa[]" id="i_arr_empresa{{ $empresa->id_empresa }}" type="hidden" value="{{ $empresa->id_empresa }}"></input>
                                     </td>                            
                                 </tr>
                                 @php ($numRows++)

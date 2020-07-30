@@ -52,8 +52,8 @@ class Usuario extends Authenticatable
 
     public static $incRules = [
         'i_nome'  => 'required',
-        'i_login' => 'required|unique:usuario',
-        'i_email' => 'required|email|unique:usuario',
+        'i_login' => 'required|unique:usuario,login',
+        'i_email' => 'required|email|unique:usuario,email',
         'i_telefone'  => 'required',
         'i_id_perfil' => 'required',
         'i_id_empresa'=> 'required',
@@ -74,7 +74,7 @@ class Usuario extends Authenticatable
     public static $updRules = [
         'u_nome'  => 'required',
         'u_login' => 'required',
-        'u_email' => 'required|email',
+        'u_email' => 'required',
         'u_telefone'  => 'required',
         'u_id_perfil' => 'required',
         'u_id_empresa'=> 'required',

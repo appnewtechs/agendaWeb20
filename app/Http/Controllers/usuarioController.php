@@ -103,8 +103,10 @@ class usuarioController extends Controller
         } else {  
 
             try {
+
+                $userID  = usuario::getId();
                 $usuario = new usuario();
-                $usuario->id_usuario = usuario::getId();
+                $usuario->id_usuario = $userID; 
                 $usuario->nome   = $request->i_nome;
                 $usuario->email  = $request->i_email;
                 $usuario->login  = $request->i_login;
@@ -122,7 +124,7 @@ class usuarioController extends Controller
                 for ($i = 0; $i < count($request->i_arr_empresa); $i++) { 
                     if($request->i_arr_email[$i]){
                         $empresa = new usuarioEmpresa();
-                        $empresa->id_usuario = $usuario;
+                        $empresa->id_usuario = $userID; 
                         $empresa->id_empresa = $request->i_arr_empresa[$i];
                         $empresa->email      = $request->i_arr_email[$i];
                         $empresa->save();
@@ -153,10 +155,10 @@ class usuarioController extends Controller
                 DB::table('usuario')
                 ->where('id_usuario', '=', $request->u_id_usuario)
                 ->update([
-                    'nome'   => $request->u_nome,
-                    'email'  => $request->u_email,
-                    'login'  => $request->u_login,
-                    'status' => $request->u_status,
+                    'nome'      => $request->u_nome,
+                    'email'     => $request->u_email,
+                    'login'     => $request->u_login,
+                    'status'    => $request->u_status,
                     'telefone'  => $request->u_telefone,
                     'id_empresa'=> $request->u_id_empresa,
                     'id_perfil' => $request->u_id_perfil,

@@ -153,14 +153,25 @@ $(document).ready(function(){
 });
 
 
-function preencherEmail() {
-    $("input[name='u_arr_empresa[]']").each(function(){
-        i=$(this).val();
-        codEmpresa = $("#u_arr_empresa"+i).val();
-        if( codEmpresa==$('#u_id_empresa').val() ){
-            $("#u_arr_email"+i).val( $('#u_email').val() );
-        }
-    });
+function preencherEmail($modo) {
+
+    if($modo=="update"){
+        $("input[name='u_arr_empresa[]']").each(function(){
+            i=$(this).val();
+            codEmpresa = $("#u_arr_empresa"+i).val();
+            if( codEmpresa==$('#u_id_empresa').val() ){
+                $("#u_arr_email"+i).val( $('#u_email').val() );
+            }
+        });
+    } else {
+        $("input[name='i_arr_empresa[]']").each(function(){
+            i=$(this).val();
+            codEmpresa = $("#i_arr_empresa"+i).val();
+            if( codEmpresa==$('#i_id_empresa').val() ){
+                $("#i_arr_email"+i).val( $('#i_email').val() );
+            }
+        });
+    }
 }
 
 function carregaEmpresas(usuario) {
