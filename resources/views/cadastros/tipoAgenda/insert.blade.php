@@ -1,4 +1,4 @@
-{!! Form::open( array('id'=>'frm_incTipoServico', 'action'=>'tipoServicoController@create') ) !!}
+{!! Form::open( array('id'=>'frm_incTipoAgenda', 'action'=>'tipoAgendaController@create') ) !!}
 {{ csrf_field() }}
 
 <div class="modal fade" id="insert">
@@ -14,7 +14,7 @@
                 <div class="form-row col-md-12">
                     <div class="col-md-10">
                     {!! Form::label("descricao", "Descrição", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::text("descricao",  null,        ["class"=>"form-control", "maxLength=200", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
+                    {!! Form::text("descricao",  null,        ["class"=>"form-control", "maxLength=200", "onkeydown"=>"setFocus(event,'#colorpicker');" ]) !!}
                     @if ($errors->has('descricao'))
                         <span colspan='12' style="color: red;">
                             {{ $errors->first('descricao') }}
@@ -23,8 +23,8 @@
                     </div>
 
                     <div class="col-md-2">
-                    {!! Form::label("color", "Cor", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::text("color" ,  null,       ["class"=>"form-control color-picker", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
+                    {!! Form::label("colorpicker", "Cor", ["class"=>"col-form-label pl-0"]) !!}
+                    {!! Form::color("colorpicker",  null, ["class"=>"form-control", "style"=>"padding: 0px", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
             
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" id="insert-canc-btn" data-dismiss="modal" onclick='javascript:location.reload();'>Cancelar</button>
-                <button type="button" class="btn btn-sm btn-secondary" id="insert-conf-btn" onclick='javascript:$("#frm_incTipoServico").submit();'>Salvar</button>
+                <button type="button" class="btn btn-sm btn-secondary" id="insert-conf-btn" onclick='javascript:$("#frm_incTipoAgenda").submit();'>Salvar</button>
             </div>
         </div>
     </div>

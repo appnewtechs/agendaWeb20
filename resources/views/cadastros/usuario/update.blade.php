@@ -70,7 +70,7 @@
                         <div class="col-md-5">
                         {!! Form::label("u_email", "E-mail Principal", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::email("u_email",  null, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#u_id_perfil');",
-                            "onfocusout"=>"preencherEmail();" ]) !!}
+                            "onfocusout"=>"preencherEmail('update');" ]) !!}
                         @if ($errors->has('u_email'))
                             <span colspan='12' style="color: red;">
                                 {{ $errors->first('u_email') }}

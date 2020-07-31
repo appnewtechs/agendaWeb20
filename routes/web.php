@@ -55,12 +55,23 @@ Route::group(['prefix' => 'tipoServico'], function () {
     Route::delete('delete', 'tipoServicoController@delete');
 });
 
-// Rotas de Cadastros - Trabalho
+// Rotas de Cadastros - Tipo de Agenda
 Route::group(['prefix' => 'tipoAgenda'], function () {
     Route::get('/'        , 'tipoAgendaController@index');
     Route::post('create'  , 'tipoAgendaController@create');
     Route::delete('delete', 'tipoAgendaController@delete');
 });
+
+
+
+
+// Rotas de Cadastros - Agendas
+Route::group(['prefix' => 'eventos'], function () {
+    Route::get('/'        , 'eventosController@index');
+    Route::post('create'  , 'perfilUsuarioController@create');
+    Route::delete('delete', 'perfilUsuarioController@delete');
+});
+
 
 
 

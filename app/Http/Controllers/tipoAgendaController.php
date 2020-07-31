@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Validator;
 use Session;
 
 use App\Models\tipoAgenda;    
@@ -46,9 +47,11 @@ class tipoAgendaController extends Controller
 
         session::put('id_modal','insert');
         $validator = Validator::make($request->all(), [
-                     'descricao' => ['required'],
+                     'descricao'   => ['required'],
+                     'colorpicker' => ['required'],
                      ], [], [
-                     'descricao' => 'Descrição',
+                     'descricao'   => 'Descrição',
+                     'colorpicker' => 'Cor',
                      ]);
 
         if ($validator->fails()) {
@@ -60,6 +63,8 @@ class tipoAgendaController extends Controller
                 $tipoAgenda = new tipoAgenda();
                 $tipoAgenda->id_trabalho = tipoAgenda::getId();
                 $tipoAgenda->descricao   = $request->descricao;
+                $tipoAgenda->cor         = substr($request->colorpicker,1,6);
+                $tipoAgenda->codigo      = tipoAgenda::getCod();
                 $tipoAgenda->save();
                 
             } catch (\Exception $e) {
@@ -79,7 +84,14 @@ class tipoAgendaController extends Controller
             return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
-            return redirect($request->header('referer'))->with('errors', $e->getMessage());
+
+            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Agenda já está sendo usada por outro cadastro.'); 
+                return redirect($request->header('referer'));
+            } else {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+                return redirect($request->header('referer'))->with('errors', $e->getMessage());
+            }
         }
     }    
     

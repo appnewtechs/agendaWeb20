@@ -43,7 +43,7 @@
                      @break
                   @case(3)
                      <li class="nav-item active">
-                        <a class="nav-link" href=" {{ url('/home') }}">{{ $rotina->nome }}</a>
+                        <a class="nav-link" href="{{ action('eventosController@index') }}">{{ $rotina->nome }}</a>
                      </li>
                      @break
                @endswitch
