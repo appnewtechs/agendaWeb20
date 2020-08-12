@@ -16,11 +16,21 @@
                     <div class="col-md-12">
                     {!! Form::label("i_nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
                     {!! Form::text("i_nome",  null,   ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#i_descricao');" ]) !!}
+                    @if ($errors->has('i_nome'))
+                        <span colspan='12' style="color: red;">
+                            {{ $errors->first('i_nome') }}
+                        </span>
+                    @endif
                     </div>
 
                     <div class="col-md-12">
                     {!! Form::label("i_descricao", "Descrição", ["class"=>"col-form-label pl-0"]) !!}
                     {!! Form::text("i_descricao",  null,        ["class"=>"form-control",  "maxLength=200", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
+                    @if ($errors->has('i_descricao'))
+                        <span colspan='12' style="color: red;">
+                            {{ $errors->first('i_descricao') }}
+                        </span>
+                    @endif
                     </div>
 
                 </div>  

@@ -178,7 +178,7 @@ function carregaEmpresas(usuario) {
 
     $(document).ready(function(){
         $.ajax({
-            url: '/usuario/empresas/'+usuario,
+            url: '{{ env("APP_URL") }}/usuario/empresas/'+usuario,
             type: 'get',
             dataType: 'json',
             success: function(response){

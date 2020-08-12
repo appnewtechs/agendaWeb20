@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Validator;
 use Session;
 
 use App\Models\perfil;    
@@ -51,7 +52,7 @@ class perfilUsuarioController extends Controller
     {
 
         session::put('id_modal','insert');
-        $validator = Validator::make( $request->all(), usuario::$incRules, [], usuario::$incTranslate);
+        $validator = Validator::make( $request->all(), perfil::$incRules, [], perfil::$incTranslate);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
         } else {  
