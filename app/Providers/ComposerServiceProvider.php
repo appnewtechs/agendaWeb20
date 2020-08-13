@@ -35,5 +35,20 @@ class ComposerServiceProvider extends ServiceProvider
                           'home'],
 
                           'App\Http\Views\GeneralViewComposer@menu');
+
+
+        view()->composer(['cadastros.eventos.index',
+                          'cadastros.usuario.index'],
+                          'App\Http\Views\GeneralViewComposer@empresas');
+
+        view()->composer(['cadastros.usuario.index'],
+                          'App\Http\Views\GeneralViewComposer@tiposServico');
+
+        view()->composer(['cadastros.eventos.index'],
+                        'App\Http\Views\GeneralViewComposer@tiposAgenda');
+
+        view()->composer(['cadastros.eventos.index'],
+                          'App\Http\Views\GeneralViewComposer@usuarios');
+
     }
 }

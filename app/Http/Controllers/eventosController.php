@@ -7,11 +7,12 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Session;
 use Validator;
 
-use App\Models\empresa;    
+use App\Models\evento;    
 class eventosController extends Controller
 {
     /**
@@ -29,8 +30,7 @@ class eventosController extends Controller
 
     public function index(Request $request)
     {
-
-        return view("cadastros.eventos.index");
+       return view("cadastros.eventos.index");
     }
 
 
@@ -38,7 +38,15 @@ class eventosController extends Controller
     {
 
         session::put('id_modal','insert');
-        $validator = Validator::make($request->all(), empresa::$incRules, [], empresa::$incTranslate);
+        $validator = Validator::make( $request->all(), 
+        [
+            'i_title'      => 'required',
+            'i_id_usuario' => 'required',
+            'i_empresa'    => 'required',
+            'i_start'      => 'required',
+            'i_end'        => 'required',
+            'i_tipo_trabalho' => 'required',
+        ], [], evento::$incTranslate);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
@@ -46,19 +54,15 @@ class eventosController extends Controller
 
             try {
 
-                $empresas = new empresa();
-                $empresas->id_empresa    = empresa::getId();
-                $empresas->razao_social  = $request->i_razao_social;
-                $empresas->nome_fantasia = $request->i_nome_fantasia;
-                $empresas->tipo_pessoa   = $request->i_tipo_pessoa;
-                $empresas->cpf_cnpj      = $request->i_cpf_cnpj;
-                $empresas->endereco      = $request->i_endereco;
-                $empresas->complemento   = $request->i_complemento;
-                $empresas->cep           = $request->i_cep;
-                $empresas->estado        = $request->i_estado;
-                $empresas->municipio     = $request->i_municipio;
-                $empresas->telefone_fixo    = $request->i_telefone_fixo;
-                $empresas->telefone_celular = $request->i_telefone_celular;
+                $empresas = new evento();
+                $empresas->title         = $request->i_title;
+                $empresas->empresa       = $request->i_empresa;
+                $empresas->tipo_trabalho = $request->i_tipo_trabalho;
+                $empresas->start         = $request->i_start;
+                $empresas->end           = Carbon::parse($request->i_end)->endOfDay();
+                $empresas->status        = $request->i_status;
+                $empresas->id_usuario    = $request->i_id_usuario;
+                $empresas->id_creator    = Auth::user()->id_usuario;
                 $empresas->save();
 
             } catch (\Exception $e) {
@@ -119,5 +123,30 @@ class eventosController extends Controller
         }
         return redirect($request->header('referer'));
     }    
+ 
     
+
+    public function consulta(Request $request)
+    {
+        if(Auth::user()->id_perfil=='1') {
+            $events = DB::table('events')
+                        ->select(
+                            DB::raw("CONCAT(usuario.nome,'-',events.title) AS title"),
+                            DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
+                            DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
+                            'start','end'
+                        )
+                        ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
+                        ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
+                        ->whereBetween('start', [ $request->start, $request->end ])
+                        ->get();
+        } else {
+            $events = DB::table('events')
+                        ->where('id_usuario', '=', Auth::user()->id_usuario)
+                        ->whereBetween('start', [ $request->start, $request->end ])
+                        ->get();
+        }
+        return response()->json($events);
+    }
+
 }

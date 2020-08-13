@@ -68,8 +68,10 @@ Route::group(['prefix' => 'tipoAgenda'], function () {
 // Rotas de Cadastros - Agendas
 Route::group(['prefix' => 'eventos'], function () {
     Route::get('/'        , 'eventosController@index');
-    Route::post('create'  , 'perfilUsuarioController@create');
+    Route::post('create'  , 'eventosController@create');
+
     Route::delete('delete', 'perfilUsuarioController@delete');
+    Route::get('consulta', 'eventosController@consulta')->name('loadEvents');
 });
 
 

@@ -79,17 +79,11 @@ class usuarioController extends Controller
         
 
         $empresas         = DB::table('empresa')->orderBy('razao_social','asc')->get();
-        $empresasUsuario  = DB::table('empresa')->orderBy('razao_social','asc')->get();
         $perfisCombo      = DB::table('perfil')->orderBy('id_perfil','asc')->pluck('nome','id_perfil');
-        $empresasCombo    = DB::table('empresa')->orderBy('razao_social','asc')->pluck('razao_social','id_empresa');
-        $tipoServicoCombo = DB::table('linha_produto')->orderBy('descricao','asc')->pluck('descricao','id_linha_produto');
 
-
-        return view("cadastros.usuario.index")->with('usuarios', $usuarios)
-                                              ->with('empresas', $empresas)
-                                              ->with('perfisCombo',   $perfisCombo)
-                                              ->with('empresasCombo', $empresasCombo)
-                                              ->with('tipoServicoCombo', $tipoServicoCombo);
+        return view("cadastros.usuario.index")->with('usuarios'   , $usuarios)
+                                              ->with('empresas'   , $empresas)
+                                              ->with('perfisCombo', $perfisCombo);
     }
 
 

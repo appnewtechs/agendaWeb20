@@ -1,0 +1,13 @@
+.fc .fc-col-header {
+	font-weight: bold;
+	color: white;
+	background-color: steelblue;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+	margin-bottom: 1em;
+}   
+
+.fc-event-title {
+	font-size: 0.85rem;
+}

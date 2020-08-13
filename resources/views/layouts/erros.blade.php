@@ -10,6 +10,8 @@
 
 @if(Session::has('errors'))
 <script type='text/javascript'>
+
+    //console.log("{{ Session::get('errors') }}");
     $(document).ready(function(){
         var nomeModal = "{{ Session('id_modal') }}";
         $('#'+nomeModal).modal('show');

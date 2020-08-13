@@ -31,4 +31,35 @@ class GeneralViewComposer
 
         return $view->with('rotinas', $rotinas);
     }
+
+    public function empresas($view) 
+    {
+        $empresasCombo = DB::table('empresa')->orderBy('razao_social','asc')->pluck('razao_social','id_empresa');
+        return $view->with('empresasCombo', $empresasCombo);
+    }
+
+
+    public function usuarios($view) 
+    {
+        $usuariosCombo = DB::table('usuario')
+                        ->where([['status'    , '=' , '0'],
+                                 ['id_usuario', '<>', '1']])
+                        ->orderBy('nome','asc')->pluck('nome','id_usuario');
+        return $view->with('usuariosCombo', $usuariosCombo);
+    }
+
+
+    public function tiposServico($view) 
+    {
+        $tipoServicoCombo = DB::table('linha_produto')->orderBy('descricao','asc')->pluck('descricao','id_linha_produto');
+        return $view->with('tipoServicoCombo', $tipoServicoCombo);
+    }
+
+
+    public function tiposAgenda($view) 
+    {
+        $tipoAgendaCombo = DB::table('trabalho')->orderBy('descricao','asc')->pluck('descricao','id_trabalho');
+        return $view->with('tipoAgendaCombo', $tipoAgendaCombo);
+    }
+
 }
