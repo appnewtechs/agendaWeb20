@@ -40,8 +40,9 @@
     </div> 
 </div> 
 
-
+@include('layouts.footer')
 @include('cadastros.tipoAgenda.insert')
+
 <script type='text/javascript'>
 $(document).ready(function(){
 

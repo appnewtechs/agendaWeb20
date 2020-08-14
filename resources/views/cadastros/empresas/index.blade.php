@@ -58,6 +58,7 @@
     </div> 
 </div> 
 
+@include('layouts.footer')
 @include('cadastros.empresas.insert')
 @include('cadastros.empresas.update')
 

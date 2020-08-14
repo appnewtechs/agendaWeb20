@@ -17,20 +17,28 @@
             </div> 
         @else
             <div id="agenda" class="col-md-12 border border-dark rounded pr-3 pl-3 pt-3 pb-1" style='background: white;'>
-                <div id="calendar">
+                <div id="calendar" style="position: relative;">
                 </div> 
             </div> 
         @endif
     </div> 
 </div> 
 
+
 @include('cadastros.eventos.insert')
+@include('cadastros.eventos.update')
+@include('layouts.delete')
+
 <script type='text/javascript'>
 
     $(document).ready(function(){
         $('#insert').on('shown.bs.modal', function(e) {
             $("#i_title").focus();
         });
+
+        $('#delete').on('show.bs.modal', function(e) {
+            $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_delAgenda').submit()");
+        });   
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -77,15 +85,30 @@
                 day : 'numeric'
             }, 
 
-
             events: {
                 url: "{{ route('loadEvents') }}",
                 method: 'GET',
+            },
 
-                failure: function() {
-                    alert('there was an error while fetching events!');
-                },
-            }
+            eventClick: function(info) {
+                if("{{Auth::user()->id_perfil}}"=='1'){
+
+                    $('#id_evento').val( info.event.id );
+                    $('#u_id_evento').val( info.event.id );
+
+                    $('#u_title').val( info.event.title );
+                    $('#u_status').val( info.event.extendedProps.status );
+                    $('#u_empresa').val( info.event.extendedProps.empresa );
+                    $('#u_id_usuario').val( info.event.extendedProps.usuario );
+                    $('#u_tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
+                    $('#update').modal('show');
+
+                } else {
+                    $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
+                    $('#infoone').modal('show');
+                }
+            },
+            
         });
 
         calendar.render();

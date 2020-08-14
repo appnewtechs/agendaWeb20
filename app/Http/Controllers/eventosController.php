@@ -112,14 +112,9 @@ class eventosController extends Controller
     public function delete(Request $request)
     {
         try {
-            DB::table('empresa')->where('id_empresa', '=', $request->id_empresa)->delete();
+            DB::table('events')->where('id', '=', $request->id_evento)->delete();
         } catch (\Exception $e) {
-
-            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
-                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Essa Empresa já está sendo usada por outro cadastro'); 
-            } else {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            }
+            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
         }
         return redirect($request->header('referer'));
     }    
@@ -131,10 +126,11 @@ class eventosController extends Controller
         if(Auth::user()->id_perfil=='1') {
             $events = DB::table('events')
                         ->select(
-                            DB::raw("CONCAT(usuario.nome,'-',events.title) AS title"),
+                            DB::raw("CONCAT(usuario.nome,' - ',events.title) AS title"),
                             DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
                             DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
-                            'start','end'
+                            'id','empresa','events.status AS status','tipo_trabalho',
+                            'start', 'start AS datainicial', 'end', 'usuario.id_usuario AS usuario'
                         )
                         ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
@@ -142,6 +138,12 @@ class eventosController extends Controller
                         ->get();
         } else {
             $events = DB::table('events')
+                        ->select(
+                            DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
+                            DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
+                            'id','title','start','end'
+                        )
+                        ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
                         ->where('id_usuario', '=', Auth::user()->id_usuario)
                         ->whereBetween('start', [ $request->start, $request->end ])
                         ->get();

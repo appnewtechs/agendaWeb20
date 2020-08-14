@@ -96,6 +96,7 @@
     </div> 
 </div> 
 
+@include('layouts.footer')
 @include('cadastros.usuario.insert')
 @include('cadastros.usuario.update')
 

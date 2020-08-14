@@ -1171,6 +1171,7 @@ A VERTICAL event
 .fc {
 
   /* bg */
+  position: relative; /* top/left/right/bottom will all be set by JS */
 
 }
 .fc .fc-timegrid-col-bg {

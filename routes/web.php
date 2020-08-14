@@ -69,8 +69,9 @@ Route::group(['prefix' => 'tipoAgenda'], function () {
 Route::group(['prefix' => 'eventos'], function () {
     Route::get('/'        , 'eventosController@index');
     Route::post('create'  , 'eventosController@create');
+    Route::post('update'  , 'eventosController@update');
 
-    Route::delete('delete', 'perfilUsuarioController@delete');
+    Route::delete('delete', 'eventosController@delete');
     Route::get('consulta', 'eventosController@consulta')->name('loadEvents');
 });
 

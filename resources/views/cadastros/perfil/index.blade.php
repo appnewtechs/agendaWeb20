@@ -45,6 +45,7 @@
     </div> 
 </div> 
 
+@include('layouts.footer')
 @include('cadastros.perfil.insert')
 @include('cadastros.perfil.update')
 

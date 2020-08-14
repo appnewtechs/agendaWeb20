@@ -39,7 +39,9 @@
     </div> 
 </div> 
 
+@include('layouts.footer')
 @include('cadastros.tipoServico.insert')
+
 <script type='text/javascript'>
 $(document).ready(function(){
 
