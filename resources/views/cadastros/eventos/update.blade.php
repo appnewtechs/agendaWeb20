@@ -90,13 +90,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" id="insert-canc-btn" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-sm btn-secondary" id="update-conf-btn" onclick='javascript:$("#frm_updAgenda").submit();'>Salvar</button>
-
-                <form id="frm_delAgenda" action="{{ url('eventos/delete') }}" method="post">
-                    {{ csrf_field() }}
-                    {{ method_field('DELETE') }}
-                    <input name="id_evento"  id="id_evento" value="" type="hidden"></input>                
-                    <button type="button" class="btn btn-sm btn-secondary" id="delete-btn" href="#delete" data-toggle="modal">Deletar</button>
-                </form>
+                <button type="button" class="btn btn-sm btn-secondary" id="delete-btn" href="#delete" data-toggle="modal">Deletar</button>
             </div>
         </div>
     </div>

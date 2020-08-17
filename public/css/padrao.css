@@ -185,7 +185,7 @@ a,
     vertical-align: middle;
     font-family: "Nunito";
     font-weight: bolder;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 
 
@@ -325,8 +325,6 @@ option {
 .navbar-light,
 .bg-light {
     padding-top   : 0.5rem;
-    padding-bottom: 0.3rem;
-    padding-left: 1.5rem;
 }
 
 .navbar-nav,

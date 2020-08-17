@@ -123,7 +123,16 @@ class eventosController extends Controller
 
     public function consulta(Request $request)
     {
+
         if(Auth::user()->id_perfil=='1') {
+            
+            $search = $request->filterTitle;
+            $status = $request->filterStatus;
+            $usuario  = $request->filterUsuario;
+            $empresa  = $request->filterEmpresa;
+            $trabalho = $request->filterTrabalho;
+
+
             $events = DB::table('events')
                         ->select(
                             DB::raw("CONCAT(usuario.nome,' - ',events.title) AS title"),
@@ -135,6 +144,33 @@ class eventosController extends Controller
                         ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
                         ->whereBetween('start', [ $request->start, $request->end ])
+                        ->where(function ($query) use ($search) {
+                           $query->where([
+                                ['nome', 'like' , '%' . $search . '%'],
+                            ])->orWhere([
+                                ['title', 'like', '%' . $search . '%'],
+                            ]);
+                        })
+                        ->where(function ($query) use ($status) {
+                            if ($status!='2'){
+                                $query->where('events.status', '=' , $status);
+                            }
+                        })
+                        ->where(function ($query) use ($usuario) {
+                            if (!empty($usuario)){
+                                $query->whereIn('events.id_usuario' , explode(',', $usuario) );
+                            }
+                        })
+                        ->where(function ($query) use ($empresa) {
+                            if (!empty($empresa)){
+                                $query->whereIn('events.empresa' , explode(',', $empresa) );
+                            }
+                        })
+                        ->where(function ($query) use ($trabalho) {
+                            if (!empty($trabalho)){
+                                $query->whereIn('events.tipo_trabalho' , explode(',', $trabalho) );
+                            }
+                        })
                         ->get();
         } else {
             $events = DB::table('events')

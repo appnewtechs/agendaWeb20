@@ -41,7 +41,7 @@
 
         @include('layouts.menu')
         @include('layouts.infoone')
-
+        @include('layouts.erros')
         
         @yield('header')
         @yield('content')

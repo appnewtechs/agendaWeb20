@@ -1,7 +1,6 @@
 @extends('layouts.layoutPadrao')
 @section('header')
 
-    @include('layouts.erros')
     {!! Form::open(['method'=>'get']) !!}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">    
         <a class='fas fa-plus' title="Adicionar Registro" id="addRegister" href="#" onclick="$('#insert').modal('show')"></a>
