@@ -49,13 +49,14 @@ class eventosController extends Controller
 
             try {
 
+                $idEvento = evento::getId();
                 if($request->dataSelecao==1){ 
 
                     $dataInicial = str_replace('/', '-', $request->dataSel[0]);
                     $dataFinal   = str_replace('/', '-', $request->dataSel[1]);
 
                     $empresas = new evento();
-                    $empresas->id_evento     = evento::getId();
+                    $empresas->id_evento     = $idEvento;
                     $empresas->title         = $request->i_title;
                     $empresas->empresa       = $request->i_empresa;
                     $empresas->tipo_trabalho = $request->i_tipo_trabalho;
@@ -68,7 +69,24 @@ class eventosController extends Controller
                 
                 } else {
 
+                    for ($i = 0; $i < count($request->dataSel); $i++) { 
 
+                        $dataInicial = str_replace('/', '-', $request->dataSel[$i]);
+                        $dataFinal   = str_replace('/', '-', $request->dataSel[$i]);
+
+                        $empresas = new evento();
+                        $empresas->id_evento     = $idEvento;
+                        $empresas->title         = $request->i_title;
+                        $empresas->empresa       = $request->i_empresa;
+                        $empresas->tipo_trabalho = $request->i_tipo_trabalho;
+                        $empresas->start         = Carbon::parse($dataInicial);
+                        $empresas->end           = Carbon::parse($dataFinal)->endOfDay();
+                        $empresas->status        = $request->i_status;
+                        $empresas->id_usuario    = $request->i_id_usuario;
+                        $empresas->id_creator    = Auth::user()->id_usuario;
+                        $empresas->save();
+                    }
+    
                 }
 
 

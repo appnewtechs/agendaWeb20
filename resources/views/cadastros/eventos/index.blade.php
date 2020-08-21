@@ -185,21 +185,29 @@
                 var qtdeDatas = tableSel.getElementsByTagName("tr") ;
                 var intervalo = $("#radio1").is(":checked"); 
                 var multipla  = $("#radio2").is(":checked"); 
+                var repetida  = false;
                 var newRow    = '';
+                
+                $("input[name='dataSel[]']").each(function(){ 
+                    if ($(this).val()==selected) {
+                        repetida = true;
+                        return false; 
+                    }
+                });
 
-                console.log( $("input[name='dataSel[]']").map(
-                                function(){ 
-                                    return $(this).val(); 
-                                }
-                            ).get() );
 
 
-                if ( (intervalo && qtdeDatas.length<=1) || multipla ){
-                    newRow =  '<tr>';
-                    newRow += '<td><input name="dataSel[]" id="dataSel" value="'+selected+'"  type="text" class="form-control inputrow" readonly></input></td>';
-                    newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
-                    newRow += '</tr>';
-                    $('#datasSelecionadas tbody').append(newRow);    
+
+                if (!repetida) {
+    
+                    if ( (intervalo && qtdeDatas.length<=1) || multipla ){
+
+                        newRow =  '<tr>';
+                        newRow += '<td><input name="dataSel[]" id="dataSel" value="'+selected+'"  type="text" class="form-control inputrow" readonly></input></td>';
+                        newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
+                        newRow += '</tr>';
+                        $('#datasSelecionadas tbody').append(newRow);    
+                    };
                 };
             }
         }).datepicker("setDate", new Date());
