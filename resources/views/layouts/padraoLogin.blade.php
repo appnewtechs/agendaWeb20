@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <title>{{ config('app.name') }} - Login</title> 
 
-        <link rel='icon' href="{{ asset('imgs/favicon.png') }}">
+        <link rel='icon' href="{{ asset('images/favicon.png') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/padrao.css') }}">
         <script src="{{ asset('js/app.js') }}" defer></script>
@@ -15,7 +15,7 @@
             html, body {
 
                 padding-bottom: 0rem;
-                background-image: url("imgs/telafundo.png");
+                background-image: url("images/telafundo.png");
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;

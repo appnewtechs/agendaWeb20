@@ -5,7 +5,7 @@
 
             <li class="nav-item active">
                <a class="navbar brand" style="padding-top: 0px;">
-               <img src="imgs/logo-new.png" class="rounded" height='30' style="background-color: white">
+               <img src="images/logo-new.png" class="rounded" height='30' style="background-color: white">
                </a>
             </li>
 

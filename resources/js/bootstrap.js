@@ -41,3 +41,4 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // });
 
 require('jquery-mask-plugin');
+import 'jquery-ui/ui/widgets/datepicker.js';

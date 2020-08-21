@@ -177,6 +177,35 @@
     $(document).ready(function(){
 
         callendarRender();
+        $('#datepicker').datepicker({
+            dateFormat: "dd/mm/yy",
+            onSelect: function(selected,evnt) {
+
+                var tableSel  = document.getElementById("datasSelecionadas");
+                var qtdeDatas = tableSel.getElementsByTagName("tr") ;
+                var intervalo = $("#radio1").is(":checked"); 
+                var multipla  = $("#radio2").is(":checked"); 
+                var newRow    = '';
+
+                console.log( $("input[name='dataSel[]']").map(
+                                function(){ 
+                                    return $(this).val(); 
+                                }
+                            ).get() );
+
+
+                if ( (intervalo && qtdeDatas.length<=1) || multipla ){
+                    newRow =  '<tr>';
+                    newRow += '<td><input name="dataSel[]" id="dataSel" value="'+selected+'"  type="text" class="form-control inputrow" readonly></input></td>';
+                    newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
+                    newRow += '</tr>';
+                    $('#datasSelecionadas tbody').append(newRow);    
+                };
+            }
+        }).datepicker("setDate", new Date());
+
+
+
         $('#insert').on('shown.bs.modal', function(e) {
             $("#i_title").focus();
         });
@@ -186,10 +215,14 @@
         });   
     });
 
+    function excluirData(index){
+        document.getElementById('datasSelecionadas').deleteRow(index);
+    };
+
 
     function callendarRender(){
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
 
             initialView: 'dayGridMonth',
             contentHeight: 'auto',
@@ -263,6 +296,8 @@
             },
 
             eventClick: function(info) {
+
+                /*
                 if("{{Auth::user()->id_perfil}}"=='1'){
 
                     $('#id_evento').val( info.event.id );
@@ -279,11 +314,13 @@
                     $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
                     $('#infoone').modal('show');
                 }
+                */
             },
             
         });
 
         calendar.render();
     };
+
 </script>
 @endsection

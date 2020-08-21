@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <title>{{ config('app.name') }}</title> 
 
-        <link rel='icon' href="{{ asset('imgs/favicon.png') }}">
+        <link rel='icon' href="{{ asset('images/favicon.png') }}">
         <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' 
             integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' 
             crossorigin='anonymous'>
@@ -22,7 +22,7 @@
             html, body {
 
                 padding-bottom: 0rem;
-                background-image: url("imgs/telafundo.png");
+                background-image: url("images/telafundo.png");
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;

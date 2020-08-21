@@ -15,17 +15,22 @@ class evento extends Model
 
     public static function getId(){
         return (DB::table('events')
-                ->orderBy('id', 'desc')->value('id'))+1;
+                ->orderBy('id_evento', 'desc')->value('id'))+1;
 
     }
 
+
+    public static $incRules = [
+        'i_title'      => 'required',
+        'i_id_usuario' => 'required',
+        'i_empresa'    => 'required',
+        'i_tipo_trabalho' => 'required',
+    ];
 
     public static $incTranslate = [
         'i_title'         => 'Título/Descrição',
         'i_id_usuario'    => 'Usuário',
         'i_empresa'       => 'Empresa',
-        'i_start'         => 'Data Inicial',
-        'i_end'           => 'Data Final',
         'i_tipo_trabalho' => 'Tipo de Agenda',
     ];
 
