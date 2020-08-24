@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use DateTime;
 use Session;
 use Validator;
@@ -38,8 +37,6 @@ class eventosController extends Controller
     public function create(Request $request)
     {
 
-
-        log::Debug($request);
         session::put('id_modal','insert');
         $validator = Validator::make( $request->all(), evento::$incRules, [], evento::$incTranslate);
 
@@ -50,46 +47,20 @@ class eventosController extends Controller
             try {
 
                 $idEvento = evento::getId();
-                if($request->dataSelecao==1){ 
-
-                    $dataInicial = str_replace('/', '-', $request->dataSel[0]);
-                    $dataFinal   = str_replace('/', '-', $request->dataSel[1]);
-
-                    $empresas = new evento();
-                    $empresas->id_evento     = $idEvento;
-                    $empresas->title         = $request->i_title;
-                    $empresas->empresa       = $request->i_empresa;
-                    $empresas->tipo_trabalho = $request->i_tipo_trabalho;
-                    $empresas->start         = Carbon::parse($dataInicial);
-                    $empresas->end           = Carbon::parse($dataFinal)->endOfDay();
-                    $empresas->status        = $request->i_status;
-                    $empresas->id_usuario    = $request->i_id_usuario;
-                    $empresas->id_creator    = Auth::user()->id_usuario;
-                    $empresas->save();
-                
+                if($request->i_dataSelecao==2){ 
+                    $dataInicial = str_replace('/', '-', $request->i_dataSel[0]);
+                    $dataFinal   = str_replace('/', '-', $request->i_dataSel[1]);
+                    evento::createEvent( $idEvento, $request->i_title, $request->i_empresa, $request->i_tipo_trabalho,
+                                         $dataInicial, $dataFinal, $request->i_status, $request->i_id_usuario, $request->i_dataSelecao );
                 } else {
 
-                    for ($i = 0; $i < count($request->dataSel); $i++) { 
-
-                        $dataInicial = str_replace('/', '-', $request->dataSel[$i]);
-                        $dataFinal   = str_replace('/', '-', $request->dataSel[$i]);
-
-                        $empresas = new evento();
-                        $empresas->id_evento     = $idEvento;
-                        $empresas->title         = $request->i_title;
-                        $empresas->empresa       = $request->i_empresa;
-                        $empresas->tipo_trabalho = $request->i_tipo_trabalho;
-                        $empresas->start         = Carbon::parse($dataInicial);
-                        $empresas->end           = Carbon::parse($dataFinal)->endOfDay();
-                        $empresas->status        = $request->i_status;
-                        $empresas->id_usuario    = $request->i_id_usuario;
-                        $empresas->id_creator    = Auth::user()->id_usuario;
-                        $empresas->save();
-                    }
-    
-                }
-
-
+                    for ($i = 0; $i < count($request->i_dataSel); $i++) { 
+                        $dataInicial = str_replace('/', '-', $request->i_dataSel[$i]);
+                        $dataFinal   = str_replace('/', '-', $request->i_dataSel[$i]);
+                        evento::createEvent( $idEvento, $request->i_title, $request->i_empresa, $request->i_tipo_trabalho,
+                                             $dataInicial, $dataFinal, $request->i_status, $request->i_id_usuario, $request->i_dataSelecao );
+                    };
+                };
 
             } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
@@ -101,6 +72,8 @@ class eventosController extends Controller
 
     public function update(Request $request) 
     {
+
+        log::Debug($request);
         session::put('id_modal','update');
         $validator = Validator::make($request->all(), empresa::$updRules, [], empresa::$updTranslate);
 
@@ -110,6 +83,21 @@ class eventosController extends Controller
 
             try {
 
+                $idEvento = evento::getId();
+                if($request->u_dataSelecao==2){ 
+                    $dataInicial = str_replace('/', '-', $request->u_dataSel[0]);
+                    $dataFinal   = str_replace('/', '-', $request->u_dataSel[1]);
+                    evento::createEvent( $idEvento, $request->u_title, $request->u_empresa, $request->u_tipo_trabalho,
+                                         $dataInicial, $dataFinal, $request->u_status, $request->u_id_usuario, $request->u_dataSelecao );
+                } else {
+
+                    for ($i = 0; $i < count($request->u_dataSel); $i++) { 
+                        $dataInicial = str_replace('/', '-', $request->i_dataSel[$i]);
+                        $dataFinal   = str_replace('/', '-', $request->i_dataSel[$i]);
+                        evento::createEvent( $idEvento, $request->i_title, $request->i_empresa, $request->i_tipo_trabalho,
+                                             $dataInicial, $dataFinal, $request->i_status, $request->i_id_usuario, $request->i_dataSelecao );
+                    };
+                };
 
             } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 

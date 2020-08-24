@@ -170,62 +170,20 @@
 
 @include('cadastros.eventos.insert')
 @include('cadastros.eventos.update')
-@include('layouts.delete')
+@include('cadastros.eventos.delete')
 
 <script type='text/javascript'>
 
     $(document).ready(function(){
-
         callendarRender();
-        $('#datepicker').datepicker({
-            dateFormat: "dd/mm/yy",
-            onSelect: function(selected,evnt) {
-
-                var tableSel  = document.getElementById("datasSelecionadas");
-                var qtdeDatas = tableSel.getElementsByTagName("tr") ;
-                var intervalo = $("#radio1").is(":checked"); 
-                var multipla  = $("#radio2").is(":checked"); 
-                var repetida  = false;
-                var newRow    = '';
-                
-                $("input[name='dataSel[]']").each(function(){ 
-                    if ($(this).val()==selected) {
-                        repetida = true;
-                        return false; 
-                    }
-                });
-
-
-
-
-                if (!repetida) {
-    
-                    if ( (intervalo && qtdeDatas.length<=1) || multipla ){
-
-                        newRow =  '<tr>';
-                        newRow += '<td><input name="dataSel[]" id="dataSel" value="'+selected+'"  type="text" class="form-control inputrow" readonly></input></td>';
-                        newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
-                        newRow += '</tr>';
-                        $('#datasSelecionadas tbody').append(newRow);    
-                    };
-                };
-            }
-        }).datepicker("setDate", new Date());
-
-
-
-        $('#insert').on('shown.bs.modal', function(e) {
-            $("#i_title").focus();
-        });
-
-        $('#delete').on('show.bs.modal', function(e) {
-            $('#delete').find("#delete-btn").attr('onclick',"javascript: $('#frm_delAgenda').submit()");
-        });   
     });
 
-    function excluirData(index){
-        document.getElementById('datasSelecionadas').deleteRow(index);
+
+    function excluirData(element, index){
+        console.log(element);
+        document.getElementById(element).deleteRow(index);
     };
+
 
 
     function callendarRender(){
@@ -305,12 +263,13 @@
 
             eventClick: function(info) {
 
-                /*
                 if("{{Auth::user()->id_perfil}}"=='1'){
 
+                    // Modal delete
                     $('#id_evento').val( info.event.id );
+                    
+                    // Modal update
                     $('#u_id_evento').val( info.event.id );
-
                     $('#u_title').val( info.event.title );
                     $('#u_status').val( info.event.extendedProps.status );
                     $('#u_empresa').val( info.event.extendedProps.empresa );
@@ -322,7 +281,6 @@
                     $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
                     $('#infoone').modal('show');
                 }
-                */
             },
             
         });

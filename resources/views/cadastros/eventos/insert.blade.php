@@ -57,13 +57,13 @@
                             <div class="row pt-1">
                                 <div class="col-md-6">
                                     <label class="radio">
-                                        <input type="radio" name="dataSelecao" id="radio1" value="1" checked> Intervalo</input>
+                                        <input type="radio" name="i_dataSelecao" id="i_radio1" value="2" checked> Intervalo</input>
                                     </label>
                                 </div>
                             
                                 <div class="col-md-6">
                                     <label class="radio inline">
-                                    <input type="radio" name="dataSelecao" id="radio2" value="2"> Múltiplas Datas</input>
+                                    <input type="radio" name="i_dataSelecao" id="i_radio2" value="1"> Múltiplas Datas</input>
                                     </label>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
 
 
                     <div class="form-row col-md-12 pl-3 pr-3">
-                        <div id="datepicker" class="col-md-6">
+                        <div id="i_datepicker" class="col-md-6">
 
                         </div>
                         <div class="col-md-4 offset-md-1">
@@ -92,15 +92,18 @@
                             <div class="row">
                                 {!! Form::label("datasBox", "Datas Selecionadas", ["class"=>"col-form-label pl-0"]) !!}
                                 <div class="col-md-12 border border-dark rounded pl-0 pr-0 pt-0 pb-0">
-                                <table id="datasSelecionadas" class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
+                                <table id="i_datasSelecionadas" class="table table-hover table-sm table-striped mb-0" cellspacing="0" cellpadding="0">
                                     <tbody>     
                                     </tbody>
                                 </table>
                                 </div>  
+                                @if ($errors->has('i_dataSel'))
+                                    <span colspan='12' style="color: red;">
+                                        {{ $errors->first('i_dataSel') }}
+                                    </span>
+                                @endif
                             </div>
                         </div>
-
-
                     </div>
                 </div>  
             </div>
@@ -112,4 +115,49 @@
         </div>
     </div>
 </div>
+
+
+<script type='text/javascript'>
+
+    $(document).ready(function(){
+
+        $('#i_datepicker').datepicker({
+            dateFormat: "dd/mm/yy",
+            onSelect: function(selected,evnt) {
+
+                var tableSel  = document.getElementById("i_datasSelecionadas");
+                var qtdeDatas = tableSel.getElementsByTagName("tr") ;
+                var intervalo = $("#i_radio1").is(":checked"); 
+                var multipla  = $("#i_radio2").is(":checked"); 
+                var repetida  = false;
+                var newRow    = '';
+                
+
+                $("input[name='i_dataSel[]']").each(function(){ 
+                    if ($(this).val()==selected) {
+                        repetida = true;
+                        return false; 
+                    }
+                });
+
+                if (!repetida) {
+    
+                    if ( (intervalo && qtdeDatas.length<=1) || multipla ){
+                        newRow =  '<tr>';
+                        newRow += '<td><input name="i_dataSel[]" id="i_dataSel" value="'+selected+'"  type="text" class="form-control inputrow" readonly></input></td>';
+                        newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.parentNode.parentNode.id, this.parentNode.parentNode.rowIndex);"></a></td>';
+                        newRow += '</tr>';
+                        $('#i_datasSelecionadas tbody').append(newRow);    
+                    };
+                };
+            }
+        }).datepicker("setDate", new Date());
+
+
+        $('#insert').on('shown.bs.modal', function(e) {
+            $("#i_title").focus();
+        });
+    });
+
+</script>
 {!! Form::close() !!}
