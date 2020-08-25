@@ -83,7 +83,10 @@ class eventosController extends Controller
 
             try {
 
+                DB::table('events')->where('id_evento', '=', $request->u_id_evento)->delete();
                 $idEvento = evento::getId();
+
+
                 if($request->u_dataSelecao==2){ 
                     $dataInicial = str_replace('/', '-', $request->u_dataSel[0]);
                     $dataFinal   = str_replace('/', '-', $request->u_dataSel[1]);
@@ -92,10 +95,10 @@ class eventosController extends Controller
                 } else {
 
                     for ($i = 0; $i < count($request->u_dataSel); $i++) { 
-                        $dataInicial = str_replace('/', '-', $request->i_dataSel[$i]);
-                        $dataFinal   = str_replace('/', '-', $request->i_dataSel[$i]);
-                        evento::createEvent( $idEvento, $request->i_title, $request->i_empresa, $request->i_tipo_trabalho,
-                                             $dataInicial, $dataFinal, $request->i_status, $request->i_id_usuario, $request->i_dataSelecao );
+                        $dataInicial = str_replace('/', '-', $request->u_dataSel[$i]);
+                        $dataFinal   = str_replace('/', '-', $request->u_dataSel[$i]);
+                        evento::createEvent( $idEvento, $request->u_title, $request->u_empresa, $request->u_tipo_trabalho,
+                                             $dataInicial, $dataFinal, $request->u_status, $request->u_id_usuario, $request->u_dataSelecao );
                     };
                 };
 
@@ -138,7 +141,7 @@ class eventosController extends Controller
                             DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
                             DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
                             'id_evento AS id','empresa','events.status AS status','tipo_trabalho',
-                            'start', 'start AS datainicial', 'end', 'usuario.id_usuario AS usuario'
+                            'start', 'tipo_data', 'start AS datainicial', 'end', 'usuario.id_usuario AS usuario'
                         )
                         ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')

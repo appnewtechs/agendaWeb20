@@ -57,13 +57,13 @@
                             <div class="row pt-1">
                                 <div class="col-md-6">
                                     <label class="radio">
-                                        <input type="radio" name="i_dataSelecao" id="i_radio1" value="2" checked> Intervalo</input>
+                                        <input type="radio" name="i_dataSelecao" id="i_radio1" value="2" onChange="$('#i_datasSelecionadas tr').remove();" checked> Intervalo</input>
                                     </label>
                                 </div>
                             
                                 <div class="col-md-6">
                                     <label class="radio inline">
-                                    <input type="radio" name="i_dataSelecao" id="i_radio2" value="1"> Múltiplas Datas</input>
+                                    <input type="radio" name="i_dataSelecao" id="i_radio2" value="1" onChange="$('#i_datasSelecionadas tr').remove();"> Múltiplas Datas</input>
                                     </label>
                                 </div>
                             </div>

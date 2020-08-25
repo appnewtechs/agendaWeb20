@@ -58,13 +58,13 @@
                             <div class="row pt-1">
                                 <div class="col-md-6">
                                     <label class="radio">
-                                        <input type="radio" name="u_dataSelecao" id="u_radio1" value="2" checked> Intervalo</input>
+                                        <input type="radio" name="u_dataSelecao" id="u_radio1" value="2" onChange="$('#u_datasSelecionadas tr').remove();" checked> Intervalo</input>
                                     </label>
                                 </div>
                             
                                 <div class="col-md-6">
                                     <label class="radio inline">
-                                    <input type="radio" name="u_dataSelecao" id="u_radio2" value="1"> Múltiplas Datas</input>
+                                    <input type="radio" name="u_dataSelecao" id="u_radio2" value="1" onChange="$('#u_datasSelecionadas tr').remove();"> Múltiplas Datas</input>
                                     </label>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
         }).datepicker("setDate", new Date());
 
 
-        $('#insert').on('shown.bs.modal', function(e) {
+        $('#update').on('shown.bs.modal', function(e) {
             $("#u_title").focus();
         });
     });

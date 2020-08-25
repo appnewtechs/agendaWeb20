@@ -180,7 +180,6 @@
 
 
     function excluirData(element, index){
-        console.log(element);
         document.getElementById(element).deleteRow(index);
     };
 
