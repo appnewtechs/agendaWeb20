@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use DateTime;
 use Session;
 use Validator;
@@ -37,31 +38,15 @@ class eventosController extends Controller
     public function create(Request $request)
     {
 
-        session::put('id_modal','insert');
-        $validator = Validator::make( $request->all(), evento::$incRules, [], evento::$incTranslate);
+        session::put('id_modal','modalAgenda');
+        $validator = Validator::make( $request->all(), evento::$rules, [], evento::$translate);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
         } else {  
 
             try {
-
-                $idEvento = evento::getId();
-                if($request->i_dataSelecao==2){ 
-                    $dataInicial = str_replace('/', '-', $request->i_dataSel[0]);
-                    $dataFinal   = str_replace('/', '-', $request->i_dataSel[1]);
-                    evento::createEvent( $idEvento, $request->i_title, $request->i_empresa, $request->i_tipo_trabalho,
-                                         $dataInicial, $dataFinal, $request->i_status, $request->i_id_usuario, $request->i_dataSelecao );
-                } else {
-
-                    for ($i = 0; $i < count($request->i_dataSel); $i++) { 
-                        $dataInicial = str_replace('/', '-', $request->i_dataSel[$i]);
-                        $dataFinal   = str_replace('/', '-', $request->i_dataSel[$i]);
-                        evento::createEvent( $idEvento, $request->i_title, $request->i_empresa, $request->i_tipo_trabalho,
-                                             $dataInicial, $dataFinal, $request->i_status, $request->i_id_usuario, $request->i_dataSelecao );
-                    };
-                };
-
+                evento::gerarAgendas($request);
             } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
             }
@@ -73,9 +58,8 @@ class eventosController extends Controller
     public function update(Request $request) 
     {
 
-        log::Debug($request);
-        session::put('id_modal','update');
-        $validator = Validator::make($request->all(), empresa::$updRules, [], empresa::$updTranslate);
+        session::put('id_modal','modalAgenda');
+        $validator = Validator::make( $request->all(), evento::$rules, [], evento::$translate);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
@@ -83,24 +67,8 @@ class eventosController extends Controller
 
             try {
 
-                DB::table('events')->where('id_evento', '=', $request->u_id_evento)->delete();
-                $idEvento = evento::getId();
-
-
-                if($request->u_dataSelecao==2){ 
-                    $dataInicial = str_replace('/', '-', $request->u_dataSel[0]);
-                    $dataFinal   = str_replace('/', '-', $request->u_dataSel[1]);
-                    evento::createEvent( $idEvento, $request->u_title, $request->u_empresa, $request->u_tipo_trabalho,
-                                         $dataInicial, $dataFinal, $request->u_status, $request->u_id_usuario, $request->u_dataSelecao );
-                } else {
-
-                    for ($i = 0; $i < count($request->u_dataSel); $i++) { 
-                        $dataInicial = str_replace('/', '-', $request->u_dataSel[$i]);
-                        $dataFinal   = str_replace('/', '-', $request->u_dataSel[$i]);
-                        evento::createEvent( $idEvento, $request->u_title, $request->u_empresa, $request->u_tipo_trabalho,
-                                             $dataInicial, $dataFinal, $request->u_status, $request->u_id_usuario, $request->u_dataSelecao );
-                    };
-                };
+                DB::table('events')->where('id_evento', '=', $request->id_evento)->delete();
+                evento::gerarAgendas($request);
 
             } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
@@ -140,8 +108,8 @@ class eventosController extends Controller
                             DB::raw("CONCAT(usuario.nome,' - ',events.title) AS title"),
                             DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
                             DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
-                            'id_evento AS id','empresa','events.status AS status','tipo_trabalho',
-                            'start', 'tipo_data', 'start AS datainicial', 'end', 'usuario.id_usuario AS usuario'
+                            'id_evento AS id','empresa','events.status AS status','tipo_trabalho', 'start', 'end',  
+                            'tipo_data', 'events.title AS descricao', 'start AS datainicial', 'usuario.id_usuario AS usuario'
                         )
                         ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
@@ -174,6 +142,9 @@ class eventosController extends Controller
                             }
                         })
                         ->get();
+            log::Debug($events);
+            return response()->json($events);
+
         } else {
             $events = DB::table('events')
                         ->select(
@@ -185,8 +156,10 @@ class eventosController extends Controller
                         ->where('id_usuario', '=', Auth::user()->id_usuario)
                         ->whereBetween('start', [ $request->start, $request->end ])
                         ->get();
+
+            return response()->json($events);
         }
-        return response()->json($events);
+
     }
 
 }

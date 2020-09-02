@@ -39,3 +39,6 @@ function tablesorter( $field ){
 	$('#search_btn').click();
 }
 
+function resetForm(form){
+	$(form)[0].reset();
+}

@@ -43,6 +43,15 @@ i {
     background-color: steelblue;
 }
 
+
+.btn-danger {
+    line-height: 1rem;
+    font-family: "Nunito";
+    width: 85px;
+    color: white;
+}
+
+
 .btn-cabec {
     height: 27px;
     padding-right: 0.5rem; 

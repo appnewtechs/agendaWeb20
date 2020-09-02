@@ -15,7 +15,7 @@
 
 
         <script src="{{ asset('js/app.js') }}"></script>
-        <script src="{{ asset('js/custom/custom.js') }}"></script>
+        <script src="{{ asset('js/utils.js') }}"></script>
 
 
         <style>

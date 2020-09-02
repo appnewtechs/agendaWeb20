@@ -168,21 +168,24 @@
 </div> 
 
 
-@include('cadastros.eventos.insert')
-@include('cadastros.eventos.update')
+@include('cadastros.eventos.modal')
 @include('cadastros.eventos.delete')
-
 <script type='text/javascript'>
 
     $(document).ready(function(){
         callendarRender();
+
+        $('#modalAgenda').on('shown.bs.modal', function(e) {
+
+            if ($('#modalAgenda #id_evento').val()==''){
+                $('#modalAgenda #modal-title').text("Inserir Evento");
+                $('#modalAgenda #delete-btn').css('display','none');
+                $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@create') }}");
+            };
+            $('#modalAgenda').find("#title").focus();
+        });
+
     });
-
-
-    function excluirData(element, index){
-        document.getElementById(element).deleteRow(index);
-    };
-
 
 
     function callendarRender(){
@@ -192,7 +195,8 @@
             initialView: 'dayGridMonth',
             contentHeight: 'auto',
             navLinks: true,
-            locales: 'pt-br',
+            locales: 'pt-BR',
+            businessHours: true,
             displayEventTime: false,
             eventDisplay: 'block',
 
@@ -208,16 +212,12 @@
                 addAgenda: {
                     text: 'Novo Evento',
                     click: function() {
-
-                        if("{{Auth::user()->id_perfil}}"=='1'){
-                            $('#insert').modal('show');
-                        } else {
-                            $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
-                            $('#infoone').modal('show');
-                        }
+                        eventInsert();
                     }
                 }
             },
+            
+
 
             headerToolbar: {
                 left: 'prev,next today',
@@ -230,6 +230,7 @@
                 month: 'long',
                 day : 'numeric'
             }, 
+
 
             events: {
                 url: "{{ route('loadEvents') }}",
@@ -261,30 +262,74 @@
             },
 
             eventClick: function(info) {
-
+                /*
                 if("{{Auth::user()->id_perfil}}"=='1'){
 
                     // Modal delete
-                    $('#id_evento').val( info.event.id );
+                    $('#delete #id_evento').val( info.event.id );
                     
+
                     // Modal update
-                    $('#u_id_evento').val( info.event.id );
-                    $('#u_title').val( info.event.title );
-                    $('#u_status').val( info.event.extendedProps.status );
-                    $('#u_empresa').val( info.event.extendedProps.empresa );
-                    $('#u_id_usuario').val( info.event.extendedProps.usuario );
-                    $('#u_tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
-                    $('#update').modal('show');
+                    resetForm('#frm_agenda');
+                    $('#datasSelecionadas tr').remove();
+                    $('#modalAgenda #modal-title').text("Alterar Evento");
+                    $('#modalAgenda #delete-btn').css('display','all');
+                    $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@update') }}");
+
+                    $('#modalAgenda #id_evento').val( info.event.id );
+                    $('#title').val( info.event.extendedProps.descricao );
+                    $('#status').val( info.event.extendedProps.status );
+                    $('#empresa').val( info.event.extendedProps.empresa );
+                    $('#id_usuario').val( info.event.extendedProps.usuario );
+                    $('#tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
+                    $('#modalAgenda').modal('show');
 
                 } else {
                     $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
                     $('#infoone').modal('show');
-                }
+                }*/
             },
+
             
+            select: function(selectionInfo){
+                eventInsert();
+            },
+            /*
+            dayHeaderContent: function(args) {
+                if (args.isToday){
+                console.log(args.date);
+                }
+            }*/
         });
 
         calendar.render();
+    };
+
+
+    function eventInsert(){
+        
+        if("{{Auth::user()->id_perfil}}"=='1'){
+
+            console.log('entrei');
+            resetForm('#modalAgenda #frm_agenda');
+            $('#datasSelecionadas tr').remove();
+
+            $('#modalAgenda #modal-title').text("Inserir Evento");
+            $('#modalAgenda #delete-btn').css('display','none');
+            $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@create') }}");
+
+            $('#modalAgenda #id_evento').val('');
+            $('#modalAgenda').modal('show');
+
+        } else {
+            $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
+            $('#infoone').modal('show');
+        }
+    };
+
+
+    function excluirData(index){
+        document.getElementById("datasSelecionadas").deleteRow(index);
     };
 
 </script>

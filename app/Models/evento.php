@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class evento extends Model
@@ -23,42 +24,83 @@ class evento extends Model
     }
 
 
-    public static $incRules = [
-        'i_title'   => 'required',
-        'i_empresa' => 'required',
-        'i_dataSel' => 'required|array|min:2',
-        'i_id_usuario'    => 'required',
-        'i_tipo_trabalho' => 'required',
+    public static $rules = [
+        'title'   => 'required',
+        'empresa' => 'required',
+        'dataSel' => 'required|array|min:2',
+        'id_usuario'    => 'required',
+        'tipo_trabalho' => 'required',
     ];
 
-    public static $incTranslate = [
-        'i_empresa' => 'Empresa',
-        'i_dataSel' => 'Data',
-        'i_title'   => 'Título/Descrição',
-        'i_id_usuario'    => 'Usuário',
-        'i_tipo_trabalho' => 'Tipo de Agenda',
-    ];
-
-
-    public static $updRules = [
-        'u_title'   => 'required',
-        'u_empresa' => 'required',
-        'u_dataSel' => 'required|array|min:2',
-        'u_id_usuario'    => 'required',
-        'u_tipo_trabalho' => 'required',
-    ];
-
-    public static $updTranslate = [
-        'u_empresa' => 'Empresa',
-        'u_dataSel' => 'Data',
-        'u_title'   => 'Título/Descrição',
-        'u_id_usuario'    => 'Usuário',
-        'u_tipo_trabalho' => 'Tipo de Agenda',
+    public static $translate = [
+        'empresa' => 'Empresa',
+        'dataSel' => 'Data',
+        'title'   => 'Título/Descrição',
+        'id_usuario'    => 'Usuário',
+        'tipo_trabalho' => 'Tipo de Agenda',
     ];
 
 
+    public static function gerarAgendas(request $request){
 
-    public static function createEvent($idEvento, $title, $empresa, $trabalho, $dataInicial, $dataFinal, $status, $usuario, $tipoData){
+        if($request->dataSelecao==2){ 
+
+            $dataInicial = Carbon::parse(str_replace('/', '-', $request->dataSel[0]));
+            $dataFinal   = Carbon::parse(str_replace('/', '-', $request->dataSel[1]))->endOfDay();
+            
+            if ($dataInicial->isSaturday()) {
+                $dataInicial->addDay(2);
+            } elseif ($dataInicial->isSunday()){
+                $dataInicial->addDay();
+            };
+
+            if ($dataFinal->isSaturday()) {
+                $dataFinal->subDay();
+            } elseif ($dataFinal->isSunday()){
+                $dataFinal->subDay(2);
+            };
+
+
+            $dataControle = Carbon::parse($dataInicial);
+            $totalDias    = ($dataInicial->diffInDays($dataFinal));
+
+            for($i=1; $i<=$totalDias; $i++) {
+
+                $dataControle->addDay()->endOfDay();
+                if ($dataControle->isSaturday() || $dataControle==$dataFinal) {
+
+                    $dataFimEvento = $dataControle->isSaturday() ? $dataControle->subDay() : $dataFinal; 
+                    
+                    $idEvento = evento::getId();
+                    evento::createEvent( $idEvento, $request->title, $request->empresa, $request->tipo_trabalho,
+                                         $dataInicial, $dataFimEvento, $request->status, $request->id_usuario, $request->dataSelecao );
+                    
+                    if ($dataControle==$dataFinal){
+                        break;
+                    }
+
+                    $dataInicial = Carbon::parse($dataFimEvento);
+                    $dataInicial->addDay(3)->startOfDay();
+                    $dataControle->addDay(2);
+                }; 
+
+            };
+
+        } else {
+
+            $idEvento = evento::getId();
+            for ($i = 0; $i < count($request->dataSel); $i++) { 
+                $dataInicial = str_replace('/', '-', $request->dataSel[$i]);
+                $dataFinal   = str_replace('/', '-', $request->dataSel[$i]);
+                evento::createEvent( $idEvento, $request->title, $request->empresa, $request->tipo_trabalho,
+                                     $dataInicial, $dataFinal, $request->status, $request->id_usuario, $request->dataSelecao );
+            };
+        };
+
+    }
+
+
+    public static function createEvent($idEvento, $title, $empresa, $trabalho, $dtIni, $dtFim, $status, $usuario, $tipoData){
 
         $empresas = new evento();
         $empresas->id_evento     = $idEvento;
@@ -68,9 +110,9 @@ class evento extends Model
         $empresas->status        = $status;
         $empresas->id_usuario    = $usuario;
         $empresas->tipo_data     = $tipoData;
+        $empresas->start         = $dtIni;
+        $empresas->end           = $dtFim;
         $empresas->id_creator    = Auth::user()->id_usuario;
-        $empresas->start         = Carbon::parse($dataInicial);
-        $empresas->end           = Carbon::parse($dataFinal)->endOfDay();
         $empresas->save();
     }
 }
