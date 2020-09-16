@@ -107,6 +107,12 @@ i {
 .thead-dark{
     background-color: #343a40;
     line-height: 1rem;
+    position:sticky;
+}
+
+
+.table .thead-custom th{
+    width: 250px;
 }
 
 
@@ -128,6 +134,13 @@ td {
 th {
     font-family: "Nunito";
     font-weight: normal;
+}
+
+
+.relEvento {
+    padding: 5px;
+    min-width: 130px;
+    color: white;
 }
 
 .dropdown-divider {
@@ -330,7 +343,7 @@ option {
 
 
 
-.navbar-expand-lg,
+.navbar-expand-sm,
 .navbar-light,
 .bg-light {
     padding-top   : 0.5rem;

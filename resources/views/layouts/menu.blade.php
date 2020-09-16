@@ -1,5 +1,5 @@
    
-   <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark min-height:0px">
+   <nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark min-height:0px">
       <div class="collapse navbar-collapse"  id="navbarSupportedContent">
          <ul class="navbar-nav mr-auto">
 

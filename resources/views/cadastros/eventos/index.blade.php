@@ -8,15 +8,16 @@
     <div class="row">
 
         @if(Auth::user()->id_perfil=='1')
+
             <div id="filtros" class="col-md-2 border border-dark rounded pt-3 pb-1" style='background: white'>
                 
                 <div class="row">
-                    <h4 class="fc-toolbar-title">Filtros</h4>
+                    <h5 class="fc-toolbar-title">Filtros</h5>
                 </div>          
 
                 <div class="row pb-1">
                     <div class="col-md-12 border border-dark rounded pb-0 pr-0 pl-0" style='border-color: steelblue !important;'>
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
+                        <nav class="navbar navbar-expand-sm navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
                             <div class="collapse navbar-collapse">
                                 <ul class="navbar-nav col-md-12">
                                 <li class="col-md-11 pl-1">
@@ -41,7 +42,7 @@
 
                 <div class="row pb-1">
                     <div class="col-md-12 border border-dark rounded pb-0 pr-0 pl-0" style='border-color: steelblue !important;'>
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
+                        <nav class="navbar navbar-expand-sm navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
                             <div class="collapse navbar-collapse">
                                 <ul class="navbar-nav col-md-12">
                                 <li class="col-md-11 pl-1">
@@ -66,7 +67,7 @@
 
                 <div class="row pb-1">
                     <div class="col-md-12 border border-dark rounded pb-0 pr-0 pl-0" style='border-color: steelblue !important;'>
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
+                        <nav class="navbar navbar-expand-sm navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
                             <div class="collapse navbar-collapse">
                                 <ul class="navbar-nav col-md-12">
                                 <li class="col-md-11 pl-1">
@@ -95,7 +96,7 @@
 
                 <div class="row pb-1">
                     <div class="col-md-12 border border-dark rounded pb-0 pr-0 pl-0" style='border-color: steelblue !important;'>
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
+                        <nav class="navbar navbar-expand-sm navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
                             <div class="collapse navbar-collapse">
                                 <ul class="navbar-nav col-md-12">
                                 <li class="col-md-11 pl-1">
@@ -125,7 +126,7 @@
 
                 <div class="row pb-1">
                     <div class="col-md-12 border border-dark rounded pb-0 pr-0 pl-0" style='border-color: steelblue !important;'>
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
+                        <nav class="navbar navbar-expand-sm navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
                             <div class="collapse navbar-collapse">
                                 <ul class="navbar-nav col-md-12">
                                 <li class="col-md-11 pl-1">
@@ -152,12 +153,39 @@
                     </div>
                 </div>
 
+
+                <div class="dropdown-divider"></div>
+                <div class="row pt-1">
+                    <h5 class="fc-toolbar-title mb-0">Relatório</h5>
+                </div>          
+
+                <div class="row">
+                    <div class="col-md-12">
+                    {!! Form::label("data_rel_ini","Data Inicial", ["class"=>"col-form-label pl-0"]) !!}
+                    {!! Form::date("data_rel_ini", now()->firstOfMonth() ,["class"=>"form-control", "onkeydown"=>"setFocus(event,'#data_rel_fin');" ]) !!}
+                    </div>
+                </div>          
+
+                <div class="row">
+                    <div class="col-md-12">
+                    {!! Form::label("data_rel_fin","Data Final", ["class"=>"col-form-label pl-0"]) !!}
+                    {!! Form::date("data_rel_fin", now()->lastOfMonth() ,["class"=>"form-control", "onkeydown"=>"setFocus(event,'#gerar-rel');" ]) !!}
+                    </div>
+                </div>          
+
+                <div class="row pt-2">
+                    <div class="col-md-12">
+                    <a type="submit" class="btn btn-sm btn-secondary" style="width: 100%;" id="gerar-rel" href="#" onClick="setFiltros();" target="_blank">Gerar</a>
+                    </div>
+                </div>          
+
             </div>
 
             <div id="agenda" class="col-md-10 border border-dark rounded pt-3 pb-1" style='background: white'>
                 <div id="calendar">
                 </div> 
             </div> 
+
         @else
             <div id="agenda" class="col-md-12 border border-dark rounded pr-3 pl-3 pt-3 pb-1" style='background: white;'>
                 <div id="calendar" style="position: relative;">
@@ -173,8 +201,9 @@
 <script type='text/javascript'>
 
     $(document).ready(function(){
-        callendarRender();
 
+
+        callendarRender();
         $('#modalAgenda').on('shown.bs.modal', function(e) {
 
             if ($('#modalAgenda #id_evento').val()==''){
@@ -186,6 +215,11 @@
         });
 
     });
+
+
+    function setFiltros() {
+        $('#gerar-rel').attr( 'href', 'eventos/relatorio/'+$('#data_rel_ini').val()+'/'+$('#data_rel_fin').val() );
+    };
 
 
     function callendarRender(){
@@ -310,7 +344,6 @@
         
         if("{{Auth::user()->id_perfil}}"=='1'){
 
-            console.log('entrei');
             resetForm('#modalAgenda #frm_agenda');
             $('#datasSelecionadas tr').remove();
 

@@ -2,7 +2,7 @@
 @section('header')
 
     {!! Form::open(['method'=>'get']) !!}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">    
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">    
         <a class='fas fa-plus' title="Adicionar Registro" id="addRegister" href="#" onclick="$('#insert').modal('show')"></a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto font-weight-bold pl-2">

@@ -142,7 +142,6 @@ class eventosController extends Controller
                             }
                         })
                         ->get();
-            log::Debug($events);
             return response()->json($events);
 
         } else {
@@ -162,4 +161,41 @@ class eventosController extends Controller
 
     }
 
+
+
+    public function relatorio($dataIni, $dataFim)
+    {
+
+        $dates  = [];
+        //$events = [];
+
+        $dtDe  = Carbon::parse($dataIni);
+        $dtAte = Carbon::parse($dataFim);
+
+        for($d = $dtDe; $d->lte($dtAte); $d->addDay()) {
+            $dates[]  = $d->format('Y-m-d');
+        }                    
+
+        $usuarios = DB::table('events')
+                    ->select('events.id_usuario', 'usuario.nome')
+                    ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
+                    ->whereBetween('start', [ Carbon::parse($dataIni), Carbon::parse($dataFim) ])
+                    ->groupBy('events.id_usuario','nome')
+                    ->orderBy('nome')
+                    ->get();
+
+        $events = DB::table('events')
+                    ->select('events.*','nome', 
+                        DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
+                    )
+                    ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
+                    ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
+                    ->whereBetween('start', [ Carbon::parse($dataIni), Carbon::parse($dataFim) ])
+                    ->orderBy('usuario.nome')
+                    ->get();
+
+        return view("cadastros.eventos.relatorio")->with('dates', $dates)
+                                                  ->with('usuarios', $usuarios)
+                                                  ->with('events', $events);
+    }
 }

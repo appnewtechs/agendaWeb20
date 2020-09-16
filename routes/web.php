@@ -72,7 +72,8 @@ Route::group(['prefix' => 'eventos'], function () {
     Route::post('create'  , 'eventosController@create');
     Route::delete('delete', 'eventosController@delete');
 
-    Route::get('consulta', 'eventosController@consulta')->name('loadEvents');
+    Route::get('consulta' , 'eventosController@consulta')->name('loadEvents');
+    Route::get('relatorio/{dataIni}/{dataFim}', 'eventosController@relatorio');
 });
 
 
