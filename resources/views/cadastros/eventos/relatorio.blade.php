@@ -24,16 +24,25 @@
 {!! Form::close() !!}
 
 <div id="main" class="container-fluid pt-2 pb-5">
-    <div id="list" class="row border border-dark rounded" style='background: white; width:100%;'>
+    <div id="list" class="row border border-light rounded" style='background: white; width:100%;'>
         <div class="table-responsive col-md-12">
             <table class="table table-bordered mb-0" style=>
                 <thead class="thead-dark">
 
-                    <th class="relEvento">Recurso<br>Linha Atuação</th>
+                    <th class="relEvento" style="border-color: white;">Recurso<br>Linha Atuação</th>
                     @foreach($dates as $date)
-                    <th>{{Carbon\Carbon::parse($date)->isoFormat('dddd')}},
-                    <br>{{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}
-                    </th>
+
+                        @php ($weekend = Carbon\Carbon::parse($date) )
+                        @if ( $weekend->isWeekend() ) 
+                            <th style="color: black; border-color: white; background-color: #d1eaf1;">
+                            {{Carbon\Carbon::parse($date)->isoFormat('dddd')}},<br>
+                            {{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}
+                            </th>
+                        @else 
+                            <th style="border-color: white;">{{Carbon\Carbon::parse($date)->isoFormat('dddd')}},
+                            <br>{{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}
+                            </th>
+                        @endif
                     @endforeach
 
                 </thead>
@@ -43,10 +52,20 @@
                     @foreach($usuarios as $usuario)
                     <tr>
 
-                        <td>{{ $usuario->nome }}</td>
+                        <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}</td>
                         @foreach($dates as $date)
 
-                            <td width="100" style="padding: 5px;">
+                            @foreach($feriados as $feriado)
+                            @endforeach
+
+
+                            @php ($weekend  = Carbon\Carbon::parse($date) )
+                            @if ( $weekend->isWeekend() ) 
+                                <td width="100" style="padding: 5px; border-color: white; background-color: #d1eaf1;">
+                            @else 
+                                <td width="100" style="padding: 5px;">
+                            @endif
+
                             @foreach($events as $evento)
                                 @if ($usuario->id_usuario==$evento->id_usuario)
 

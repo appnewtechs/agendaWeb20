@@ -38,6 +38,7 @@
                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $rotina->nome }}</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                            <a class="dropdown-item"  href="{{ action('tipoAgendaController@index') }}">Tipo de Agenda</a>
+                           <a class="dropdown-item"  href="{{ action('feriadosController@index') }}">Feriados</a>
                         </ul>
                      </li>
                      @break

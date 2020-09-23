@@ -35,7 +35,7 @@ class tipoAgendaController extends Controller
         $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
 
         $tiposAgenda = DB::table('trabalho')
-                        ->orwhere('descricao' , 'like', '%' . $search . '%')                
+                        ->where('descricao' , 'like', '%' . $search . '%')                
                         ->orderBy($field, $sort)
                         ->get();
         return view("cadastros.tipoAgenda.index")->with('tiposAgenda', $tiposAgenda);

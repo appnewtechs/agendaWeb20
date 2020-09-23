@@ -55,6 +55,7 @@ Route::group(['prefix' => 'tipoServico'], function () {
     Route::delete('delete', 'tipoServicoController@delete');
 });
 
+
 // Rotas de Cadastros - Tipo de Agenda
 Route::group(['prefix' => 'tipoAgenda'], function () {
     Route::get('/'        , 'tipoAgendaController@index');
@@ -62,6 +63,13 @@ Route::group(['prefix' => 'tipoAgenda'], function () {
     Route::delete('delete', 'tipoAgendaController@delete');
 });
 
+
+// Rotas de Cadastros - Feriados
+Route::group(['prefix' => 'feriados'], function () {
+    Route::get('/'        , 'feriadosController@index');
+    Route::post('create'  , 'feriadosController@create');
+    Route::delete('delete', 'feriadosController@delete');
+});
 
 
 

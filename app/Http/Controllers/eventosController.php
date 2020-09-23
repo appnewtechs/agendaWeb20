@@ -176,6 +176,12 @@ class eventosController extends Controller
             $dates[]  = $d->format('Y-m-d');
         }                    
 
+
+        $feriados = DB::table('feriados')
+                    ->whereBetween('data', [ Carbon::parse($dataIni), Carbon::parse($dataFim) ])
+                    ->get();
+
+                    log::debug($feriados);
         $usuarios = DB::table('events')
                     ->select('events.id_usuario', 'usuario.nome')
                     ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
@@ -195,6 +201,7 @@ class eventosController extends Controller
                     ->get();
 
         return view("cadastros.eventos.relatorio")->with('dates', $dates)
+                                                  ->with('feriados', $feriados)
                                                   ->with('usuarios', $usuarios)
                                                   ->with('events', $events);
     }

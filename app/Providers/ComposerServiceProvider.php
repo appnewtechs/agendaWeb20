@@ -31,6 +31,7 @@ class ComposerServiceProvider extends ServiceProvider
                           'cadastros.tipoServico.index',
                           'cadastros.tipoAgenda.index',
                           'cadastros.eventos.index',
+                          'cadastros.feriados.index',
                           'auth.update',
                           'home'],
 
