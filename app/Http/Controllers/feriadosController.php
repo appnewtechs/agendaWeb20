@@ -47,12 +47,10 @@ class feriadosController extends Controller
 
         session::put('id_modal','insert');
         $validator = Validator::make($request->all(), [
-                     'colorpicker' => ['required'],
                      'descricao'   => ['required'],
                      'data'        => ['required'],
                      ], [], [
                      'descricao'   => 'Descrição',
-                     'colorpicker' => 'Cor',
                      'data'        => 'Data',
                      ]);
 
@@ -65,7 +63,6 @@ class feriadosController extends Controller
                 $feriados = new feriados();
                 $feriados->descricao = $request->descricao;
                 $feriados->data      = $request->data;
-                $feriados->cor       = substr($request->colorpicker,1,6);
                 $feriados->save();
                 
             } catch (\Exception $e) {

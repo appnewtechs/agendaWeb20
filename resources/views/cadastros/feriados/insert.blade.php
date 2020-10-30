@@ -23,21 +23,14 @@
                     @endif
                     </div>
 
-                    <div class="col-md-7">
+                    <div class="col-md-9">
                     {!! Form::label("descricao", "Descrição", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::text("descricao",  null,        ["class"=>"form-control", "maxLength=200", "onkeydown"=>"setFocus(event,'#colorpicker');" ]) !!}
+                    {!! Form::text("descricao",  null,        ["class"=>"form-control", "maxLength=200", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
                     @if ($errors->has('descricao'))
                         <span colspan='12' style="color: red;">
                             {{ $errors->first('descricao') }}
                         </span>
                     @endif
-                    </div>
-
-
-
-                    <div class="col-md-2">
-                    {!! Form::label("colorpicker", "Cor", ["class"=>"col-form-label pl-0"]) !!}
-                    {!! Form::color("colorpicker",  null, ["class"=>"form-control", "style"=>"padding: 0px", "onkeydown"=>"setFocus(event,'#insert-conf-btn');" ]) !!}
                     </div>
                 </div>
 

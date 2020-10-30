@@ -296,7 +296,7 @@
             },
 
             eventClick: function(info) {
-                /*
+                
                 if("{{Auth::user()->id_perfil}}"=='1'){
 
                     // Modal delete
@@ -316,18 +316,27 @@
                     $('#empresa').val( info.event.extendedProps.empresa );
                     $('#id_usuario').val( info.event.extendedProps.usuario );
                     $('#tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
+
+                    if (info.event.extendedProps.tipo_data=='1'){
+                        $('#radio2').prop("checked", true);
+                    } else {
+                        $('#radio1').prop("checked", true);
+                    };
+
                     $('#modalAgenda').modal('show');
 
                 } else {
                     $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
                     $('#infoone').modal('show');
-                }*/
+                }
             },
 
             
             select: function(selectionInfo){
                 eventInsert();
             },
+
+
             /*
             dayHeaderContent: function(args) {
                 if (args.isToday){

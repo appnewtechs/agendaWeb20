@@ -142,20 +142,21 @@ class eventosController extends Controller
                             }
                         })
                         ->get();
-            return response()->json($events);
+                        log::Debug($events);
+                        return response()->json($events);
 
         } else {
             $events = DB::table('events')
                         ->select(
                             DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
                             DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
+                            DB::raw("CONCAT('inverse-background') AS display"),
                             'id','title','start','end'
                         )
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
                         ->where('id_usuario', '=', Auth::user()->id_usuario)
                         ->whereBetween('start', [ $request->start, $request->end ])
                         ->get();
-
             return response()->json($events);
         }
 
@@ -166,9 +167,7 @@ class eventosController extends Controller
     public function relatorio($dataIni, $dataFim)
     {
 
-        $dates  = [];
-        //$events = [];
-
+        $dates = [];
         $dtDe  = Carbon::parse($dataIni);
         $dtAte = Carbon::parse($dataFim);
 
@@ -181,7 +180,6 @@ class eventosController extends Controller
                     ->whereBetween('data', [ Carbon::parse($dataIni), Carbon::parse($dataFim) ])
                     ->get();
 
-                    log::debug($feriados);
         $usuarios = DB::table('events')
                     ->select('events.id_usuario', 'usuario.nome')
                     ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')

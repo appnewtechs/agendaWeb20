@@ -2,7 +2,7 @@
 @section('content')
 
 {!! Form::open(['method'=>'get']) !!}
-<nav class="navbar navbar-expand-sm navbar-light bg-light">    
+<nav class="navbar navbar-expand-sm navbar-light bg-light pt-3">    
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto font-weight-bold pl-2">
             <li><span class="linhaMestra">Relatório de Agendas</span></li>                
@@ -32,11 +32,18 @@
                     <th class="relEvento" style="border-color: white;">Recurso<br>Linha Atuação</th>
                     @foreach($dates as $date)
 
+                        @php ($hollyday = false )
+                        @foreach($feriados as $feriado)
+                            @if (Carbon\Carbon::parse($feriado->data)==Carbon\Carbon::parse($date)) 
+                                @php ($hollyday = true )
+                            @endif
+                        @endforeach
+
                         @php ($weekend = Carbon\Carbon::parse($date) )
-                        @if ( $weekend->isWeekend() ) 
+                        @if ( $weekend->isWeekend() || $hollyday) 
                             <th style="color: black; border-color: white; background-color: #d1eaf1;">
                             {{Carbon\Carbon::parse($date)->isoFormat('dddd')}},<br>
-                            {{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}
+                            {{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}<br>
                             </th>
                         @else 
                             <th style="border-color: white;">{{Carbon\Carbon::parse($date)->isoFormat('dddd')}},
@@ -55,12 +62,16 @@
                         <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}</td>
                         @foreach($dates as $date)
 
+                            @php ($hollyday = false )
                             @foreach($feriados as $feriado)
+                                @if (Carbon\Carbon::parse($feriado->data)==Carbon\Carbon::parse($date)) 
+                                    @php ($hollyday = true )
+                                @endif
                             @endforeach
 
 
                             @php ($weekend  = Carbon\Carbon::parse($date) )
-                            @if ( $weekend->isWeekend() ) 
+                            @if ( $weekend->isWeekend() || $hollyday ) 
                                 <td width="100" style="padding: 5px; border-color: white; background-color: #d1eaf1;">
                             @else 
                                 <td width="100" style="padding: 5px;">

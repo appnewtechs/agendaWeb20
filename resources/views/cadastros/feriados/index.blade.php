@@ -10,7 +10,6 @@
                 <tr>
                     <th><a class="linktd" href='#' onClick="tablesorter('data');">Data</a></th>
                     <th><a class="linktd" href='#' onClick="tablesorter('descricao');">Descrição</a></th>
-                    <th>Cor</th>
                     <th class="text-right"></th>
                 </tr>
                 </thead>
@@ -20,7 +19,6 @@
                     <tr>
                         <td>{{ Carbon\Carbon::parse($feriado->data)->format('d/m/Y') }}</td>
                         <td>{{ $feriado->descricao }}</td>
-					    <td><div style="background-color: #{{ $feriado->cor }}; padding: 10px;"></div></td>
                         <td class="text-right" style="vertical-align: middle">
                         <form id="frm_del_feriado_{{ $feriado->id_feriado }}" action="{{ url('feriados/delete') }}" method="post">
 
