@@ -38,11 +38,9 @@ class eventosController extends Controller
     public function create(Request $request)
     {
 
-        session::put('id_modal','modalAgenda');
         $validator = Validator::make( $request->all(), evento::$rules, [], evento::$translate);
-
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->with('errors', $validator->messages());
+            return response()->json( $validator->messages() );
         } else {  
 
             try {
@@ -50,19 +48,17 @@ class eventosController extends Controller
             } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
             }
-            return redirect($request->header('referer'));
         }
+
     }
   
 
     public function update(Request $request) 
     {
 
-        session::put('id_modal','modalAgenda');
         $validator = Validator::make( $request->all(), evento::$rules, [], evento::$translate);
-
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->with('errors', $validator->messages());
+            return response()->json($validator->messages() );
         } else {  
 
             try {
@@ -142,7 +138,6 @@ class eventosController extends Controller
                             }
                         })
                         ->get();
-                        log::Debug($events);
                         return response()->json($events);
 
         } else {

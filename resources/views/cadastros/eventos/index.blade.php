@@ -358,7 +358,7 @@
 
             $('#modalAgenda #modal-title').text("Inserir Evento");
             $('#modalAgenda #delete-btn').css('display','none');
-            $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@create') }}");
+            $('#modalAgenda #frm_agenda').attr('action', 'eventos/create');
 
             $('#modalAgenda #id_evento').val('');
             $('#modalAgenda').modal('show');
@@ -373,6 +373,25 @@
     function excluirData(index){
         document.getElementById("datasSelecionadas").deleteRow(index);
     };
+
+
+    function gravaAgenda() {
+
+        $.ajax({
+            url: $('#modalAgenda #frm_agenda').prop('action'),
+            type: 'POST',
+            data: $('#frm_agenda').serialize(),
+            
+            success: function(response){
+                $('#modalAgenda').modal('hide');
+                callendarRender()
+            },
+
+            error: function(response){
+                console.log(response);
+            }
+        });
+    }
 
 </script>
 @endsection
