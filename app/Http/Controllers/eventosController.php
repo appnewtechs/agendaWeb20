@@ -86,6 +86,19 @@ class eventosController extends Controller
     }    
  
     
+    public function carregaDatas($idEvento)
+    {
+
+        $datas = DB::table('events')
+                ->where('id_evento', '=', $idEvento)
+                ->get();
+        log::Debug($datas);
+
+        return response()->json($datas);
+    }
+
+
+
 
     public function consulta(Request $request)
     {
@@ -146,7 +159,7 @@ class eventosController extends Controller
                             DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
                             DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
                             DB::raw("CONCAT('inverse-background') AS display"),
-                            'id','title','start','end'
+                            'id_evento id','title','start','end'
                         )
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
                         ->where('id_usuario', '=', Auth::user()->id_usuario)
@@ -156,8 +169,6 @@ class eventosController extends Controller
         }
 
     }
-
-
 
     public function relatorio($dataIni, $dataFim)
     {

@@ -323,6 +323,48 @@
                         $('#radio1').prop("checked", true);
                     };
 
+                    
+                    $.ajax({
+                        url: '{{ env("APP_URL") }}/eventos/carregaDatas/'+info.event.id,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(response){
+
+                            if(response.length > 0){
+                                if(response[0].tipo_data==2){
+
+                                    dataIni = response[0].start.substr(8,2)+'/'+response[0].start.substr(5,2)+'/'+response[0].start.substr(0,4);
+                                    dataFim = response[0].end.substr(8,2)+'/'+response[0].end.substr(5,2)+'/'+response[0].end.substr(0,4);
+
+                                    newRow =  '<tr>';
+                                    newRow += '<td><input name="dataSel[]" id="dataSel" value="'+dataIni+'"  type="text" class="form-control inputrow" readonly></input></td>';
+                                    newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
+                                    newRow += '</tr>';
+                                    $('#datasSelecionadas tbody').append(newRow);    
+
+                                    newRow =  '<tr>';
+                                    newRow += '<td><input name="dataSel[]" id="dataSel" value="'+dataFim+'"  type="text" class="form-control inputrow" readonly></input></td>';
+                                    newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
+                                    newRow += '</tr>';
+                                    $('#datasSelecionadas tbody').append(newRow);    
+
+                                } else {
+                                
+                                    for(var i=0; i<response.length; i++){
+
+                                        newRow  =  '<tr>';
+                                        dataIni = response[i].start.substr(8,2)+'/'+response[i].start.substr(5,2)+'/'+response[i].start.substr(0,4);
+                                        newRow += '<td><input name="dataSel[]" id="dataSel" value="'+dataIni+'" type="text" class="form-control inputrow" readonly></input></td>';
+                                        newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
+                                        newRow += '</tr>';
+                                        $('#datasSelecionadas tbody').append(newRow);    
+
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
                     $('#modalAgenda').modal('show');
 
                 } else {
@@ -337,12 +379,51 @@
             },
 
 
-            /*
-            dayHeaderContent: function(args) {
-                if (args.isToday){
-                console.log(args.date);
+            datesSet: function(dateInfo) {
+
+                var dia = Number(dateInfo.startStr.substr(8,2));
+                var mes = Number(dateInfo.startStr.substr(5,2));
+                var ano = Number(dateInfo.startStr.substr(0,4));
+                
+                var diaStr = '';
+                var mesStr = '';
+                var anoStr = '';
+                var dataIni= '';
+                var dataFim= '';
+
+                if (dia>1){
+                    mes = mes+1;
+                    if(mes>12){
+                        mes=1;
+                        ano++;
+                    };
                 }
-            }*/
+
+                diaStr = '01';  
+                mesStr = mes.toString();
+                anoStr = ano.toString();
+                if(mes<10){
+                    mesStr = '0'+mesStr;
+                };
+
+
+                dataIni = anoStr+'-'+mesStr+'-'+diaStr;
+                mes31   = ['01','03','05','07','08','10','12'];
+
+                if (mes31.includes(mesStr)){
+                    diaStr='31';
+                } else {
+                    if (mesStr=='02'){
+                        diaStr='28';
+                    } else {
+                        diaStr='30';
+                    }
+                }
+
+                dataFim = anoStr+'-'+mesStr+'-'+diaStr;
+                $('#data_rel_ini').val(dataIni);
+                $('#data_rel_fin').val(dataFim);
+            }
         });
 
         calendar.render();

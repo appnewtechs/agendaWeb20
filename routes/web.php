@@ -81,6 +81,7 @@ Route::group(['prefix' => 'eventos'], function () {
     Route::delete('delete', 'eventosController@delete');
 
     Route::get('consulta' , 'eventosController@consulta')->name('loadEvents');
+    Route::get('carregaDatas/{idEvento}'      , 'eventosController@carregaDatas');
     Route::get('relatorio/{dataIni}/{dataFim}', 'eventosController@relatorio');
 });
 
