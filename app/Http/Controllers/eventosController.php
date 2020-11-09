@@ -154,15 +154,18 @@ class eventosController extends Controller
                         return response()->json($events);
 
         } else {
+
             $events = DB::table('events')
                         ->select(
+                            DB::raw("CONCAT(usuario.nome,' - ',events.title) AS title"),
                             DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
                             DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
-                            DB::raw("CONCAT('inverse-background') AS display"),
-                            'id_evento id','title','start','end'
+                            'id_evento AS id','empresa','events.status AS status','tipo_trabalho', 'start', 'end',  
+                            'tipo_data', 'events.title AS descricao', 'start AS datainicial', 'usuario.id_usuario AS usuario'
                         )
+                        ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
                         ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
-                        ->where('id_usuario', '=', Auth::user()->id_usuario)
+                        ->where('events.id_usuario', '=', Auth::user()->id_usuario)
                         ->whereBetween('start', [ $request->start, $request->end ])
                         ->get();
             return response()->json($events);
