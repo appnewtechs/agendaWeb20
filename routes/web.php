@@ -67,6 +67,7 @@ Route::group(['prefix' => 'tipoAgenda'], function () {
 // Rotas de Cadastros - Feriados
 Route::group(['prefix' => 'feriados'], function () {
     Route::get('/'        , 'feriadosController@index');
+    Route::get('consulta' , 'feriadosController@consulta');
     Route::post('create'  , 'feriadosController@create');
     Route::delete('delete', 'feriadosController@delete');
 });
@@ -80,9 +81,9 @@ Route::group(['prefix' => 'eventos'], function () {
     Route::post('create'  , 'eventosController@create');
     Route::delete('delete', 'eventosController@delete');
 
+    Route::get('relatorio', 'eventosController@relatorio');
     Route::get('consulta' , 'eventosController@consulta')->name('loadEvents');
     Route::get('carregaDatas/{idEvento}'      , 'eventosController@carregaDatas');
-    Route::get('relatorio/{dataIni}/{dataFim}', 'eventosController@relatorio');
 });
 
 

@@ -1,27 +1,13 @@
 @extends('layouts.layoutRelatorio')
 @section('content')
 
-{!! Form::open(['method'=>'get']) !!}
 <nav class="navbar navbar-expand-sm navbar-light bg-light pt-3">    
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto font-weight-bold pl-2">
             <li><span class="linhaMestra">Relatório de Agendas</span></li>                
         </ul>
-
-        <form class="form-inline my-2 my-lg-2">
-        <ul class="navbar-nav input-group input-group-sm col-md-3">
-            <div class="input-group">
-                <input id="search" class="form-control" name="search" value="{{ request('search') }}" type="text" 
-                        placeholder="Pesquisar..." onkeydown="javascript:if(event.keyCode==13){ $('#search_btn').click(); };" aria-label="Search"/>
-                <div class="input-group-append">
-                    <button type="submit" id="search_btn" class="btn btn-sm btn-light"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-        </ul>
-        </form>
     </div>
 </nav>
-{!! Form::close() !!}
 
 <div id="main" class="container-fluid pt-2 pb-5">
     <div id="list" class="row border border-light rounded" style='background: white; width:100%;'>
@@ -32,16 +18,20 @@
                     <th class="relEvento" style="border-color: white;">Recurso<br>Linha Atuação</th>
                     @foreach($dates as $date)
 
-                        @php ($hollyday = false )
+                        @php ($descricao = '')
+                        @php ($hollyday = false)
                         @foreach($feriados as $feriado)
                             @if (Carbon\Carbon::parse($feriado->data)==Carbon\Carbon::parse($date)) 
-                                @php ($hollyday = true )
+                                @php ($hollyday = true)
+                                @php ($descricao = '*** '.$feriado->descricao.' ***')
                             @endif
                         @endforeach
+
 
                         @php ($weekend = Carbon\Carbon::parse($date) )
                         @if ( $weekend->isWeekend() || $hollyday) 
                             <th style="color: black; border-color: white; background-color: #d1eaf1;">
+                            {{ $descricao }}<br>
                             {{Carbon\Carbon::parse($date)->isoFormat('dddd')}},<br>
                             {{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}<br>
                             </th>
@@ -51,15 +41,14 @@
                             </th>
                         @endif
                     @endforeach
-
                 </thead>
 
                 <tbody>     
 
                     @foreach($usuarios as $usuario)
                     <tr>
-
-                        <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}</td>
+                        <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}
+                        <br> {{ $usuario->atuacao }}</td>
                         @foreach($dates as $date)
 
                             @php ($hollyday = false )
@@ -89,7 +78,6 @@
                             </td>
 
                         @endforeach
-    
                     </tr>
                     @endforeach
 
@@ -98,13 +86,4 @@
         </div>
     </div> 
 </div> 
-
-
-<script type='text/javascript'>
-
-
-//background: var(--fc-non-business-color, rgba(215, 215, 215, 0.3));
-    $('#search').focus();
-
-</script>
 @endsection

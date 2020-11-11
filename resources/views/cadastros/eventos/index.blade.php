@@ -9,8 +9,10 @@
 
         @if(Auth::user()->id_perfil=='1')
 
+
             <div id="filtros" class="col-md-2 border border-dark rounded pt-3 pb-1" style='background: white'>
                 
+                {!! Form::open(['method'=>'get', 'id'=>'btnRelat', 'target'=>'"_blank', 'action'=>'eventosController@relatorio']) !!}
                 <div class="row">
                     <h5 class="fc-toolbar-title">Filtros</h5>
                 </div>          
@@ -85,7 +87,7 @@
                         <div class="pesqEmpresa pl-1 pr-1 pt-1 pb-1" style="display:none">
                             @foreach ($empresasCombo as $id_empresa=>$razao_social)
                                 <div class="checkbox">
-                                <input name="checkEmpresas[]" value="{{ $id_empresa }}" type="checkbox" onClick="callendarRender();"></input>
+                                <input id="checkEmpresas" name="checkEmpresas[]" value="{{ $id_empresa }}" type="checkbox" onClick="callendarRender();"></input>
                                 <label class="mb-0">{{ $razao_social }}</label>
                                 </div>
                             @endforeach
@@ -114,7 +116,7 @@
                         <div class="pesqUsuario pl-1 pr-1 pt-1 pb-1" style="display:none">
                             @foreach ($usuariosCombo as $id_usuario=>$nome)
                                 <div class="checkbox">
-                                <input name="checkUsuarios[]" value="{{ $id_usuario }}" type="checkbox" onClick="callendarRender();"></input>
+                                <input id="checkUsuarios" name="checkUsuarios[]" value="{{ $id_usuario }}" type="checkbox" onClick="callendarRender();"></input>
                                 <label class="mb-0">{{ $nome }}</label>
                                 </div>
                             @endforeach
@@ -145,7 +147,7 @@
                         <div class="pesqTrabalho pl-1 pr-1 pt-1 pb-1" style="display:none">
                             @foreach ($tipoAgendaCombo as $id_trabalho=>$descricao)
                                 <div class="checkbox">
-                                <input name="checkTrabalhos[]" value="{{ $id_trabalho }}" type="checkbox" onClick="callendarRender();"></input>
+                                <input id="checkTrabalhos" name="checkTrabalhos[]" value="{{ $id_trabalho }}" type="checkbox" onClick="callendarRender();"></input>
                                 <label class="mb-0">{{ substr($descricao,0,21) }}</label>
                                 </div>
                             @endforeach
@@ -175,9 +177,10 @@
 
                 <div class="row pt-2">
                     <div class="col-md-12">
-                    <a type="submit" class="btn btn-sm btn-secondary" style="width: 100%;" id="gerar-rel" href="#" onClick="setFiltros();" target="_blank">Gerar</a>
+                    <a class="btn btn-sm btn-secondary" style="width: 100%;" id="gerar-rel" href="#" onClick='javascript:$("#btnRelat").submit();'>Gerar</a>
                     </div>
                 </div>          
+                {!! Form::close() !!}
 
             </div>
 
@@ -202,6 +205,11 @@
 
     $(document).ready(function(){
 
+        $('#btnRelat').bind("keypress", function(e) {
+            if ((e.keyCode == 10)||(e.keyCode == 13)) {
+                e.preventDefault();
+            }
+        });
 
         callendarRender();
         $('#modalAgenda').on('shown.bs.modal', function(e) {
@@ -215,11 +223,6 @@
         });
 
     });
-
-
-    function setFiltros() {
-        $('#gerar-rel').attr( 'href', 'eventos/relatorio/'+$('#data_rel_ini').val()+'/'+$('#data_rel_fin').val() );
-    };
 
 
     function callendarRender(){
@@ -373,6 +376,18 @@
                 }
             },
 
+            eventDidMount: function(info) {
+                $(info.el).tooltip({
+                    title: info.event.title,
+                    placement: 'top',
+                    trigger: 'hover',
+                    container: 'body'
+                });
+            },
+            
+            dayCellDidMount: function (info) {
+                console.log(info);
+            },
             
             select: function(selectionInfo){
                 eventInsert();
