@@ -33,11 +33,18 @@ class tipoAgendaController extends Controller
         $search = $request->get('search');
         $field  = $request->get('field')  != '' ? $request->get('field') : 'descricao';
         $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
+        $status = $request->get('status') != '' ? $request->get('status'): '0';
 
         $tiposAgenda = DB::table('trabalho')
                         ->where('descricao' , 'like', '%' . $search . '%')                
+                        ->where(function ($query) use ($status) {
+                            if ($status!='2'){
+                                $query->where('status', '=' , $status);
+                            }
+                        })
                         ->orderBy($field, $sort)
                         ->get();
+                        
         return view("cadastros.tipoAgenda.index")->with('tiposAgenda', $tiposAgenda);
     }
 
@@ -76,42 +83,41 @@ class tipoAgendaController extends Controller
     }
 
 
-    public function delete(Request $request)
+    public function status(Request $request)
     {
+
+        $status = $request->status=="0" ?? "1";
         try {
 
-            DB::table('trabalho')->where('id_trabalho', '=', $request->id_trabalho)->delete();
+            DB::table('trabalho')
+            ->where('id_trabalho', '=', $request->id_trabalho)
+            ->update(['status' => $status]);
             return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
 
-            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
-                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Agenda já está sendo usada por outro cadastro.'); 
-                return redirect($request->header('referer'));
-            } else {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-                return redirect($request->header('referer'))->with('errors', $e->getMessage());
-            }
+            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            return redirect($request->header('referer'))->with('errors', $e->getMessage());
         }
     }    
 
     
-    public function status(Request $request)
+    public function delete(Request $request)
     {
         try {
 
-            DB::table('trabalho')->where('id_trabalho', '=', $request->id_trabalho)->delete();
+            $eventos = DB::table('events')->where('tipo_trabalho', '=', $request->id_trabalho)->get();
+            if($eventos){
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Agenda já está sendo usado.'); 
+            } else {
+                DB::table('trabalho')->where('id_trabalho', '=', $request->id_trabalho)->delete();
+            }
             return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
 
-            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
-                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Agenda já está sendo usada por outro cadastro.'); 
-                return redirect($request->header('referer'));
-            } else {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-                return redirect($request->header('referer'))->with('errors', $e->getMessage());
-            }
+            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            return redirect($request->header('referer'))->with('errors', $e->getMessage());
         }
     }    
 

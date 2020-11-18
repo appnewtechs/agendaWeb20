@@ -12,7 +12,7 @@
             <form class="form-inline my-2 my-lg-2">
             <ul class="navbar-nav input-group input-group-sm col-md-6">
                 {!! Form::label("status" , "Status",["class"=>"col-form-label col-md-2 offset-md-2 text-right"]) !!}
-                {!! Form::select('status', ['0'=>'Ativo', '1'=>'Inativo', '2'=>'Ambos'], request('status') ? request('status') :'0', 
+                {!! Form::select('status', ['0'=>'Ativos', '1'=>'Inativos', '2'=>'Ambos'], request('status') ? request('status') :'0', 
                     ['class'=>'form-control col-md-2', 
                     'style'=>"border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem;", 
                     "onchange"=>"$('#search_btn').click();" ]) !!}
@@ -59,12 +59,14 @@
                         <td class="text-right" style="vertical-align: middle">
 
                             <form id="frm_del_tipoAgenda_{{ $trabalho->id_trabalho }}" method="post">
-                            <input name="id_trabalho" id="id_trabalho" value="{{ $trabalho->id_trabalho }}" type="hidden"></input>                
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <a class="{{ $trabalho->status=='0' ? 'fas fa-thumbs-down' : 'fas fa-thumbs-up' }}"
-                               title="{{ $trabalho->status=='0' ? 'Inativar' : 'Ativar' }}" href="#" onclick="excluirTipo( 'status', {{json_encode($trabalho)}} );"></a>
-                            <a class='fas fa-eraser' title="Deletar"  href="#" onclick="excluirTipo( 'delete', {{json_encode($trabalho)}} );"></a>
+
+                                {{ csrf_field() }}
+                                <input name="id_trabalho" id="id_trabalho" value="{{ $trabalho->id_trabalho }}" type="hidden"></input>                
+                                <input name="status"      id="status"      value="{{ $trabalho->status }}"      type="hidden"></input>                
+
+                                <a class="{{ $trabalho->status=='0' ? 'fas fa-thumbs-down' : 'fas fa-thumbs-up' }}"
+                                   title="{{ $trabalho->status=='0' ? 'Inativar' : 'Ativar' }}" href="#" onclick="excluirTipo( 'status', {{json_encode($trabalho)}} );"></a>
+                                <a class='fas fa-eraser' title="Deletar"  href="#" onclick="excluirTipo( 'delete', {{json_encode($trabalho)}} );"></a>
                             </form>
                         </td>
                     </tr>
@@ -111,6 +113,7 @@
                 $('#delete').find("#modal-title").html('Inativação de Registro!');
                 $('#delete').find("#intro").html('Você tem certeza que deseja inativar o registro?');
             } else {
+                $('#delete').find("#delete-btn").html('Ativar');
                 $('#delete').find("#modal-title").html('Ativação de Registro!');
                 $('#delete').find("#intro").html('Você tem certeza que deseja ativar o registro?');
             }
