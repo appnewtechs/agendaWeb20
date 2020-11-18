@@ -62,4 +62,11 @@ class GeneralViewComposer
         return $view->with('tipoAgendaCombo', $tipoAgendaCombo);
     }
 
+
+    public function feriados($view) 
+    {
+        $feriados = DB::table('feriados')->get();
+        return $view->with('feriados', $feriados);
+    }
+
 }

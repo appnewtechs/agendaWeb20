@@ -386,7 +386,18 @@
             },
             
             dayCellDidMount: function (info) {
-                console.log(info);
+
+                var dia = info.el.dataset.date.substr(8,2);
+                var feriados = {!! json_encode($feriados) !!};
+
+                for(var i=0; i<feriados.length; i++){
+
+                    if (feriados[i].data == info.el.dataset.date){
+                        $(info.el).css("background", "rgb(215, 215, 215,0.3)" );
+                        $element = info.el.getElementsByClassName('fc-daygrid-day-number');
+                        $($element).html(feriados[i].descricao+' - '+dia.toString());
+                    }
+                }
             },
             
             select: function(selectionInfo){

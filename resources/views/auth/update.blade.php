@@ -73,7 +73,7 @@
                
                 <div class="card-footer" style="background-color: white;">
                     <div class="row justify-content-end">
-                    <button type="button" class="btn btn-sm btn-secondary mr-1" id="insert-canc-btn" data-dismiss="modal" onclick='javascript:location.reload();'>Cancelar</button>
+                    <button type="button" class="btn btn-sm btn-secondary mr-1" id="insert-canc-btn" onclick="window.location='{{ url("/home") }}' ">Cancelar</button>
                     <button type="button" class="btn btn-sm btn-secondary"      id="insert-conf-btn" onclick='javascript:$("#frm_upd_user").submit();'>Salvar</button>
                     </div>
                 </div>

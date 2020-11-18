@@ -94,5 +94,25 @@ class tipoAgendaController extends Controller
             }
         }
     }    
+
     
+    public function status(Request $request)
+    {
+        try {
+
+            DB::table('trabalho')->where('id_trabalho', '=', $request->id_trabalho)->delete();
+            return redirect($request->header('referer'));
+
+        } catch (\Exception $e) {
+
+            if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Agenda já está sendo usada por outro cadastro.'); 
+                return redirect($request->header('referer'));
+            } else {
+                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+                return redirect($request->header('referer'))->with('errors', $e->getMessage());
+            }
+        }
+    }    
+
 }

@@ -51,5 +51,9 @@ class ComposerServiceProvider extends ServiceProvider
         view()->composer(['cadastros.eventos.index'],
                           'App\Http\Views\GeneralViewComposer@usuarios');
 
+        view()->composer(['cadastros.eventos.index'],
+                          'App\Http\Views\GeneralViewComposer@feriados');
+  
+  
     }
 }
