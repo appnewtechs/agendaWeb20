@@ -31,13 +31,22 @@ class tipoServicoController extends Controller
     {
 
         $search = $request->get('search');
-        $field  = $request->get('field')  != '' ? $request->get('field') : 'descricao';
-        $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
+        $field  = $request->get('field')  ?? 'descricao';
+        $sort   = $request->get('sort')   ?? 'asc';
+        $status = $request->get('status') ?? '0';
+
+        log::Debug($status);
 
         $tiposServico = DB::table('linha_produto')
-                        ->orwhere('descricao' , 'like', '%' . $search . '%')                
+                        ->where(function ($query) use ($status) {
+                            if ($status!='2'){
+                                $query->where('status', '=' , $status);
+                            }
+                        })
+                        ->where('descricao', 'like', '%' .$search. '%')                
                         ->orderBy($field, $sort)
                         ->get();
+                        
         return view("cadastros.tipoServico.index")->with('tiposServico', $tiposServico);
     }
 
@@ -61,6 +70,7 @@ class tipoServicoController extends Controller
                 $linha = new tipoServico();
                 $linha->id_linha_produto = tipoServico::getId();
                 $linha->descricao = $request->descricao;
+                $linha->status    = '0';
                 $linha->save();
 
             } catch (\Exception $e) {
@@ -72,6 +82,24 @@ class tipoServicoController extends Controller
     }
   
 
+    public function status(Request $request)
+    {
+
+        $status = $request->status=="0" ?? "1";
+        try {
+
+            DB::table('linha_produto')
+            ->where('id_linha_produto', '=', $request->id_linha_produto)
+            ->update(['status' => $status]);
+            return redirect($request->header('referer'));
+
+        } catch (\Exception $e) {
+
+            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            return redirect($request->header('referer'))->with('errors', $e->getMessage());
+        }
+    }    
+
 
     public function delete(Request $request)
     {
@@ -82,7 +110,7 @@ class tipoServicoController extends Controller
 
         } catch (\Exception $e) {
             if(strpos($e->getMessage(), 'Cannot delete or update a parent row')>0){
-                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Serviço já está sendo usada por outro cadastro'); 
+                session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Essa Linha de Atuação já está sendo usada por outro cadastro'); 
                 return redirect($request->header('referer'));
             } else {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 

@@ -67,7 +67,7 @@ class Usuario extends Authenticatable
         'i_telefone' => 'Telefone',
         'i_id_perfil' => 'Perfil',
         'i_id_empresa'=>'Empresa',
-        'i_id_linha_produto' => 'Tipo de Serviço',
+        'i_id_linha_produto' => 'Linha de Atuação',
     ];
 
 
@@ -87,7 +87,7 @@ class Usuario extends Authenticatable
         'u_telefone' => 'Telefone',
         'u_id_perfil' => 'Perfil',
         'u_id_empresa'=>'Empresa',
-        'u_id_linha_produto' => 'Tipo de Serviço',
+        'u_id_linha_produto' => 'Linha de Atuação',
     ];
 
 

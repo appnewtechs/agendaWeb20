@@ -48,11 +48,14 @@ Route::group(['prefix' => 'usuario'], function () {
     Route::get('empresas/{id}', 'usuarioController@empresas');
 });
 
+
+
 // Rotas de Cadastros - Linha de Produto
 Route::group(['prefix' => 'tipoServico'], function () {
-    Route::get('/'        , 'tipoServicoController@index');
-    Route::post('create'  , 'tipoServicoController@create');
-    Route::delete('delete', 'tipoServicoController@delete');
+    Route::get('/'      , 'tipoServicoController@index');
+    Route::post('create', 'tipoServicoController@create');
+    Route::post('status', 'tipoServicoController@status');
+    Route::post('delete', 'tipoServicoController@delete');
 });
 
 

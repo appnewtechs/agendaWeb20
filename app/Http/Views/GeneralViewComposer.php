@@ -51,14 +51,20 @@ class GeneralViewComposer
 
     public function tiposServico($view) 
     {
-        $tipoServicoCombo = DB::table('linha_produto')->orderBy('descricao','asc')->pluck('descricao','id_linha_produto');
+        $tipoServicoCombo = DB::table('linha_produto')
+                            ->where('status','=' ,'0')
+                            ->orderBy('descricao','asc')
+                            ->pluck('descricao','id_linha_produto');
         return $view->with('tipoServicoCombo', $tipoServicoCombo);
     }
 
 
     public function tiposAgenda($view) 
     {
-        $tipoAgendaCombo = DB::table('trabalho')->orderBy('descricao','asc')->pluck('descricao','id_trabalho');
+        $tipoAgendaCombo = DB::table('trabalho')
+                           ->where('status','=' ,'0')
+                           ->orderBy('descricao','asc')
+                           ->pluck('descricao','id_trabalho');
         return $view->with('tipoAgendaCombo', $tipoAgendaCombo);
     }
 

@@ -45,7 +45,7 @@
                     <th><a class="linktd" href='#' onClick="tablesorter('login'       );">Login</a></th>
                     <th><a class="linktd" href='#' onClick="tablesorter('nome'        );">Nome</a></th>
                     <th><a class="linktd" href='#' onClick="tablesorter('razao_social');">Empresa</a></th>
-                    <th><a class="linktd" href='#' onClick="tablesorter('linha_produto.descricao');">Tipo de Serviço/Atuação</a></th>
+                    <th><a class="linktd" href='#' onClick="tablesorter('linha_produto.descricao');">Linha de Atuação</a></th>
                     <th><a class="linktd">E-mail</a></th>
                     <th><a class="linktd">Telefone</a></th>
                     <th><a class="linktd">Status</a></th>

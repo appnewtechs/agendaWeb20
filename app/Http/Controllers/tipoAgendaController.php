@@ -70,8 +70,9 @@ class tipoAgendaController extends Controller
                 $tipoAgenda = new tipoAgenda();
                 $tipoAgenda->id_trabalho = tipoAgenda::getId();
                 $tipoAgenda->descricao   = $request->descricao;
-                $tipoAgenda->cor         = substr($request->colorpicker,1,6);
-                $tipoAgenda->codigo      = tipoAgenda::getCod();
+                $tipoAgenda->cor    = substr($request->colorpicker,1,6);
+                $tipoAgenda->codigo = tipoAgenda::getCod();
+                $tipoAgenda->status = '0';
                 $tipoAgenda->save();
                 
             } catch (\Exception $e) {

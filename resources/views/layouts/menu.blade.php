@@ -25,7 +25,7 @@
                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $rotina->nome }}</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                            <a class="dropdown-item" href="{{ action('perfilUsuarioController@index') }}">Perfil de Usuário</a>
-                           <a class="dropdown-item" href="{{ action('tipoServicoController@index') }}">Tipo de Serviço</a>
+                           <a class="dropdown-item" href="{{ action('tipoServicoController@index') }}">Linha de Atuação</a>
                            <a class="dropdown-item" href="{{ action('usuarioController@index') }}">Usuários</a>
                            <div class="dropdown-divider"></div>
                            <a class="dropdown-item" href="{{ action('empresaController@index') }}">Empresas do Grupo</a>

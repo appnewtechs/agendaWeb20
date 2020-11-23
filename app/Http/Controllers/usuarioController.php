@@ -71,7 +71,7 @@ class usuarioController extends Controller
                         ]);
                     })->where(function ($query) use ($status) {
                         if ($status!='2'){
-                            $query->where('status', '=' , $status);
+                            $query->where('usuario.status', '=' , $status);
                         }
                     })
                    ->orderBy($field, $sort)

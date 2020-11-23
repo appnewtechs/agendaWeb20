@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-dialog-centered modal">
         <div class="modal-content" role='document'>
             <div class="modal-header">
-                <span class="linhaMestra" class="modal-title font-weight-bold" id="modal-title">Inserir Tipo de Serviço</span>
+                <span class="linhaMestra" class="modal-title font-weight-bold" id="modal-title">Inserir Linha de Atuação</span>
             </div>
 
             <div class="modal-body">
