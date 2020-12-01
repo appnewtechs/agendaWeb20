@@ -6,6 +6,15 @@
  }
  
 
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url(../images/vendor/jquery-ui/themes/base/ui-icons_444444_256x240.png?a4c733ec4baef9ad3896d4e34a8a5448) !important;
+}
+.ui-widget-header .ui-icon {
+	background-image: url(../images/vendor/jquery-ui/themes/base/ui-icons_444444_256x240.png?a4c733ec4baef9ad3896d4e34a8a5448) !important;
+}
+
+
 
 /* --------------------- */
 /*       Body CSS        */

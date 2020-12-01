@@ -114,10 +114,10 @@
                         </nav>
 
                         <div class="pesqUsuario pl-1 pr-1 pt-1 pb-1" style="display:none">
+                            <input id="usuarios" class="form-control mb-2" name="search" type="text" placeholder="Pesquisar..." onkeyup="filtrarUsuarios();" aria-label="Search"/>
                             @foreach ($usuariosCombo as $id_usuario=>$nome)
-                                <div class="checkbox">
-                                <input id="checkUsuarios" name="checkUsuarios[]" value="{{ $id_usuario }}" type="checkbox" onClick="callendarRender();"></input>
-                                <label class="mb-0">{{ $nome }}</label>
+                                <div class="checkbox" id='divUsuarios' name='divUsuarios[]'>
+                                <input id="checkUsuarios" name="checkUsuarios[]" value="{{ $id_usuario }}" type="checkbox" onClick="callendarRender();">  {{ $nome }}</input>
                                 </div>
                             @endforeach
                         </div>
@@ -226,8 +226,9 @@
 
 
     function callendarRender(){
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
 
             initialView: 'dayGridMonth',
             contentHeight: 'auto',
@@ -401,9 +402,10 @@
 
                     if (feriados[i].data == info.el.dataset.date){
 
-                        $(info.el).css("background", "rgb(215, 215, 215,0.3)" );
+                        $(info.el).css("background", "rgb(215, 215, 215, 1)" );
                         $element = info.el.getElementsByClassName('fc-daygrid-day-number');
-                        $($element).html(feriados[i].descricao+' - '+dia.toString());
+
+                        $($element)[0].innerText = feriados[i].descricao+' - '+dia.toString();
                     }
                 }
             },
@@ -460,7 +462,10 @@
             }
         });
 
+        var dateIni = $('#data_rel_ini').val();
+        calendar.gotoDate(dateIni);
         calendar.render();
+
     };
 
 
@@ -505,6 +510,22 @@
             error: function(response){
                 console.log(response);
             }
+        });
+    }
+
+
+    function filtrarUsuarios() {
+
+        $texto = $('#usuarios').val();
+
+        $("div[name='divUsuarios[]']").each(function(){
+
+            $(this).css("display", "block");
+            $nome = $(this)[0].innerText.trim();
+            if($nome.indexOf($texto)<0){
+                $(this).css("display", "none");
+            }
+
         });
     }
 
