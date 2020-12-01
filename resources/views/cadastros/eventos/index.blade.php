@@ -377,6 +377,13 @@
             },
 
             eventDidMount: function(info) {
+
+                if(info.event.extendedProps.status==0){
+                    $(info.el).css("background", "red" );
+                    $element = info.el.getElementsByClassName('fc-event-title');
+                    $($element).html('*** '+info.event.title);
+                };
+
                 $(info.el).tooltip({
                     title: info.event.title,
                     placement: 'top',
@@ -393,6 +400,7 @@
                 for(var i=0; i<feriados.length; i++){
 
                     if (feriados[i].data == info.el.dataset.date){
+
                         $(info.el).css("background", "rgb(215, 215, 215,0.3)" );
                         $element = info.el.getElementsByClassName('fc-daygrid-day-number');
                         $($element).html(feriados[i].descricao+' - '+dia.toString());
