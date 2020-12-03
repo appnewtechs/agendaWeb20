@@ -462,9 +462,13 @@
             }
         });
 
-        var dateIni = $('#data_rel_ini').val();
-        calendar.gotoDate(dateIni);
+        if("{{Auth::user()->id_perfil}}"=='1'){
+            var dateIni = $('#data_rel_ini').val();
+            calendar.gotoDate(dateIni);
+        };
+
         calendar.render();
+    
 
     };
 
