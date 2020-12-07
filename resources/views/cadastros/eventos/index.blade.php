@@ -311,7 +311,7 @@
                     resetForm('#frm_agenda');
                     $('#datasSelecionadas tr').remove();
                     $('#modalAgenda #modal-title').text("Alterar Evento");
-                    $('#modalAgenda #delete-btn').css('display','all');
+                    $('#modalAgenda #delete-btn').css('display','inline-block');
                     $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@update') }}");
 
                     $('#modalAgenda #id_evento').val( info.event.id );
@@ -384,9 +384,23 @@
                     $element = info.el.getElementsByClassName('fc-event-title');
                     $($element).html('*** '+info.event.title);
                 };
+                
+                var dia = Number(info.event.startStr.substr(8,2));
+                var mes = Number(info.event.startStr.substr(5,2));
+                var ano = Number(info.event.startStr.substr(0,4));
+                dataInicial = dia+'/'+mes+'/'+ano;
+
+                var dia = Number(info.event.endStr.substr(8,2));
+                var mes = Number(info.event.endStr.substr(5,2));
+                var ano = Number(info.event.endStr.substr(0,4));
+                dataFinal = dia+'/'+mes+'/'+ano;
 
                 $(info.el).tooltip({
-                    title: info.event.title,
+                    title: info.event.title+
+                    '\n Data Inicial: '+dataInicial+
+                    '\n Data Final: '+dataFinal+
+                    '\n Tipo: '+info.event.extendedProps.descTrabalho,
+
                     placement: 'top',
                     trigger: 'hover',
                     container: 'body'

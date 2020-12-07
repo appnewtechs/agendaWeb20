@@ -28,6 +28,10 @@ body {
 /* --------------------- */
 /*      Botões CSS       */
 /* --------------------- */  
+.tooltip-inner {
+    white-space: pre-wrap;
+}
+
 .fas {
     color: midnightblue;
 }
