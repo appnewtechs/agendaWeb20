@@ -16,7 +16,6 @@
                         <input name="id_evento"  id="id_evento" value="" type="hidden"></input>                
                         {!! Form::label("title", "Título/Descrição", ["class"=>"col-form-label pl-0"]) !!}
                         {!! Form::text("title",  null,     ["class"=>"form-control", "maxLength=255", "onkeydown"=>"setFocus(event,'#id_usuario');" ]) !!}
-                        <span colspan='12' id="titleError" style="color: red;"></span>
                         </div>
 
                         <div class="col-md-5">
@@ -108,9 +107,10 @@
             </div>
 
             <div class="modal-footer">
+                <span colspan='10' id='erros' style="color: red; font-weight: bold; padding-right: 2rem;"></span>
                 <button type="button" class="btn btn-sm btn-danger"    id="delete-btn"  href="#delete" data-toggle="modal">Excluir</button>
                 <button type="button" class="btn btn-sm btn-secondary" id="cancel-btn"  data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-secondary" id="confirm-btn" data-dismiss="modal" onClick="gravaAgenda();">Salvar</button>
+                <button type="button" class="btn btn-sm btn-secondary" id="confirm-btn" onClick="gravaAgenda();">Salvar</button>
             </div>
         </div>
     </div>

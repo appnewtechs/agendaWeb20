@@ -390,10 +390,14 @@
                 var ano = Number(info.event.startStr.substr(0,4));
                 dataInicial = dia+'/'+mes+'/'+ano;
 
-                var dia = Number(info.event.endStr.substr(8,2));
-                var mes = Number(info.event.endStr.substr(5,2));
-                var ano = Number(info.event.endStr.substr(0,4));
-                dataFinal = dia+'/'+mes+'/'+ano;
+                if(info.event.extendedProps.tipo_data==2){
+                    var dia = Number(info.event.endStr.substr(8,2));
+                    var mes = Number(info.event.endStr.substr(5,2));
+                    var ano = Number(info.event.endStr.substr(0,4));
+                    dataFinal = dia+'/'+mes+'/'+ano;
+                } else {
+                    dataFinal = dataInicial;
+                }
 
                 $(info.el).tooltip({
                     title: info.event.title+
@@ -518,16 +522,22 @@
         $.ajax({
             url: $('#modalAgenda #frm_agenda').prop('action'),
             type: 'POST',
+            dataType:'json',            
             data: $('#frm_agenda').serialize(),
             
             success: function(response){
-                $('#modalAgenda').modal('hide');
-                callendarRender()
-            },
 
-            error: function(response){
-                console.log(response);
-            }
+                if(response.code=='200'){   
+                    $('#modalAgenda').modal('hide');
+                    callendarRender();
+                } else {
+                    $.each(response.erros, function (index) {
+                        $('#erros').html(response.erros[index]);
+                        return false;
+                    });
+                }
+            },
+        
         });
     }
 
