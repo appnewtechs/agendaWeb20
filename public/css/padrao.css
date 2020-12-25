@@ -359,7 +359,7 @@ option {
 .navbar-expand-sm,
 .navbar-light,
 .bg-light {
-    padding-top   : 0.5rem;
+    padding-top: 0.6rem;
 }
 
 .navbar-nav,
@@ -430,3 +430,22 @@ footer {
     padding-bottom: 0.5rem; 
 }
 
+
+
+.copyright{
+    font-family: "Nunito";
+    float: left;
+    font-size: 12px;
+    line-height: 15px;
+    color: rgb(255, 255, 255);
+    width: 50%;
+    padding: 10px 0 14px;
+    padding-top: 1rem;
+}
+
+.copyright a{
+    font-family: "Nunito";
+    font-size: 12px;
+    line-height: 15px;
+    color: whitesmoke;
+}

@@ -1,10 +1,24 @@
-@include('layouts.padraoLogin')
-<div class="container-fluid" style="margin-top: 20vh;">
+@extends('layouts.padraoLogin')
+
+
+@section('header')
+<nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark" style="min-height:37px;">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto pl-4">
+            <li><span class="linhaMestra" style='color: white;'>Bem-vinda(o) à {{ env('APP_NAME')}}</span></li>                
+        </ul>
+    </div>
+</nav>
+@endsection
+
+
+@section('content')
+<div class="container-fluid" style="margin-top: 19vh;">
 
     <div class="row justify-content-center">
         <div class="col-md-4">
 
-            <div class="card border border-dark rounded">
+            <div class="card border border-dark rounded" style="width: 23rem;">
                 <form method="POST" action="{{ route('login') }}">
                 @csrf
 
@@ -52,4 +66,4 @@
         </div>
     </div>
 </div>
-
+@endsection

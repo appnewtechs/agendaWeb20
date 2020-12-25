@@ -35,7 +35,7 @@
 
 
 @section('content')
-<div id="main" class="container-fluid pt-2 pb-5">
+<div id="main" class="container-fluid pt-2 pb-4">
     <div id="list" class="row border border-dark rounded pb-1" style='background: white'>
         <div class="table-responsive col-md-12">
             <table class="table table-hover table-sm table-striped tablesorter mb-0" cellspacing="0" cellpadding="0">

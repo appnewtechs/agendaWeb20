@@ -20,19 +20,17 @@
 
         <style>
             html, body {
-
                 padding-bottom: 0rem;
-                background-image: url("images/telafundo.png");
+                background-image: url("{{ asset('images/telafundo.png') }}");
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
 
                 background-size: cover;
                 background-repeat: no-repeat;
-                background-position: center;
+                background-position: bottom;
                 background-attachment: fixed;
             }
-
         </style>   
     </head>
 
