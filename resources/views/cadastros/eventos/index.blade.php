@@ -4,6 +4,10 @@
 <link  href="{{ asset('assets/fullcalendar/main.css') }}" rel="stylesheet">
 <link  href="{{ asset('css/customCalendar.css') }}" rel="stylesheet">
 
+
+<script src="{{ asset('assets/MultipleDatesPicker/jquery-ui.multidatespicker.js') }}"></script>
+<link  href="{{ asset('assets/MultipleDatesPicker/jquery-ui.multidatespicker.css') }}" rel="stylesheet">
+
 <div id="main" class="container-fluid pt-2 pb-3">
     <div class="row">
 
@@ -212,17 +216,52 @@
         });
 
         callendarRender();
+        $('#datepicker').multiDatesPicker({
+            
+            dateFormat: "dd/mm/yy",
+            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                       
+            nextText: 'Proximo',
+            prevText: 'Anterior',
+            altField: '#datas',
+
+            onSelect: function(selected,evnt) {
+
+                var intervalo = $("#radio1").is(":checked"); 
+                var multipla  = $("#radio2").is(":checked"); 
+                var arrDatas  = $("#datas").val().split(',');
+                var repetida  = false;
+
+                if( intervalo && arrDatas.length>2 ){
+                      return false; 
+                };
+            }
+        });
+
+
         $('#modalAgenda').on('shown.bs.modal', function(e) {
 
             if ($('#modalAgenda #id_evento').val()==''){
                 $('#modalAgenda #modal-title').text("Inserir Evento");
                 $('#modalAgenda #delete-btn').css('display','none');
-                $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@create') }}");
+                $('#modalAgenda #frm_agenda').attr('action', "eventos/create");
             };
+
+            $('#datepicker').multiDatesPicker('resetDates', 'picked');
             $('#modalAgenda').find("#title").focus();
         });
 
     });
+
+
+    function selecaoDatas($maxPicks){
+        $('#datepicker').multiDatesPicker({ maxPicks: $maxPicks});
+        $('#datepicker').multiDatesPicker('resetDates', 'picked');
+    };
 
 
     function callendarRender(){
@@ -309,7 +348,6 @@
 
                     // Modal update
                     resetForm('#frm_agenda');
-                    $('#datasSelecionadas tr').remove();
                     $('#modalAgenda #modal-title').text("Alterar Evento");
                     $('#modalAgenda #delete-btn').css('display','inline-block');
                     $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@update') }}");
@@ -339,30 +377,13 @@
 
                                     dataIni = response[0].start.substr(8,2)+'/'+response[0].start.substr(5,2)+'/'+response[0].start.substr(0,4);
                                     dataFim = response[0].end.substr(8,2)+'/'+response[0].end.substr(5,2)+'/'+response[0].end.substr(0,4);
-
-                                    newRow =  '<tr>';
-                                    newRow += '<td><input name="dataSel[]" id="dataSel" value="'+dataIni+'"  type="text" class="form-control inputrow" readonly></input></td>';
-                                    newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
-                                    newRow += '</tr>';
-                                    $('#datasSelecionadas tbody').append(newRow);    
-
-                                    newRow =  '<tr>';
-                                    newRow += '<td><input name="dataSel[]" id="dataSel" value="'+dataFim+'"  type="text" class="form-control inputrow" readonly></input></td>';
-                                    newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
-                                    newRow += '</tr>';
-                                    $('#datasSelecionadas tbody').append(newRow);    
+                                    $('#datepicker').multiDatesPicker({ addDates: [dataIni, dataFim] });
 
                                 } else {
                                 
                                     for(var i=0; i<response.length; i++){
-
-                                        newRow  =  '<tr>';
                                         dataIni = response[i].start.substr(8,2)+'/'+response[i].start.substr(5,2)+'/'+response[i].start.substr(0,4);
-                                        newRow += '<td><input name="dataSel[]" id="dataSel" value="'+dataIni+'" type="text" class="form-control inputrow" readonly></input></td>';
-                                        newRow += '<td><a class="fas fa-eraser" title="Deletar" href="#" onclick="excluirData(this.parentNode.parentNode.rowIndex);"></a></td>';
-                                        newRow += '</tr>';
-                                        $('#datasSelecionadas tbody').append(newRow);    
-
+                                        $('#datepicker').multiDatesPicker({ addDates: [dataIni] });
                                     }
                                 }
                             }
@@ -496,12 +517,11 @@
         if("{{Auth::user()->id_perfil}}"=='1'){
 
             resetForm('#modalAgenda #frm_agenda');
-            $('#datasSelecionadas tr').remove();
-
             $('#modalAgenda #modal-title').text("Inserir Evento");
             $('#modalAgenda #delete-btn').css('display','none');
             $('#modalAgenda #frm_agenda').attr('action', 'eventos/create');
 
+            selecaoDatas(2);
             $('#modalAgenda #id_evento').val('');
             $('#modalAgenda').modal('show');
 
@@ -509,11 +529,6 @@
             $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
             $('#infoone').modal('show');
         }
-    };
-
-
-    function excluirData(index){
-        document.getElementById("datasSelecionadas").deleteRow(index);
     };
 
 

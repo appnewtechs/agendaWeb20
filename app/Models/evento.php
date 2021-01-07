@@ -27,28 +27,31 @@ class evento extends Model
     public static $rules = [
         'title'   => 'required',
         'empresa' => 'required',
-        'dataSel' => 'required|array|min:1',
+        'datas'   => 'required',
         'id_usuario'    => 'required',
         'tipo_trabalho' => 'required',
     ];
 
     public static $translate = [
         'empresa' => 'Empresa',
-        'dataSel' => 'Data',
+        'datas'   => 'Datas',
         'title'   => 'Título/Descrição',
         'id_usuario'    => 'Usuário',
         'tipo_trabalho' => 'Tipo de Agenda',
     ];
 
 
-    public static function gerarAgendas(request $request){
+    public static function gerarAgendas(request $request)
+    {
 
+        $arrDatas = explode(',', trim($request->datas));
+        
         if($request->dataSelecao=='2'){ 
 
-            if (count($request->dataSel)>1){
+            if (count($arrDatas)>1){
 
-                $dataInicial = Carbon::parse(str_replace('/', '-', $request->dataSel[0]));
-                $dataFinal   = Carbon::parse(str_replace('/', '-', $request->dataSel[1]))->endOfDay();
+                $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
+                $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[1]))->endOfDay();
 
                 if ($dataInicial->isSaturday()) {
                     $dataInicial->addDay(2);
@@ -90,8 +93,8 @@ class evento extends Model
 
             } else {
 
-                $dataInicial = Carbon::parse(str_replace('/', '-', $request->dataSel[0]));
-                $dataFinal   = Carbon::parse(str_replace('/', '-', $request->dataSel[0]))->endOfDay();
+                $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
+                $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[0]))->endOfDay();
 
                 $idEvento = evento::getId();
                 evento::createEvent( $idEvento, $request->title, $request->empresa, $request->tipo_trabalho,
@@ -101,23 +104,23 @@ class evento extends Model
         } else {
 
             $idEvento = evento::getId();
-            if (count($request->dataSel)>1){
+            if (count($arrDatas)>1){
                 
-                for ($i = 0; $i < count($request->dataSel); $i++) { 
-                    $dataInicial = Carbon::parse( str_replace('/', '-', $request->dataSel[$i]) );
-                    $dataFinal   = Carbon::parse( str_replace('/', '-', $request->dataSel[$i]) );
+                for ($i = 0; $i < count($arrDatas); $i++) { 
+                    $dataInicial = Carbon::parse( str_replace('/', '-', $arrDatas[$i]) );
+                    $dataFinal   = Carbon::parse( str_replace('/', '-', $arrDatas[$i]) );
                     evento::createEvent( $idEvento, $request->title, $request->empresa, $request->tipo_trabalho,
                                          $dataInicial, $dataFinal, $request->status, $request->id_usuario, $request->dataSelecao );
                 };
 
             } else {
-                $dataInicial = Carbon::parse(str_replace('/', '-', $request->dataSel[0]));
-                $dataFinal   = Carbon::parse(str_replace('/', '-', $request->dataSel[0]))->endOfDay();
+                $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
+                $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[0]))->endOfDay();
                 evento::createEvent( $idEvento, $request->title, $request->empresa, $request->tipo_trabalho,
                                      $dataInicial, $dataFinal, $request->status, $request->id_usuario, $request->dataSelecao );
             }
         };
-
+        
     }
 
 

@@ -88,12 +88,9 @@ class eventosController extends Controller
     
     public function carregaDatas($idEvento)
     {
-
         $datas = DB::table('events')
                 ->where('id_evento', '=', $idEvento)
                 ->get();
-        log::Debug($datas);
-
         return response()->json($datas);
     }
 
