@@ -249,9 +249,9 @@
                 $('#modalAgenda #modal-title').text("Inserir Evento");
                 $('#modalAgenda #delete-btn').css('display','none');
                 $('#modalAgenda #frm_agenda').attr('action', "eventos/create");
+                $('#datepicker').multiDatesPicker('resetDates', 'picked');
             };
 
-            $('#datepicker').multiDatesPicker('resetDates', 'picked');
             $('#modalAgenda').find("#title").focus();
         });
 
@@ -348,6 +348,8 @@
 
                     // Modal update
                     resetForm('#frm_agenda');
+                    $('#datepicker').multiDatesPicker('resetDates', 'picked');
+
                     $('#modalAgenda #modal-title').text("Alterar Evento");
                     $('#modalAgenda #delete-btn').css('display','inline-block');
                     $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@update') }}");
@@ -373,6 +375,7 @@
                         success: function(response){
 
                             if(response.length > 0){
+
                                 if(response[0].tipo_data==2){
 
                                     dataIni = response[0].start.substr(8,2)+'/'+response[0].start.substr(5,2)+'/'+response[0].start.substr(0,4);
