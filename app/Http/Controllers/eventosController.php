@@ -44,6 +44,7 @@ class eventosController extends Controller
         } else {  
 
             try {
+                DB::table('events')->where('id_evento', '=', $request->id_evento)->delete();
                 evento::gerarAgendas($request);
             } catch (\Exception $e) {
                 session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
@@ -52,27 +53,6 @@ class eventosController extends Controller
         }
     }
   
-
-    public function update(Request $request) 
-    {
-
-        $validator = Validator::make( $request->all(), evento::$rules, [], evento::$translate);
-        if ($validator->fails()) {
-            return response()->json($validator->messages() );
-        } else {  
-
-            try {
-
-                DB::table('events')->where('id_evento', '=', $request->id_evento)->delete();
-                evento::gerarAgendas($request);
-
-            } catch (\Exception $e) {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            }
-            return redirect($request->header('referer'));
-        }
-    }
-
 
 
     public function delete(Request $request)

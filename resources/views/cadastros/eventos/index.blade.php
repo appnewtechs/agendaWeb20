@@ -248,7 +248,6 @@
             if ($('#modalAgenda #id_evento').val()==''){
                 $('#modalAgenda #modal-title').text("Inserir Evento");
                 $('#modalAgenda #delete-btn').css('display','none');
-                $('#modalAgenda #frm_agenda').attr('action', "eventos/create");
                 $('#datepicker').multiDatesPicker('resetDates', 'picked');
             };
 
@@ -352,7 +351,6 @@
 
                     $('#modalAgenda #modal-title').text("Alterar Evento");
                     $('#modalAgenda #delete-btn').css('display','inline-block');
-                    $('#modalAgenda #frm_agenda').attr('action', "{{ action('eventosController@update') }}");
 
                     $('#modalAgenda #id_evento').val( info.event.id );
                     $('#title').val( info.event.extendedProps.descricao );
@@ -380,7 +378,10 @@
 
                                     dataIni = response[0].start.substr(8,2)+'/'+response[0].start.substr(5,2)+'/'+response[0].start.substr(0,4);
                                     dataFim = response[0].end.substr(8,2)+'/'+response[0].end.substr(5,2)+'/'+response[0].end.substr(0,4);
+
+                                    $('#datepicker').datepicker('setDate', dataIni );
                                     $('#datepicker').multiDatesPicker({ addDates: [dataIni, dataFim] });
+                                    $('#datepicker').multiDatesPicker({ maxPicks: 2});
 
                                 } else {
                                 
@@ -522,7 +523,6 @@
             resetForm('#modalAgenda #frm_agenda');
             $('#modalAgenda #modal-title').text("Inserir Evento");
             $('#modalAgenda #delete-btn').css('display','none');
-            $('#modalAgenda #frm_agenda').attr('action', 'eventos/create');
 
             selecaoDatas(2);
             $('#modalAgenda #id_evento').val('');
@@ -538,13 +538,12 @@
     function gravaAgenda() {
 
         $.ajax({
-            url: $('#modalAgenda #frm_agenda').prop('action'),
+            url: "eventos/create",
             type: 'POST',
             dataType:'json',            
             data: $('#frm_agenda').serialize(),
             
             success: function(response){
-
                 if(response.code=='200'){   
                     $('#modalAgenda').modal('hide');
                     callendarRender();

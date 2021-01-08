@@ -81,7 +81,6 @@ Route::group(['prefix' => 'feriados'], function () {
 // Rotas de Cadastros - Agendas
 Route::group(['prefix' => 'eventos'], function () {
     Route::get('/'        , 'eventosController@index');
-    Route::post('update'  , 'eventosController@update');
     Route::post('create'  , 'eventosController@create');
     Route::delete('delete', 'eventosController@delete');
 
