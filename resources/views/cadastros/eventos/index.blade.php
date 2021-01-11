@@ -385,10 +385,14 @@
 
                                 } else {
                                 
+                                    dataIni = [];
                                     for(var i=0; i<response.length; i++){
-                                        dataIni = response[i].start.substr(8,2)+'/'+response[i].start.substr(5,2)+'/'+response[i].start.substr(0,4);
-                                        $('#datepicker').multiDatesPicker({ addDates: [dataIni] });
+                                        dataIni[i] = response[i].start.substr(8,2)+'/'+response[i].start.substr(5,2)+'/'+response[i].start.substr(0,4);
                                     }
+
+                                    $('#datepicker').datepicker('setDate', dataIni[0]);
+                                    $('#datepicker').multiDatesPicker({ addDates: dataIni });
+                                    $('#datepicker').multiDatesPicker({ maxPicks: 999});
                                 }
                             }
                         }
