@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card">
-                <div class="card-header">Newtech - Agenda</div>
+                <div class="card-header">Agenda</div>
 
                 <div class="card-body">
                     @if (session('status'))
