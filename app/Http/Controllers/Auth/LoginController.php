@@ -116,4 +116,11 @@ class LoginController extends Controller
         Auth::logout();
         return redirect('/');
     }
+
+
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect('/home');
+    }
+
 }

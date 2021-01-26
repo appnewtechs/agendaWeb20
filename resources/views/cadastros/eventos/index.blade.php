@@ -335,6 +335,9 @@
                                             }
                                     }).get(),
                 },
+                failure: function() {
+                    window.location.href = '/';
+                },
             },
 
             eventClick: function(info) {
@@ -395,7 +398,11 @@
                                     $('#datepicker').multiDatesPicker({ maxPicks: 999});
                                 }
                             }
-                        }
+                        },
+    
+                        error: function() {
+                            window.location.href = '/';
+                        },
                     });
                     
                     $('#modalAgenda').modal('show');
@@ -565,17 +572,22 @@
 
     function filtrarUsuarios() {
 
-        $texto = $('#usuarios').val();
+        $texto = $('#usuarios').val().toLowerCase();
 
-        $("div[name='divUsuarios[]']").each(function(){
+        if($texto.length>=3){
+            $("div[name='divUsuarios[]']").each(function(){
 
-            $(this).css("display", "block");
-            $nome = $(this)[0].innerText.trim();
-            if($nome.indexOf($texto)<0){
-                $(this).css("display", "none");
-            }
-
-        });
+                $(this).css("display", "block");
+                $nome = $(this)[0].innerText.trim().toLowerCase();
+                if($nome.indexOf($texto)<0){
+                    $(this).css("display", "none");
+                }
+            });
+        } else {
+            $("div[name='divUsuarios[]']").each(function(){
+                $(this).css("display", "block");
+            });
+        }
     }
 
 </script>
