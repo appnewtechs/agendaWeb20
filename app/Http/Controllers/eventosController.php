@@ -14,6 +14,7 @@ use Session;
 use Validator;
 
 use App\Models\evento;    
+use App\Models\calendar;    
 class eventosController extends Controller
 {
     /**
@@ -151,13 +152,21 @@ class eventosController extends Controller
         $dtAte = Carbon::parse($request->data_rel_fin);
 
         for($d = $dtDe; $d->lte($dtAte); $d->addDay()) {
-            $dates[]  = $d->format('Y-m-d');
+
+            if(!DB::table('calendar')->where('id_data', '=', $d->format('Y-m-d') )->first()){
+                $calendar = new calendar();
+                $calendar->id_data = $d->format('Y-m-d');            
+                $calendar->save();
+            };
+            $dates[] = $d->format('Y-m-d');
         }                    
 
 
-        $feriados = DB::table('feriados')
-                    ->whereBetween('data', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
-                    ->get();
+        $dates = DB::table('calendar')
+                ->select('calendar.id_data', 'feriados.descricao')
+                ->leftjoin('feriados', 'feriados.data',   '=', 'calendar.id_data')
+                ->whereBetween('id_data', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
+                ->get();
 
         $usuarios = DB::table('events')
                     ->select('events.id_usuario', 'usuario.nome', 'linha_produto.descricao AS atuacao')
@@ -208,7 +217,6 @@ class eventosController extends Controller
         
         return view("cadastros.eventos.relatorio")->with('dates', $dates)
                                                   ->with('events', $events)
-                                                  ->with('feriados', $feriados)
                                                   ->with('usuarios', $usuarios);
     }
 }

@@ -9,81 +9,62 @@
     </div>
 </nav>
 
-<div id="main" class="container-fluid pt-2 pb-5">
+<div id="main" class="container-fluid pt-2 pb-1">
     <div id="list" class="row border border-light rounded" style='background: white; width:100%;'>
-        <div class="table-responsive col-md-12">
-            <table class="table table-bordered mb-0" style=>
-                <thead class="thead-dark">
+        <table class="table table-bordered mb-0">
+            <thead class="thead-dark rouded">
 
-                    <th class="relEvento" style="border-color: white;">Recurso<br>Linha Atuação</th>
+                <th class="relEvento" style="border-color: white;">Recurso<br>Linha Atuação</th>
+                @foreach($dates as $date)
+
+
+                    <th style="padding: 5px; border-color: white;">
+                    @php ($weekend = Carbon\Carbon::parse($date->id_data) )
+                    @if ( $weekend->isWeekend() || $date->descricao) 
+                        {{ ($date->descricao) ? ('*** '.$date->descricao.' ***') : '' }}<br>
+                        {{Carbon\Carbon::parse($date->id_data)->isoFormat('dddd')}},<br>
+                        {{Carbon\Carbon::parse($date->id_data)->isoFormat('DD/MM/Y')}}<br>
+                    @else 
+                        {{Carbon\Carbon::parse($date->id_data)->isoFormat('dddd')}},
+                        <br>{{Carbon\Carbon::parse($date->id_data)->isoFormat('DD/MM/Y')}}
+                    @endif
+                    </th>
+                @endforeach
+            </thead>
+
+            <tbody>     
+                @foreach($usuarios as $usuario)
+                <tr>
+                    <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}
+                    <br> {{ $usuario->atuacao }}</td>
                     @foreach($dates as $date)
 
-                        @php ($descricao = '')
-                        @php ($hollyday = false)
-                        @foreach($feriados as $feriado)
-                            @if (Carbon\Carbon::parse($feriado->data)==Carbon\Carbon::parse($date)) 
-                                @php ($hollyday = true)
-                                @php ($descricao = '*** '.$feriado->descricao.' ***')
-                            @endif
-                        @endforeach
 
-
-                        @php ($weekend = Carbon\Carbon::parse($date) )
-                        @if ( $weekend->isWeekend() || $hollyday) 
-                            <th style="color: black; border-color: white; background-color: #d1eaf1;">
-                            {{ $descricao }}<br>
-                            {{Carbon\Carbon::parse($date)->isoFormat('dddd')}},<br>
-                            {{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}<br>
-                            </th>
+                        @php ($weekend  = Carbon\Carbon::parse($date->id_data) )
+                        @if ( $weekend->isWeekend() || $date->descricao ) 
+                            <td style="padding: 5px; border-color: white; background-color: #e4e4e7;">
                         @else 
-                            <th style="border-color: white;">{{Carbon\Carbon::parse($date)->isoFormat('dddd')}},
-                            <br>{{Carbon\Carbon::parse($date)->isoFormat('DD/MM/Y')}}
-                            </th>
+                            <td style="padding: 5px; border-color: white; background-color: #d1eaf1;">
                         @endif
-                    @endforeach
-                </thead>
 
-                <tbody>     
+                        @foreach($events as $evento)
+                            @if ($usuario->id_usuario==$evento->id_usuario)
 
-                    @foreach($usuarios as $usuario)
-                    <tr>
-                        <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}
-                        <br> {{ $usuario->atuacao }}</td>
-                        @foreach($dates as $date)
-
-                            @php ($hollyday = false )
-                            @foreach($feriados as $feriado)
-                                @if (Carbon\Carbon::parse($feriado->data)==Carbon\Carbon::parse($date)) 
-                                    @php ($hollyday = true )
+                                @if ( (Carbon\Carbon::parse($date->id_data)>=Carbon\Carbon::parse($evento->start)) && 
+                                        (Carbon\Carbon::parse($date->id_data)<=Carbon\Carbon::parse($evento->end)) )
+                                    <div class="relEvento border border-dark rounded" style="background-color: {{ $evento->backgroundColor }}">{{ $evento->title }}</div>
                                 @endif
-                            @endforeach
-
-
-                            @php ($weekend  = Carbon\Carbon::parse($date) )
-                            @if ( $weekend->isWeekend() || $hollyday ) 
-                                <td width="100" style="padding: 5px; border-color: white; background-color: #d1eaf1;">
-                            @else 
-                                <td width="100" style="padding: 5px;">
                             @endif
-
-                            @foreach($events as $evento)
-                                @if ($usuario->id_usuario==$evento->id_usuario)
-
-                                    @if ( (Carbon\Carbon::parse($date)>=Carbon\Carbon::parse($evento->start)) && 
-                                          (Carbon\Carbon::parse($date)<=Carbon\Carbon::parse($evento->end)) )
-                                        <div class="relEvento border border-dark rounded" style="background-color: {{ $evento->backgroundColor }}">{{ $evento->title }}</div>
-                                    @endif
-                                @endif
-                            @endforeach
-                            </td>
-
                         @endforeach
-                    </tr>
-                    @endforeach
+                        </td>
 
-                </tbody>
-            </table>
-        </div>
+                    @endforeach
+                </tr>
+                @endforeach
+
+
+            </tbody>
+        </table>
     </div> 
 </div> 
 @endsection
