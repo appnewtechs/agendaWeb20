@@ -141,16 +141,13 @@ class eventosController extends Controller
     public function relatorio(Request $request)
     {
 
-        $search   = $request->search;
         $status   = $request->filterStatus;
         $empresa  = $request->checkEmpresas ?? '';
         $usuario  = $request->checkUsuarios ?? '';
         $trabalho = $request->checkTrabalhos ?? '';
 
-        $dates = [];
         $dtDe  = Carbon::parse($request->data_rel_ini);
         $dtAte = Carbon::parse($request->data_rel_fin);
-
         for($d = $dtDe; $d->lte($dtAte); $d->addDay()) {
 
             if(!DB::table('calendar')->where('id_data', '=', $d->format('Y-m-d') )->first()){
@@ -158,7 +155,6 @@ class eventosController extends Controller
                 $calendar->id_data = $d->format('Y-m-d');            
                 $calendar->save();
             };
-            $dates[] = $d->format('Y-m-d');
         }                    
 
 
@@ -168,55 +164,22 @@ class eventosController extends Controller
                 ->whereBetween('id_data', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
                 ->get();
 
-        $usuarios = DB::table('events')
-                    ->select('events.id_usuario', 'usuario.nome', 'linha_produto.descricao AS atuacao')
-                    ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
-                    ->join('linha_produto', 'linha_produto.id_linha_produto', '=', 'usuario.id_linha_produto')
 
-                    ->whereBetween('start', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
-                    ->where(function ($query) use ($search) {
-                        $query->where([
-                             ['usuario.nome', 'like' , '%' . $search . '%'],
-                         ])->orWhere([
-                             ['events.title', 'like', '%' . $search . '%'],
-                         ]);
-                    })
+
+
+        $events =  DB::table('relatorioAgendas')
+                    ->whereBetween('DATACAL', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
                     ->where(function ($query) use ($status)  { if ($status!='2'){ $query->where('events.status', '=' , $status); } })
-                    ->where(function ($query) use ($empresa) { if ($empresa){  $query->whereIn('events.empresa', $empresa ); } })
-                    ->where(function ($query) use ($usuario) { if ($usuario){  $query->whereIn('events.id_usuario', $usuario ); }  })
+                    ->where(function ($query) use ($empresa) { if ($empresa){  $query->whereIn('events.empresa', $empresa);  } })
+                    ->where(function ($query) use ($usuario) { if ($usuario){  $query->whereIn('events.id_usuario', $usuario ); } })
                     ->where(function ($query) use ($trabalho){ if ($trabalho){ $query->whereIn('events.tipo_trabalho', $trabalho ); } })
-                    ->where('usuario.status','=','0')
 
-                    ->groupBy('events.id_usuario','nome', 'atuacao')
-                    ->orderBy('atuacao')
+                    ->orderBy('LINHA')
+                    ->orderBy('NOME')
+                    ->orderBy('DATACAL')
+                    
                     ->get();
-
-
-        $events = DB::table('events')
-                    ->select('events.*','nome', DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor") )
-                    ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
-                    ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
-                    ->whereBetween('start', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
-                    ->where(function ($query) use ($search) {
-                        $query->where([
-                             ['usuario.nome', 'like' , '%' . $search . '%'],
-                         ])->orWhere([
-                             ['events.title', 'like', '%' . $search . '%'],
-                         ]);
-                    })
-                    ->where(function ($query) use ($status)  { if ($status!='2'){ $query->where('events.status', '=' , $status); } })
-                    ->where(function ($query) use ($empresa) { if ($empresa){ $query->whereIn('events.empresa', $empresa);  } })
-                    ->where(function ($query) use ($usuario) { if ($usuario){ $query->whereIn('events.id_usuario', $usuario ); } })
-                    ->where(function ($query) use ($trabalho){ if ($trabalho){ $query->whereIn('events.tipo_trabalho', $trabalho ); } })
-                    ->where('usuario.status','=','0')
-
-                    ->orderBy('usuario.nome')
-                    ->get();
-
-
-        
-        return view("cadastros.eventos.relatorio")->with('dates', $dates)
-                                                  ->with('events', $events)
-                                                  ->with('usuarios', $usuarios);
+                
+        return view("cadastros.eventos.relatorio")->with('dates', $dates)->with('events', $events);
     }
 }

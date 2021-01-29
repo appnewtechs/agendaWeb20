@@ -72,7 +72,7 @@ class evento extends Model
 
                 for($i=1; $i<=$totalDias; $i++) {
 
-                    // log::Debug('Data Controle: '.$dataControle);
+                   // log::Debug('Data Controle: '.$dataControle);
                     $dataControle->addDay()->endOfDay();
                     $feriado = DB::table('feriados')->where('data', '=', substr($dataControle,0,10))->first();
 
@@ -83,19 +83,33 @@ class evento extends Model
                         
                         $idEvento = evento::getId();
                         evento::createEvent( $idEvento, $dataInicial, $dataFimEvento, $request);
-                        
                         if ($dataControle==$dataFinal){ break; }
-                        
+
+
                         $dataInicial = Carbon::parse($dataFimEvento);
-                        $dataInicial->addDay(  $feriado?2:1 )->startOfDay();
-                        $dataControle->addDay( $feriado?2:1 );
+                        $dataInicial->addDay()->startOfDay();
+                        $dataControle->addDay()->endOfDay();
 
-                        $dataInicial->addDay(  $dataInicial->isSaturday()?2:0 )->startOfDay();
-                        $dataControle->addDay( $dataControle->isSaturday()?1:-1 );
 
-                        if(DB::table('feriados')->where('data', '=', substr($dataInicial,0,10))->first()){
-                            $dataInicial->addDay()->startOfDay();
-                            $dataControle->addDay();
+                        if ($dataInicial->isSaturday() && $feriado){
+                            $dataInicial->addDay(2)->startOfDay();
+                            $dataControle->addDay()->endOfDay();
+                        } else {
+
+                            if($feriado){
+                                $dataInicial->addDay()->startOfDay();
+                                $dataControle->addDay()->endOfDay();
+                            };
+
+                            if($dataInicial->isSaturday()){
+                                $dataInicial->addDay(2)->startOfDay();
+                                $dataControle->addDay()->endOfDay();
+                            };
+                            
+                            if(DB::table('feriados')->where('data', '=', substr($dataInicial,0,10))->first()){
+                                $dataInicial->addDay()->startOfDay();
+                                $dataControle->addDay()->endOfDay();
+                            };
                         };
                     }; 
 

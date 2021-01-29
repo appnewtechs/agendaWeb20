@@ -33,33 +33,51 @@
             </thead>
 
             <tbody>     
-                @foreach($usuarios as $usuario)
-                <tr>
-                    <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $usuario->nome }}
-                    <br> {{ $usuario->atuacao }}</td>
-                    @foreach($dates as $date)
 
 
-                        @php ($weekend  = Carbon\Carbon::parse($date->id_data) )
-                        @if ( $weekend->isWeekend() || $date->descricao ) 
-                            <td style="padding: 5px; border-color: white; background-color: #e4e4e7;">
-                        @else 
-                            <td style="padding: 5px; border-color: white; background-color: #d1eaf1;">
-                        @endif
+                @php ($usuario = '')
+                @foreach($events as $evento)
 
-                        @foreach($events as $evento)
-                            @if ($usuario->id_usuario==$evento->id_usuario)
+                    @if($usuario<>$evento->USUARIO)
+                        <tr>
+                        <td style="color: black; background-color: #e4e4e7; border-color: white;">{{ $evento->NOME }}
+                        <br> {{ $evento->LINHA }}</td>
+                       
 
-                                @if ( (Carbon\Carbon::parse($date->id_data)>=Carbon\Carbon::parse($evento->start)) && 
-                                        (Carbon\Carbon::parse($date->id_data)<=Carbon\Carbon::parse($evento->end)) )
-                                    <div class="relEvento border border-dark rounded" style="background-color: {{ $evento->backgroundColor }}">{{ $evento->title }}</div>
+                        @php ($dataLoop = '')
+                        @php ($filtered = $events->where('USUARIO', $evento->USUARIO))
+
+
+                        @foreach($filtered as $user)
+    
+                            @if($dataLoop<>$user->DATACAL)
+                                @php ($weekend = Carbon\Carbon::parse($user->DATACAL) )
+                                @if ( $weekend->isWeekend() || $user->FERIADO ) 
+                                <td style="padding: 5px; border-color: white; background-color: #e4e4e7;">
+                                @else 
+                                <td style="padding: 5px; border-color: white; background-color: #d1eaf1;">
                                 @endif
-                            @endif
-                        @endforeach
-                        </td>
 
-                    @endforeach
-                </tr>
+
+                                @php ($dataCal = $filtered->where('DATACAL', $user->DATACAL))
+                                @foreach($dataCal as $dataEvento)
+                            
+                                    @if($user->DESCRICAO)
+                                    <div class="relEvento border border-dark rounded" style="background-color: {{ $user->COR }}">{{ $dataEvento->DESCRICAO }}</div>
+                                    @endif
+                            
+                                @endforeach
+                                </td>
+                            @endif
+                            @php ($dataLoop = $user->DATACAL)
+
+
+                        @endforeach
+                        </tr>
+                    @endif
+ 
+
+                    @php ($usuario = $evento->USUARIO)
                 @endforeach
 
 

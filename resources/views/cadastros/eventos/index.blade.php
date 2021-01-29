@@ -118,7 +118,7 @@
                         </nav>
 
                         <div class="pesqUsuario pl-1 pr-1 pt-1 pb-1" style="display:none">
-                            <input id="usuarios" class="form-control mb-2" name="search" type="text" placeholder="Pesquisar..." onkeyup="filtrarUsuarios();" aria-label="Search"/>
+                            <input id="usuarios" class="form-control mb-2" name="usuarios" type="text" placeholder="Pesquisar..." onkeyup="filtrarUsuarios();" aria-label="Search"/>
                             @foreach ($usuariosCombo as $id_usuario=>$nome)
                                 <div class="checkbox" id='divUsuarios' name='divUsuarios[]'>
                                 <input id="checkUsuarios" name="checkUsuarios[]" value="{{ $id_usuario }}" type="checkbox" onClick="callendarRender();">  {{ $nome }}</input>
@@ -398,6 +398,8 @@
                                     $('#datepicker').multiDatesPicker({ maxPicks: 999});
                                 }
                             }
+                            $('#modalAgenda').modal('show');
+
                         },
     
                         error: function() {
@@ -405,7 +407,6 @@
                         },
                     });
                     
-                    $('#modalAgenda').modal('show');
 
                 } else {
                     $('#infoone').find("#description").html("Opção indisponível para o seu perfil de usuário!");
@@ -458,8 +459,9 @@
 
                         $(info.el).css("background", "rgb(215, 215, 215, 1)" );
                         $element = info.el.getElementsByClassName('fc-daygrid-day-number');
-
-                        $($element)[0].innerText = feriados[i].descricao+' - '+dia.toString();
+                        
+                        $($element)[0].innerText = '';
+                        $($element)[0].innerText = feriados[i].descricao+' - '+dia;
                     }
                 }
             },
