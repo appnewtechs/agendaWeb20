@@ -567,7 +567,10 @@
                     });
                 }
             },
-        
+
+            error: function() {
+                window.location.href = '/';
+            },
         });
     }
 

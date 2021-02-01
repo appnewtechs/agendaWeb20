@@ -62,8 +62,8 @@
                                 @php ($dataCal = $filtered->where('DATACAL', $user->DATACAL))
                                 @foreach($dataCal as $dataEvento)
                             
-                                    @if($user->DESCRICAO)
-                                    <div class="relEvento border border-dark rounded" style="background-color: {{ $user->COR }}">{{ $dataEvento->DESCRICAO }}</div>
+                                    @if($dataEvento->DESCRICAO)
+                                    <div class="relEvento border border-dark rounded" style="background-color: {{ $dataEvento->COR }}">{{ $dataEvento->DESCRICAO }}</div>
                                     @endif
                             
                                 @endforeach
