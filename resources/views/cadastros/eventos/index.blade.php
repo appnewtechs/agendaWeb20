@@ -120,7 +120,7 @@
                         <div class="pesqUsuario pl-1 pr-1 pt-1 pb-1" style="display:none">
                             <input id="usuarios" class="form-control mb-2" name="usuarios" type="text" placeholder="Pesquisar..." onkeyup="filtrarUsuarios();" aria-label="Search"/>
                             @foreach ($usuariosCombo as $id_usuario=>$nome)
-                                <div class="checkbox" id='divUsuarios' name='divUsuarios[]'>
+                                <div class="checkbox" id='divUsuarios' name='divUsuarios[]' value="{{ $id_usuario }}">
                                 <input id="checkUsuarios" name="checkUsuarios[]" value="{{ $id_usuario }}" type="checkbox" onClick="callendarRender();">  {{ $nome }}</input>
                                 </div>
                             @endforeach
@@ -578,21 +578,29 @@
     function filtrarUsuarios() {
 
         $texto = $('#usuarios').val().toLowerCase();
+        $("div[name='divUsuarios[]']").each(function(){
 
-        if($texto.length>=3){
-            $("div[name='divUsuarios[]']").each(function(){
+            var objDiv = $(this).css("display", "block");
+            if($texto.length>=3){
 
-                $(this).css("display", "block");
-                $nome = $(this)[0].innerText.trim().toLowerCase();
+
+                $nome = objDiv[0].innerText.trim().toLowerCase();
                 if($nome.indexOf($texto)<0){
-                    $(this).css("display", "none");
-                }
-            });
-        } else {
-            $("div[name='divUsuarios[]']").each(function(){
-                $(this).css("display", "block");
-            });
-        }
+                    objDiv.css("display", "none");
+                };
+                
+                
+                var codUsuario = objDiv.attr('value');
+                $("input[name='checkUsuarios[]']").map( function(){ 
+                    
+                    if( $(this).attr('value')==codUsuario ) {
+                        if ($(this).is(':checked')){
+                            objDiv.css("display", "block");
+                        };
+                    };
+                });
+            };
+        });
     }
 
 </script>
