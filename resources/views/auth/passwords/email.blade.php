@@ -1,4 +1,18 @@
-@include('layouts.padraoLogin')
+@extends('layouts.padraoLogin')
+
+
+@section('header')
+<nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark" style="min-height:37px;">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto pl-4">
+            <li><span class="linhaMestra" style='color: white;'>Bem-vinda(o) à {{ env('APP_NAME')}}</span></li>                
+        </ul>
+    </div>
+</nav>
+@endsection
+
+
+@section('content')
 <div class="container-fluid" style="margin-top: 20vh;">
 
     <div class="row justify-content-center">
@@ -8,7 +22,7 @@
                 <form method="POST" action="{{ route('password.email') }}">
                 @csrf
 
-                <div class="card-header">Enviar Nova Senha</div>
+                    <div class="card-header">Recadastramento de Senha</div>
                     <div class="card-body pb-4">
 
                         <div class="form-row col-md-12 pl-3 pr-3">
@@ -17,8 +31,12 @@
                             </div>
 
                             <div class="col-md-12 pt-2">
-                            <input type="hidden" name="login" id="login" value="{{ $usuario->login }}">
-                            {!! Form::text("email", $usuario->email, ["class"=>"form-control pt", "readonly"]) !!}
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -33,3 +51,4 @@
         </div>
     </div>
 </div>
+@endsection

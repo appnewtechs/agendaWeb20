@@ -31,8 +31,8 @@
                             {!! Form::text("login", null, ["class"=>"form-control", "autofocus", "onkeydown"=>"setFocus(event,'#password');" ]) !!}
                             
                             @if ($errors->has('login'))
-                                <span colspan='12' style="color: red;">
-                                    {{ $errors->first('login') }}
+                                <span colspan='12' style="color: red; padding-top: 0.25rem;">
+                                {{ $errors->first('login') }}
                                 </span>
                             @endif
                             </div>
@@ -43,8 +43,8 @@
                             {!! Form::password("password", ["class"=>"form-control", "onkeydown"=>"javascript:if(event.keyCode==13){ form.submit(); };" ]) !!}
 
                             @if ($errors->has('password'))
-                                <span colspan='12' style="color: red;">
-                                    {{ $errors->first('password') }}
+                                <span colspan='12' style="color: red; padding-top: 0.25rem;">
+                                {{ $errors->first('password') }}
                                 </span>
                             @endif
                             </div>
@@ -53,11 +53,9 @@
                     </div>
 
                     <div class="card-footer">
-                        <div class="col-md-12 pl-5 pr-5">
+                        <div class="col-md-12 pl-5 pr-0">
                         <button type="submit" class="btn btn-sm btn-secondary" id="login-btn">Login</button>
-                        {{--
-                        <a class="btn btn-link" href="{{ route('password.request') }}">{{ __('Esqueceu sua Senha?') }}</a>
-                        --}}
+                        <a class="btn btn-link" style="text-align: right;" href="{{ route('password.request') }}">{{ __('Esqueceu sua Senha?') }}</a>
                         </div>
                     </div>
 

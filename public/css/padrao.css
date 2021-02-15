@@ -452,3 +452,9 @@ footer {
     line-height: 15px;
     color: whitesmoke;
 }
+
+
+.invalid-feedback {
+    font-size: 100% !important;
+}
+  

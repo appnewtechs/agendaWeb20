@@ -62,7 +62,7 @@ class LoginController extends Controller
         ]);
     }
 
-
+/*
     protected function login(Request $request)
     {
 
@@ -110,7 +110,7 @@ class LoginController extends Controller
             }
         }
     }
-
+*/
     public function logout(Request $request) 
     {
         Auth::logout();
