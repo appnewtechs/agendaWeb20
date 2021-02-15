@@ -89,19 +89,7 @@ class eventosController extends Controller
             $empresa  = $request->filterEmpresa;
             $trabalho = $request->filterTrabalho;
 
-
-            $events = DB::table('events')
-                        ->select(
-                            DB::raw("CONCAT(usuario.nome,' - ',events.title) AS title"),
-                            DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
-                            DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
-                            'id_evento AS id','empresa','events.status AS status','tipo_trabalho', 'start', 'end',  
-                            'tipo_data', 'events.title AS descricao', 'start AS datainicial', 'usuario.id_usuario AS usuario',
-                            'trabalho.descricao AS descTrabalho'
-                        )
-                        ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
-                        ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
-                        ->where('usuario.status','=','0')
+            $events = DB::table('consultaagendas')
                         ->whereBetween('start', [ $request->start, $request->end ])
                         ->where(function ($query) use ($search) {
                            $query->where([
@@ -110,12 +98,12 @@ class eventosController extends Controller
                                 ['title', 'like', '%' . $search . '%'],
                             ]);
                         })
-                        ->where(function ($query) use ($status)  { if ($status!='2'){ $query->where('events.status', '=' , $status);  } })
-                        ->where(function ($query) use ($usuario) { if ($usuario) { $query->whereIn('events.id_usuario' , explode(',', $usuario) ); } })
-                        ->where(function ($query) use ($empresa) { if ($empresa) { $query->whereIn('events.empresa' , explode(',', $empresa) ); } })
-                        ->where(function ($query) use ($trabalho) {if ($trabalho){ $query->whereIn('events.tipo_trabalho' , explode(',', $trabalho) ); } })
+                        ->where(function ($query) use ($status)  { if ($status!='2'){ $query->where('status', '=' , $status);  } })
+                        ->where(function ($query) use ($usuario) { if ($usuario) { $query->whereIn('usuario' , explode(',', $usuario) ); } })
+                        ->where(function ($query) use ($empresa) { if ($empresa) { $query->whereIn('empresa' , explode(',', $empresa) ); } })
+                        ->where(function ($query) use ($trabalho) {if ($trabalho){ $query->whereIn('tipo_trabalho' , explode(',', $trabalho) ); } })
                         ->get();
-                        return response()->json($events);
+            return response()->json($events);
 
         } else {
 

@@ -416,12 +416,6 @@
 
             eventDidMount: function(info) {
 
-                if(info.event.extendedProps.status==0){
-                    $(info.el).css("background", "red" );
-                    $element = info.el.getElementsByClassName('fc-event-title');
-                    $($element).html('*** '+info.event.title);
-                };
-                
                 var dia = Number(info.event.startStr.substr(8,2));
                 var mes = Number(info.event.startStr.substr(5,2));
                 var ano = Number(info.event.startStr.substr(0,4));
