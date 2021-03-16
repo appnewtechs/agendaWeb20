@@ -556,7 +556,8 @@
                     callendarRender();
                 } else {
                     $.each(response.erros, function (index) {
-                        $('#erros').html(response.erros[index]);
+                        $('#modalAgenda #erros').css("color", 'red');
+                        $('#modalAgenda #erros').html(response.erros[index]);
                         return false;
                     });
                 }

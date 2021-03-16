@@ -15,9 +15,10 @@
                 <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
                     <div class="form-row pl-3 pr-3">
 
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                         {!! Form::label("nome", "Nome", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("nome",  old('nome') ?? Auth::user()->nome, ["class"=>"form-control", "maxLength=200", "onkeydown"=>"setFocus(event,'#email');"]) !!}
+                        {!! Form::text("nome",  old('nome') ?? Auth::user()->nome, ["class"=>"form-control", 
+                            "maxLength=200", "onkeydown"=>"setFocus(event,'#telefone');"]) !!}
                         @if ($errors->has('nome'))
                             <span colspan='12' style="color: red;">
                                 {{ $errors->first('nome') }}
@@ -25,15 +26,22 @@
                         @endif
                         </div>
 
+
+                        <div class="col-md-4">
+                        {!! Form::label("login", "Login", ["class"=>"col-form-label pl-0"]) !!}
+                        {!! Form::text("login",  Auth::user()->login, ["class"=>"form-control", "readonly"]) !!}
+                        </div>
+
                         <div class="col-md-12">
                         {!! Form::label("email", "E-mail", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("email",  old('email') ?? Auth::user()->email, ["class"=>"form-control", "readonly", "onkeydown"=>"setFocus(event,'#telefone');"]) !!}
+                        {!! Form::text("email",  old('email') ?? Auth::user()->email, ["class"=>"form-control", "readonly"]) !!}
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                         {!! Form::label("telefone", "Telefone", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("telefone", old('telefone') ?? Auth::user()->telefone, ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#login');" ]) !!}
+                        {!! Form::text("telefone", old('telefone') ?? Auth::user()->telefone, ["class"=>"form-control", 
+                            "tabIndex"=>'-1', "onkeydown"=>"setFocus(event,'#notificacao_agenda');" ]) !!}
                         @if ($errors->has('telefone'))
                             <span colspan='12' style="color: red;">
                                 {{ $errors->first('telefone') }}
@@ -41,9 +49,10 @@
                         @endif
                         </div>
 
-                        <div class="col-md-6">
-                        {!! Form::label("login", "Login", ["class"=>"col-form-label pl-0"]) !!}
-                        {!! Form::text("login",  Auth::user()->login, ["class"=>"form-control", "readonly", "onkeydown"=>"setFocus(event,'#senha');" ]) !!}
+                        <div class="col-md-5">
+                        {!! Form::label("notificacao_agenda", "Notifica Agenda", ["class"=>"col-form-label pl-0"]) !!}
+                        {!! Form::select("notificacao_agenda", ['S'=>'Sim','N'=>'Não'], old('notificacao_agenda') ?? Auth::user()->notificacao_agenda, 
+                            ["class"=>"form-control", "onkeydown"=>"setFocus(event,'#senha');" ]) !!}
                         </div>
 
                         <div class="col-md-6">

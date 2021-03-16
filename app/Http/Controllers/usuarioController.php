@@ -53,151 +53,144 @@ class usuarioController extends Controller
 
 
         $search = $request->get('search');
-        $field  = $request->get('field')  != '' ? $request->get('field') : 'nome';
-        $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
-        $status = $request->get('status') != '' ? $request->get('status'): '0';
+        $field  = $request->get('field')  ?? 'nome';
+        $sort   = $request->get('sort')   ?? 'asc';
+        $status = $request->get('status') ?? '0';
         
         $usuarios  = DB::table('usuario')
-                   ->select('usuario.*', 'empresa.razao_social', 'linha_produto.descricao')
-                   ->join('empresa', 'usuario.id_empresa','=', 'empresa.id_empresa')
-                   ->join('linha_produto', 'usuario.id_linha_produto','=', 'linha_produto.id_linha_produto')
-                   ->where(function ($query) use ($search) {
-                    $query->where([
-                            ['nome', 'like' , '%' . $search . '%'],
-                        ])->orWhere([
-                            ['usuario.email', 'like', '%' . $search . '%'],
-                        ])->orWhere([
-                            ['linha_produto.descricao', 'like', '%' . $search . '%'],
-                        ]);
-                    })->where(function ($query) use ($status) {
-                        if ($status!='2'){
-                            $query->where('usuario.status', '=' , $status);
-                        }
+                    ->select('usuario.*', 'empresa.razao_social', 'linha_produto.descricao')
+                    ->join('empresa', 'usuario.id_empresa','=', 'empresa.id_empresa')
+                    ->join('linha_produto', 'usuario.id_linha_produto','=', 'linha_produto.id_linha_produto')
+                    ->where(function ($query) use ($search) {
+                        $query->where('nome', 'like' , '%' . $search . '%')
+                            ->orWhere('usuario.email', 'like', '%' . $search . '%')
+                            ->orWhere('linha_produto.descricao', 'like', '%' . $search . '%');
                     })
-                   ->orderBy($field, $sort)
-                   ->get();
+                    ->where(function ($query) use ($status) { if ($status!='2'){ $query->where('usuario.status', '=' , $status); } })
+                    ->orderBy($field, $sort)
+                    ->get();
         
 
-        $empresas         = DB::table('empresa')->orderBy('razao_social','asc')->get();
-        $perfisCombo      = DB::table('perfil')->orderBy('id_perfil','asc')->pluck('nome','id_perfil');
+        $empresas     = DB::table('empresa')->orderBy('razao_social','asc')->get();
+        $perfisCombo  = DB::table('perfil')->orderBy('id_perfil','asc')->pluck('nome','id_perfil');
 
         return view("cadastros.usuario.index")->with('usuarios'   , $usuarios)
                                               ->with('empresas'   , $empresas)
                                               ->with('perfisCombo', $perfisCombo);
     }
 
-
-    public function create(Request $request)
+    public function store(Request $request)
     {
 
-        session::put('id_modal','insert');
-        $validator = Validator::make( $request->all(), usuario::$incRules, [], usuario::$incTranslate);
+        if($request->id_usuario){                
+        $validator = Validator::make( $request->all(), [
+                    'login' => 'required',
+                    'email' => 'required',
+                    'nome'  => 'required',
+                    'telefone'  => 'required',
+                    'id_perfil' => 'required',
+                    'id_empresa'=> 'required',
+                    'id_linha_produto' => 'required',
+                    ], [], usuario::$translate);
+        } else {
+        $validator = Validator::make( $request->all(), [
+                    'login' => 'required|unique:usuario,login',
+                    'email' => 'required|email|unique:usuario,email',
+                    'nome'  => 'required',
+                    'telefone'  => 'required',
+                    'id_perfil' => 'required',
+                    'id_empresa'=> 'required',
+                    'id_linha_produto' => 'required',
+                    ], [], usuario::$translate);
+        }
+
+
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        return response()->json(['code'=>'401', 'erros'=>$validator->messages()]);
         } else {  
 
             try {
 
-                $userID  = usuario::getId();
-                $usuario = new usuario();
-                $usuario->id_usuario = $userID; 
-                $usuario->nome   = $request->i_nome;
-                $usuario->email  = $request->i_email;
-                $usuario->login  = $request->i_login;
-                $usuario->senha  = Hash::make("123456");
-                $usuario->status = $request->i_status;
-                $usuario->telefone  = $request->i_telefone;
-                $usuario->id_empresa= $request->i_id_empresa;
-                $usuario->id_perfil = $request->i_id_perfil;
-                $usuario->id_linha_produto = $request->i_id_linha_produto;
-                $usuario->especialidade    = $request->i_especialidade;
-                $usuario->data_nascimento  = $request->i_data_nascimento;
-                $usuario->imagem = "";
-                $usuario->save();
+                if($request->id_usuario){                
 
-                for ($i = 0; $i < count($request->i_arr_empresa); $i++) { 
-                    if($request->i_arr_email[$i]){
-                        $empresa = new usuarioEmpresa();
-                        $empresa->id_usuario = $userID; 
-                        $empresa->id_empresa = $request->i_arr_empresa[$i];
-                        $empresa->email      = $request->i_arr_email[$i];
-                        $empresa->save();
-                    }
+                    $idUsuario = $request->id_usuario;
+                    DB::table('usuario')
+                    ->where('id_usuario', '=', $idUsuario)
+                    ->update([
+                        'nome'      => $request->nome,
+                        'email'     => $request->email,
+                        'login'     => $request->login,
+                        'status'    => $request->status,
+                        'telefone'  => $request->telefone,
+                        'id_empresa'=> $request->id_empresa,
+                        'id_perfil' => $request->id_perfil,
+                        'id_linha_produto'  => $request->id_linha_produto,
+                        'especialidade'     => $request->especialidade,
+                        'data_nascimento'   => $request->data_nascimento,
+                        'notificacao_agenda'=> $request->notificacao_agenda, 
+                    ]);
+
+                } else {
+
+                    $idUsuario = usuario::getId();
+                    $usuario   = new usuario();
+                    $usuario->id_usuario = $idUsuario; 
+                    $usuario->nome   = $request->nome;
+                    $usuario->email  = $request->email;
+                    $usuario->login  = $request->login;
+                    $usuario->status = $request->status;
+                    $usuario->senha  = Hash::make("123456");
+                    $usuario->telefone   = $request->telefone;
+                    $usuario->id_empresa = $request->id_empresa;
+                    $usuario->id_perfil  = $request->id_perfil;
+                    $usuario->id_linha_produto = $request->id_linha_produto;
+                    $usuario->especialidade    = $request->especialidade;
+                    $usuario->data_nascimento  = $request->data_nascimento;
+                    $usuario->notificacao_agenda = $request->notificacao_agenda; 
+                    $usuario->imagem = "";
+                    $usuario->save();
                 }
 
-            } catch (\Exception $e) {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            }
-
-            return redirect($request->header('referer'));
-        }
-    }
-
-    
-
-    public function update(Request $request)
-    {
-    
-        session::put('id_modal','update');
-        $validator = Validator::make( $request->all(), usuario::$updRules, [], usuario::$updTranslate);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->with('errors', $validator->messages());
-        } else {  
-
-            try {
-                DB::table('usuario')
-                ->where('id_usuario', '=', $request->u_id_usuario)
-                ->update([
-                    'nome'      => $request->u_nome,
-                    'email'     => $request->u_email,
-                    'login'     => $request->u_login,
-                    'status'    => $request->u_status,
-                    'telefone'  => $request->u_telefone,
-                    'id_empresa'=> $request->u_id_empresa,
-                    'id_perfil' => $request->u_id_perfil,
-                    'id_linha_produto' => $request->u_id_linha_produto,
-                    'especialidade'    => $request->u_especialidade,
-                    'data_nascimento'  => $request->u_data_nascimento,
-                ]);
-
-
-                for ($i = 0; $i < count($request->u_arr_empresa); $i++) { 
-                    if($request->u_arr_empresa[$i]){
+                for ($i = 0; $i < count($request->arr_empresa); $i++) { 
+                    if($request->arr_empresa[$i]){
 
                         $mail = DB::table('usuario_empresa')->where([
-                                ['id_usuario', '=', $request->u_id_usuario],
-                                ['id_empresa', '=', $request->u_arr_empresa[$i]],
+                                ['id_usuario', '=', $idUsuario],
+                                ['id_empresa', '=', $request->arr_empresa[$i]],
                                 ])->first();
 
                         if (empty($mail)){
+
                             $empresa = new usuarioEmpresa();
-                            $empresa->id_usuario = $request->u_id_usuario;
-                            $empresa->id_empresa = $request->u_arr_empresa[$i];
-                            $empresa->email      = $request->u_arr_email[$i];
+                            $empresa->id_usuario = $idUsuario;
+                            $empresa->id_empresa = $request->arr_empresa[$i];
+                            $empresa->email      = $request->arr_email[$i];
+                            $empresa->status     = $request->arr_status[$i];
                             $empresa->save();
+                        
                         } else {
 
                             DB::table('usuario_empresa')->where([
-                                ['id_usuario', '=', $request->u_id_usuario],
-                                ['id_empresa', '=', $request->u_arr_empresa[$i]],
+                                ['id_usuario', '=', $idUsuario],
+                                ['id_empresa', '=', $request->arr_empresa[$i]],
                             ])->update([
-                                'email' => $request->u_arr_email[$i],
+                                'email'  => $request->arr_email[$i],
+                                'status' => $request->arr_status[$i],
                             ]);
                         }
                     }
                 }
 
-             } catch (\Exception $e) {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            }
-
-            return redirect($request->header('referer'));
+                return response()->json(['code'=>'200']);
+                
+            } catch (\Exception $e) {
+                log::Debug('ERRO: '.$e->getMessage());
+                return response()->json(['code'=>'401', 'erros'=>array(Config::get('app.messageError'))] );
+            }   
         }
     }
 
-
-
+    
     public function delete(Request $request)
     {
         try {
@@ -215,13 +208,11 @@ class usuarioController extends Controller
             }
         }
     }    
-    
-
 
     public function empresas($usuario){
 
         return  DB::table('empresa')
-                ->select('empresa.id_empresa','empresa.razao_social','usuario_empresa.email')
+                ->select('empresa.id_empresa','empresa.razao_social','usuario_empresa.email','usuario_empresa.status')
                 ->leftJoin('usuario_empresa' , function($join) use ($usuario) {
                     $join->on('usuario_empresa.id_empresa', '=', 'empresa.id_empresa')
                         ->where('usuario_empresa.id_usuario', '=', $usuario);
@@ -229,8 +220,6 @@ class usuarioController extends Controller
                 )
                 ->orderBy('empresa.razao_social', 'asc')->get();
     }
-
-
 
     public function updateUser(Request $request){
 
@@ -248,6 +237,7 @@ class usuarioController extends Controller
                     'login'    => $request->login,
                     'telefone' => $request->telefone,
                     'senha'    => Hash::make($request->senha),
+                    'notificacao_agenda'=> $request->notificacao_agenda, 
                 ]);
 
             } catch (\Exception $e) {

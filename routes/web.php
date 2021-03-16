@@ -39,12 +39,10 @@ Route::group(['prefix' => 'perfilUsuario'], function () {
 
 // Rotas de Cadastros - Usuarios
 Route::group(['prefix' => 'usuario'], function () {
-    Route::get('/'        , 'usuarioController@index');
-    Route::post('create'  , 'usuarioController@create');
-    Route::post('update'  , 'usuarioController@update');
-    Route::post('updateUser'  , 'usuarioController@updateUser');
-
+    Route::get('/'            , 'usuarioController@index');
+    Route::post('store'       , 'usuarioController@store');
     Route::delete('delete'    , 'usuarioController@delete');
+    Route::post('updateUser'  , 'usuarioController@updateUser');
     Route::get('empresas/{id}', 'usuarioController@empresas');
 });
 
