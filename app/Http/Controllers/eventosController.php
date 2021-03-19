@@ -62,6 +62,7 @@ class eventosController extends Controller
                                ])->first();
 
                     if($empresa->status==0){
+                        $user->email = $empresa->email;
                         $user->notify( new agendaInsert());
                     }
                 }
