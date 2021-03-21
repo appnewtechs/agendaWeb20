@@ -52,6 +52,39 @@ class usuarioController extends Controller
         */
 
 
+
+        // Ajuste usuario-empresa.
+        $usuarios  = DB::table('usuario')->where('status', '=', '0')->get();
+        foreach ($usuarios as $usuario) {
+
+
+            $mail = DB::table('usuario_empresa')->where([
+            ['id_usuario', '=', $usuario->id_usuario],
+            ['id_empresa', '=', 5],
+            ])->first();
+            if (!$mail){
+                $empresa = new usuarioEmpresa();
+                $empresa->id_usuario = $usuario->id_usuario;
+                $empresa->id_empresa = 5;
+                $empresa->status = 0;
+                $empresa->save();
+            }
+
+
+            $mail = DB::table('usuario_empresa')->where([
+            ['id_usuario', '=', $usuario->id_usuario],
+            ['id_empresa', '=', 5],
+            ])->first();
+            if (!$mail){
+                $empresa = new usuarioEmpresa();
+                $empresa->id_usuario = $usuario->id_usuario;
+                $empresa->id_empresa = 6;
+                $empresa->status = 0;
+                $empresa->save();
+            }
+        }
+
+
         $search = $request->get('search');
         $field  = $request->get('field')  ?? 'nome';
         $sort   = $request->get('sort')   ?? 'asc';
