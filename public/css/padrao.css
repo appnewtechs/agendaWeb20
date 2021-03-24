@@ -59,14 +59,12 @@ i {
     background-color: steelblue;
 }
 
-
-.btn-danger {
+.btn-danger, .btn-success {
     line-height: 1rem;
     font-family: "Nunito";
     width: 85px;
     color: white;
 }
-
 
 .btn-cabec {
     height: 27px;

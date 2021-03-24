@@ -205,6 +205,7 @@
 
 @include('cadastros.eventos.modal')
 @include('cadastros.eventos.delete')
+@include('cadastros.eventos.delAll')
 <script type='text/javascript'>
 
     $(document).ready(function(){
@@ -346,7 +347,8 @@
 
                     // Modal delete
                     $('#delete #id_evento').val( info.event.id );
-                    
+                    $('#delAll #id_geral').val( info.event.extendedProps.id_geral );
+
 
                     // Modal update
                     resetForm('#frm_agenda');
@@ -354,19 +356,19 @@
 
                     $('#modalAgenda #modal-title').text("Alterar Evento");
                     $('#modalAgenda #delete-btn').css('display','inline-block');
+                    $('#modalAgenda #del-all-btn').css('display','inline-block');
 
                     $('#modalAgenda #id_evento').val( info.event.id );
-                    $('#title').val( info.event.extendedProps.descricao );
-                    $('#status').val( info.event.extendedProps.status );
-                    $('#empresa').val( info.event.extendedProps.empresa );
-                    $('#id_usuario').val( info.event.extendedProps.usuario );
-                    $('#tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
+                    $('#modalAgenda #id_geral').val( info.event.extendedProps.id_geral );
 
-                    if (info.event.extendedProps.tipo_data=='1'){
-                        $('#radio2').prop("checked", true);
-                    } else {
-                        $('#radio1').prop("checked", true);
-                    };
+                    $('#modalAgenda #title').val( info.event.extendedProps.descricao );
+                    $('#modalAgenda #status').val( info.event.extendedProps.status );
+                    $('#modalAgenda #empresa').val( info.event.extendedProps.empresa );
+                    $('#modalAgenda #id_usuario').val( info.event.extendedProps.usuario );
+                    $('#modalAgenda #tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
+
+                    $radio = (info.event.extendedProps.tipo_data=='1') ?'#modalAgenda #radio2' : '#modalAgenda #radio1';
+                    $($radio).prop("checked", true);
 
                     
                     $.ajax({
@@ -382,9 +384,9 @@
                                     dataIni = response[0].start.substr(8,2)+'/'+response[0].start.substr(5,2)+'/'+response[0].start.substr(0,4);
                                     dataFim = response[0].end.substr(8,2)+'/'+response[0].end.substr(5,2)+'/'+response[0].end.substr(0,4);
 
-                                    $('#datepicker').datepicker('setDate', dataIni );
-                                    $('#datepicker').multiDatesPicker({ addDates: [dataIni, dataFim] });
-                                    $('#datepicker').multiDatesPicker({ maxPicks: 2});
+                                    $('#modalAgenda #datepicker').datepicker('setDate', dataIni );
+                                    $('#modalAgenda #datepicker').multiDatesPicker({ addDates: [dataIni, dataFim] });
+                                    $('#modalAgenda #datepicker').multiDatesPicker({ maxPicks: 2});
 
                                 } else {
                                 
@@ -393,9 +395,9 @@
                                         dataIni[i] = response[i].start.substr(8,2)+'/'+response[i].start.substr(5,2)+'/'+response[i].start.substr(0,4);
                                     }
 
-                                    $('#datepicker').datepicker('setDate', dataIni[0]);
-                                    $('#datepicker').multiDatesPicker({ addDates: dataIni });
-                                    $('#datepicker').multiDatesPicker({ maxPicks: 999});
+                                    $('#modalAgenda #datepicker').datepicker('setDate', dataIni[0]);
+                                    $('#modalAgenda #datepicker').multiDatesPicker({ addDates: dataIni });
+                                    $('#modalAgenda #datepicker').multiDatesPicker({ maxPicks: 999});
                                 }
                             }
                             $('#modalAgenda').modal('show');
@@ -530,6 +532,7 @@
             resetForm('#modalAgenda #frm_agenda');
             $('#modalAgenda #modal-title').text("Inserir Evento");
             $('#modalAgenda #delete-btn').css('display','none');
+            $('#modalAgenda #del-all-btn').css('display','none');
 
             selecaoDatas(2);
             $('#modalAgenda #id_evento').val('');
@@ -540,7 +543,6 @@
             $('#infoone').modal('show');
         }
     };
-
 
     function gravaAgenda() {
 
@@ -568,7 +570,6 @@
             },
         });
     }
-
 
     function filtrarUsuarios() {
 

@@ -38,7 +38,6 @@ class eventosController extends Controller
        return view("cadastros.eventos.index");
     }
 
-
     public function create(Request $request)
     {
 
@@ -49,7 +48,7 @@ class eventosController extends Controller
 
             try {
                 
-                DB::table('events')->where('id_evento', '=', $request->id_evento)->delete();
+                DB::table('events')->where('id', '=', $request->id_evento)->delete();
                 evento::gerarAgendas($request);
 
                 $user = usuario::find($request->id_usuario);
@@ -80,25 +79,29 @@ class eventosController extends Controller
     public function delete(Request $request)
     {
         try {
-            DB::table('events')->where('id_evento', '=', $request->id_evento)->delete();
+            DB::table('events')->where('id', '=', $request->id_evento)->delete();
         } catch (\Exception $e) {
             session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
         }
         return redirect($request->header('referer'));
     }    
  
-    
-    public function carregaDatas($idEvento)
+    public function deleteAll(Request $request)
     {
-        $datas = DB::table('events')
-                ->where('id_evento', '=', $idEvento)
-                ->get();
-        return response()->json($datas);
-    }
+        try {
 
+            DB::table('events')->where([
+                    ['id_evento', '=', $request->id_geral],
+                    ['start', '>', now()]
+                ])->delete();
 
+        } catch (\Exception $e) {
+            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+        }
+        return redirect($request->header('referer'));
+    }    
 
-
+    
     public function consulta(Request $request)
     {
 
@@ -160,7 +163,6 @@ class eventosController extends Controller
         }
 
     }
-
 
     public function relatorio(Request $request)
     {

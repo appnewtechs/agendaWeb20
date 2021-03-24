@@ -11,13 +11,12 @@
                     {!! Form::open( array('id'=>'frm_agenda') ) !!}
                     {{ csrf_field() }}
 
-
                     <div class="form-row col-md-12 pl-0 pr-0">
-
                         <div class="form-row col-md-7 pl-0 pr-1">
 
                             <div class="col-md-12">
-                            <input name="id_evento"  id="id_evento" value="" type="hidden"></input>                
+                            <input name="id_geral"  id="id_geral"  value="" type="hidden"></input>                
+                            <input name="id_evento" id="id_evento" value="" type="hidden"></input>                
                             {!! Form::label("title", "Título/Descrição", ["class"=>"col-form-label pl-0"]) !!}
                             {!! Form::text("title",  null,     ["class"=>"form-control", "maxLength=255", "onkeydown"=>"setFocus(event,'#status');" ]) !!}
                             </div>
@@ -81,9 +80,6 @@
                             <div id="datepicker" class="col-md-12"></div>
                         </div>
                     </div>
-
-
-
                     {!! Form::close() !!}
 
                 </div>  
@@ -91,9 +87,10 @@
 
             <div class="modal-footer">
                 <span colspan='10' id='erros' style="color: red; font-weight: bold; padding-right: 2rem;"></span>
-                <button type="button" class="btn btn-sm btn-danger"    id="delete-btn"  href="#delete" data-toggle="modal">Excluir</button>
-                <button type="button" class="btn btn-sm btn-secondary" id="cancel-btn"  data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-secondary" id="confirm-btn" onClick="gravaAgenda();">Salvar</button>
+                <button type="button" class="btn btn-sm btn-dark"      id="del-all-btn"  href="#delAll" data-toggle="modal">Excluir Todos</button>
+                <button type="button" class="btn btn-sm btn-danger"    id="delete-btn"   href="#delete" data-toggle="modal">Excluir</button>
+                <button type="button" class="btn btn-sm btn-secondary" id="cancel-btn"   data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-success"   id="confirm-btn"  onClick="gravaAgenda();">Salvar</button>
             </div>
         </div>
     </div>

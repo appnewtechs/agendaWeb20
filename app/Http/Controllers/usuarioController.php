@@ -53,7 +53,8 @@ class usuarioController extends Controller
 
 
 
-        // Ajuste usuario-empresa.
+        // Ajuste usuario-empresa. 
+        /*
         $usuarios  = DB::table('usuario')->where('status', '=', '0')->get();
         foreach ($usuarios as $usuario) {
 
@@ -83,7 +84,7 @@ class usuarioController extends Controller
                 $empresa->save();
             }
         }
-
+        */
 
         $search = $request->get('search');
         $field  = $request->get('field')  ?? 'nome';

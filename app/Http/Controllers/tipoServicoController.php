@@ -35,8 +35,6 @@ class tipoServicoController extends Controller
         $sort   = $request->get('sort')   ?? 'asc';
         $status = $request->get('status') ?? '0';
 
-        log::Debug($status);
-
         $tiposServico = DB::table('linha_produto')
                         ->where(function ($query) use ($status) {
                             if ($status!='2'){

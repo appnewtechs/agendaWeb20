@@ -18,9 +18,7 @@ class evento extends Model
     public $autoincrement = false;
 
     public static function getId(){
-        return (DB::table('events')
-                ->orderBy('id_evento', 'desc')->value('id'))+1;
-
+        return (DB::table('events')->orderBy('id_evento', 'desc')->value('id'))+1;
     }
 
 
@@ -46,6 +44,7 @@ class evento extends Model
 
         //log::Debug('------------------');
         $arrDatas = explode(',', trim($request->datas));
+        $idEvento = $request->id_geral ?? evento::getId();
         
         if($request->dataSelecao=='2'){ 
 
@@ -80,8 +79,6 @@ class evento extends Model
                     if ($dataControle->isSaturday() || $dataControle==$dataFinal || $feriado) {
 
                         $dataFimEvento = ($dataControle->isSaturday() || $feriado) ? $dataControle->subDay() : $dataFinal; 
-                        
-                        $idEvento = evento::getId();
                         evento::createEvent( $idEvento, $dataInicial, $dataFimEvento, $request);
                         if ($dataControle==$dataFinal){ break; }
 
@@ -119,16 +116,13 @@ class evento extends Model
 
                 $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
                 $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[0]))->endOfDay();
-
-                $idEvento = evento::getId();
                 evento::createEvent( $idEvento, $dataInicial, $dataFinal, $request );
             };
 
         } else {
 
-            $idEvento = evento::getId();
             if (count($arrDatas)>1){
-                
+
                 for ($i = 0; $i < count($arrDatas); $i++) { 
                     $dataInicial = Carbon::parse( str_replace('/', '-', $arrDatas[$i]) );
                     $dataFinal   = Carbon::parse( str_replace('/', '-', $arrDatas[$i]) );
@@ -136,14 +130,13 @@ class evento extends Model
                 };
 
             } else {
+
                 $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
                 $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[0]))->endOfDay();
                 evento::createEvent( $idEvento, $dataInicial, $dataFinal, $request );
             }
         };
-        
     }
-
 
     public static function createEvent($idEvento, $dtIni, $dtFim, $request){
 
