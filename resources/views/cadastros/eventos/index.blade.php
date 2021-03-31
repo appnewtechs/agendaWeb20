@@ -352,6 +352,7 @@
 
                     // Modal update
                     resetForm('#frm_agenda');
+                    $('#modalAgenda #erros').html('');
                     $('#datepicker').multiDatesPicker('resetDates', 'picked');
 
                     $('#modalAgenda #modal-title').text("Alterar Evento");
@@ -367,12 +368,14 @@
                     $('#modalAgenda #id_usuario').val( info.event.extendedProps.usuario );
                     $('#modalAgenda #tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
 
-                    $radio = (info.event.extendedProps.tipo_data=='1') ?'#modalAgenda #radio2' : '#modalAgenda #radio1';
+                    $radio = (info.event.extendedProps.tipo_data=='1') ? '#modalAgenda #radio2' : '#modalAgenda #radio1';
+                    $url   = (info.event.extendedProps.tipo_data=='2') ? '{{ env("APP_URL") }}/eventos/carregaIntervaloDatas/'+info.event.id :
+                                                                         '{{ env("APP_URL") }}/eventos/carregaMultiplasDatas/'+info.event.extendedProps.id_geral;
                     $($radio).prop("checked", true);
 
                     
                     $.ajax({
-                        url: '{{ env("APP_URL") }}/eventos/carregaDatas/'+info.event.id,
+                        url: $url,
                         type: 'get',
                         dataType: 'json',
                         success: function(response){

@@ -51,9 +51,13 @@ class eventosController extends Controller
 
             try {
                 
+                if($request->dataSelecao=='2'){
                 DB::table('events')->where('id', '=', $request->id_evento)->delete();
-                evento::gerarAgendas($request);
+                } else {
+                DB::table('events')->where('id_evento', '=', $request->id_geral)->delete();
+                }
 
+                evento::gerarAgendas($request);
                 if($request->status=="1"){
                     $user = usuario::find($request->id_usuario);
                     if($user->notificacao_agenda=="S"){

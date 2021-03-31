@@ -44,7 +44,7 @@ class evento extends Model
 
         //log::Debug('------------------');
         $arrDatas = explode(',', trim($request->datas));
-        $idEvento = $request->id_geral ?? evento::getId();
+        $idEvento = evento::getId();
         
         if($request->dataSelecao=='2'){ 
 

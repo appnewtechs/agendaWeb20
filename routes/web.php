@@ -85,9 +85,12 @@ Route::group(['prefix' => 'eventos'], function () {
 
     Route::get('relatorio'        , 'eventosController@relatorio');
     Route::get('consulta'         , 'eventosController@consulta')->name('loadEvents');
-    Route::get('carregaDatas/{id}', function($id){
-        return response()->json( DB::table('events')->where('id', '=', $id)->get() ); 
-    });
+
+    Route::get('carregaMultiplasDatas/{id}', function($id){
+    return response()->json( DB::table('events')->where('id_evento', '=', $id)->get() );  });
+
+    Route::get('carregaIntervaloDatas/{id}', function($id){
+    return response()->json( DB::table('events')->where('id', '=', $id)->get() );  });
 });
 
 
