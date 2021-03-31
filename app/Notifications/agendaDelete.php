@@ -7,10 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
-class agendaInsert extends Notification
+class agendaDelete extends Notification
 {
     use Queueable;
     public $event;
@@ -20,7 +19,7 @@ class agendaInsert extends Notification
      *
      * @return void
      */
-    public function __construct(Request $event)
+    public function __construct($event)
     {
         $this->event = $event;
     }
@@ -46,16 +45,13 @@ class agendaInsert extends Notification
     {
 
         $aux = $this->event;
-        $trabalho = DB::table('trabalho')->where('id_trabalho', '=', $aux->tipo_trabalho)->first(); 
-        $arrDatas = explode(',', trim($aux->datas));
-
         return (new MailMessage)
-                    ->subject("Nova Agenda incluída para você!")
-                    ->line('Identificamos que foi incluída uma agenda para você em nosso sistema.')
-                    ->line('Descrição: '.$aux->title)
-                    ->line('Tipo: '.$trabalho->descricao)
-                    ->line('Período: '.reset($arrDatas).'-'.end($arrDatas) )
-                    ->action('Acompanhe sua agenda!', url( env('APP_URL') ));
+            ->subject("Agenda Excluída!")
+            ->line('Identificamos que foi excluída uma de suas agendas.')
+            ->line('Descrição: '.$aux->title)
+            ->line('Tipo: '.$aux->descricao)
+            ->line('Período: '.Carbon::parse($aux->start)->format('d/m/Y').'-'.Carbon::parse($aux->end)->format('d/m/Y') )
+            ->action('Acompanhe sua agenda!', url( env('APP_URL') ));
     }
 
     /**
