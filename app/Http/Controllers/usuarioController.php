@@ -116,27 +116,15 @@ class usuarioController extends Controller
     public function store(Request $request)
     {
 
-        if($request->id_usuario){                
         $validator = Validator::make( $request->all(), [
-                    'login' => 'required',
-                    'email' => 'required',
-                    'nome'  => 'required',
-                    'telefone'  => 'required',
-                    'id_perfil' => 'required',
-                    'id_empresa'=> 'required',
-                    'id_linha_produto' => 'required',
-                    ], [], usuario::$translate);
-        } else {
-        $validator = Validator::make( $request->all(), [
-                    'login' => 'required|unique:usuario,login',
-                    'email' => 'required|email|unique:usuario,email',
-                    'nome'  => 'required',
-                    'telefone'  => 'required',
-                    'id_perfil' => 'required',
-                    'id_empresa'=> 'required',
-                    'id_linha_produto' => 'required',
-                    ], [], usuario::$translate);
-        }
+            'login' => $request->id_usuario ? 'required' : 'required|unique:usuario,login',
+            'email' => $request->id_usuario ? 'required' : 'required|email|unique:usuario,email',
+            'nome'  => 'required',
+            'telefone'  => 'required',
+            'id_perfil' => 'required',
+            'id_empresa'=> 'required',
+            'id_linha_produto' => 'required',
+            ], [], usuario::$translate);
 
 
         if ($validator->fails()) {
@@ -164,6 +152,14 @@ class usuarioController extends Controller
                         'notificacao_agenda'=> $request->notificacao_agenda, 
                     ]);
 
+
+                    if($request->status=="1"){
+                        DB::table('events')->where([
+                            ['id_usuario', '=', $idUsuario],
+                            ['start', '>', now()]
+                        ])->delete();
+                    }
+
                 } else {
 
                     $idUsuario = usuario::getId();
@@ -184,6 +180,7 @@ class usuarioController extends Controller
                     $usuario->imagem = "";
                     $usuario->save();
                 }
+
 
                 for ($i = 0; $i < count($request->arr_empresa); $i++) { 
                     if($request->arr_empresa[$i]){
