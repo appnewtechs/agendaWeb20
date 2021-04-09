@@ -16,7 +16,7 @@
 
             <div id="filtros" class="col-md-2 border border-dark rounded pt-3 pb-1" style='background: white'>
                 
-                {!! Form::open(['method'=>'get', 'id'=>'btnRelat', 'target'=>'"_blank', 'action'=>'eventosController@relatorio']) !!}
+                {!! Form::open(['method'=>'get', 'id'=>'btnRelat', 'target'=>'_blank', 'action'=>'eventosController@relatorio']) !!}
                 <div class="row">
                     <h5 class="fc-toolbar-title">Filtros</h5>
                 </div>          
