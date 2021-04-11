@@ -100,7 +100,7 @@
                 </div>
 
 
-                <div class="row pb-1">
+                <div class="row pb-1" id="divPesqUsuario">
                     <div class="col-md-12 border border-dark rounded pb-0 pr-0 pl-0" style='border-color: steelblue !important;'>
                         <nav class="navbar navbar-expand-sm navbar-dark bg-dark pr-1 pl-1" style="height: 27px; font-size: 0.7rem;">
                             <div class="collapse navbar-collapse">
@@ -265,6 +265,9 @@
 
 
     function callendarRender(){
+
+        $("#usuarios").prop('readonly', true);
+        $("#divPesqUsuario *").prop('disabled',true);
 
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -523,7 +526,8 @@
         };
 
         calendar.render();
-    
+        $("#usuarios").prop('readonly', false);
+        $("#divPesqUsuario *").prop('disabled', false);
 
     };
 
