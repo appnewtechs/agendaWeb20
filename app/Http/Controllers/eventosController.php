@@ -112,11 +112,12 @@ class eventosController extends Controller
                     }
                 }
             }
+            return response()->json(['code'=>'200']);
 
         } catch (\Exception $e) {
-            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            log::Debug('ERRO: '.$e);
+            return response()->json(['code'=>'401', 'erros'=>array(Config::get('app.messageError'))] );
         }
-        return redirect($request->header('referer'));
     }    
  
     public function deleteAll(Request $request)

@@ -78,13 +78,13 @@ Route::group(['prefix' => 'feriados'], function () {
 
 // Rotas de Cadastros - Agendas
 Route::group(['prefix' => 'eventos'], function () {
-    Route::get('/'           , 'eventosController@index');
-    Route::post('create'     , 'eventosController@create');
-    Route::delete('delete'   , 'eventosController@delete');
+    Route::get('/'      , 'eventosController@index');
+    Route::post('create', 'eventosController@create');
+    Route::post('delete', 'eventosController@delete');
     Route::delete('deleteAll', 'eventosController@deleteAll');
 
-    Route::get('relatorio'        , 'eventosController@relatorio');
-    Route::get('consulta'         , 'eventosController@consulta')->name('loadEvents');
+    Route::get('relatorio', 'eventosController@relatorio');
+    Route::get('consulta' , 'eventosController@consulta')->name('loadEvents');
 
     Route::get('carregaMultiplasDatas/{id}', function($id){
     return response()->json( DB::table('events')->where('id_evento', '=', $id)->get() );  });

@@ -578,6 +578,33 @@
         });
     }
 
+    function excluirAgenda() {
+        $.ajax({
+            url: "eventos/delete",
+            type: 'POST',
+            dataType:'json',            
+            data: $('#frmDelAgenda').serialize(),
+            
+            success: function(response){
+                if(response.code=='200'){   
+                    $('#modalAgenda').modal('hide');
+                    callendarRender();
+                } else {
+                    $.each(response.erros, function (index) {
+                        $('#modalAgenda #erros').css("color", 'red');
+                        $('#modalAgenda #erros').html(response.erros[index]);
+                        return false;
+                    });
+                }
+            },
+
+            error: function() {
+                window.location.href = '/';
+            },
+        });
+    }
+
+
     function filtrarUsuarios() {
 
         $texto = $('#usuarios').val().toLowerCase();
