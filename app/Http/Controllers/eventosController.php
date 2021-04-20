@@ -127,12 +127,13 @@ class eventosController extends Controller
             DB::table('events')->where([
                     ['id_evento', '=', $request->id_geral],
                     ['start', '>', now()]
-                ])->delete();
+                    ])->delete();
+            return response()->json(['code'=>'200']);
 
         } catch (\Exception $e) {
-            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
+            log::Debug('ERRO: '.$e);
+            return response()->json(['code'=>'401', 'erros'=>array(Config::get('app.messageError'))] );
         }
-        return redirect($request->header('referer'));
     }    
 
     

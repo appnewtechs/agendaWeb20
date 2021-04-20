@@ -1,4 +1,4 @@
-{!! Form::open( array('id'=>'frmDeleteTodasAgendas', 'action'=>'eventosController@deleteAll') ) !!}
+{!! Form::open( array('id'=>'frmDeleteTodasAgendas', 'url'=>'eventos/deleteAll') ) !!}
 {{ csrf_field() }}
 {{ method_field('DELETE') }}
 
@@ -20,7 +20,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-danger"    data-dismiss="modal" onClick="$('#frmDeleteTodasAgendas').submit()">Excluir</button>
+                <button type="button" class="btn btn-sm btn-danger"    data-dismiss="modal" onClick="gravarAgenda('#frmDeleteTodasAgendas');">Excluir</button>
             </div>
         </div>
     </div>

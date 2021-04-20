@@ -354,7 +354,7 @@
 
 
                     // Modal update
-                    resetForm('#frm_agenda');
+                    resetForm('#frmAgenda');
                     $('#modalAgenda #erros').html('');
                     $('#datepicker').multiDatesPicker('resetDates', 'picked');
 
@@ -536,7 +536,7 @@
         
         if("{{Auth::user()->id_perfil}}"=='1'){
 
-            resetForm('#modalAgenda #frm_agenda');
+            resetForm('#modalAgenda #frmAgenda');
             $('#modalAgenda #modal-title').text("Inserir Evento");
             $('#modalAgenda #delete-btn').css('display','none');
             $('#modalAgenda #del-all-btn').css('display','none');
@@ -551,13 +551,12 @@
         }
     };
 
-    function gravaAgenda() {
+    function gravarAgenda(form) {
 
         $.ajax({
-            url: "eventos/create",
+            url:  $(form).attr('action'),
+            data: $(form).serialize(),
             type: 'POST',
-            dataType:'json',            
-            data: $('#frm_agenda').serialize(),
             
             success: function(response){
                 if(response.code=='200'){   
@@ -573,37 +572,12 @@
             },
 
             error: function() {
+
+
                 window.location.href = '/';
             },
         });
     }
-
-    function excluirAgenda() {
-        $.ajax({
-            url: "eventos/delete",
-            type: 'POST',
-            dataType:'json',            
-            data: $('#frmDelAgenda').serialize(),
-            
-            success: function(response){
-                if(response.code=='200'){   
-                    $('#modalAgenda').modal('hide');
-                    callendarRender();
-                } else {
-                    $.each(response.erros, function (index) {
-                        $('#modalAgenda #erros').css("color", 'red');
-                        $('#modalAgenda #erros').html(response.erros[index]);
-                        return false;
-                    });
-                }
-            },
-
-            error: function() {
-                window.location.href = '/';
-            },
-        });
-    }
-
 
     function filtrarUsuarios() {
 

@@ -9,7 +9,7 @@
                     Você tem certeza que deseja excluir o registro?
                 </div>
 
-                {!! Form::open( array('id'=>'frmDelAgenda') ) !!}
+                {!! Form::open( array('id'=>'frmDelAgenda', 'url'=>'eventos/delete') ) !!}
                 {{ csrf_field() }}
                 <div class="row col-md-12" id="description">
                 <input name="id_evento"  id="id_evento" value="" type="hidden"></input>                
@@ -21,7 +21,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-danger"    data-dismiss="modal" onClick="excluirAgenda();">Excluir</button>
+                <button type="button" class="btn btn-sm btn-danger"    data-dismiss="modal" onClick="gravarAgenda('#frmDelAgenda');">Excluir</button>
             </div>
         </div>
     </div>

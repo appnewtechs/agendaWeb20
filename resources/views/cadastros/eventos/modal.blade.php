@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="col-md-12 border border-dark rounded pl-4 pr-4 pt-1 pb-3 ml-0">
                         
-                    {!! Form::open( array('id'=>'frm_agenda') ) !!}
+                    {!! Form::open( array('id'=>'frmAgenda', 'url'=>'eventos/create') ) !!}
                     {{ csrf_field() }}
 
                     <div class="form-row col-md-12 pl-0 pr-0">
@@ -90,7 +90,7 @@
                 <button type="button" class="btn btn-sm btn-dark"      id="del-all-btn"  href="#delAll" data-toggle="modal">Excluir Todos</button>
                 <button type="button" class="btn btn-sm btn-danger"    id="delete-btn"   href="#delete" data-toggle="modal">Excluir</button>
                 <button type="button" class="btn btn-sm btn-secondary" id="cancel-btn"   data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-sm btn-success"   id="confirm-btn"  onClick="gravaAgenda();">Salvar</button>
+                <button type="button" class="btn btn-sm btn-success"   id="confirm-btn"  onClick="gravarAgenda('#frmAgenda');">Salvar</button>
             </div>
         </div>
     </div>
