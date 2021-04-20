@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class agendaInsert extends Notification
+class AgendaInsert extends Notification
 {
     use Queueable;
     public $event;

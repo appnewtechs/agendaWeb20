@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class agendaDelete extends Notification
+class AgendaDelete extends Notification
 {
     use Queueable;
     public $event;
