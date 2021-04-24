@@ -17,12 +17,6 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
-        ],
-        'App\Events\AgendaCriada' => [
-            'App\Listener\AgendaCriadaListener'
-        ],
-        'App\Events\AgendaExcluida' => [
-            'App\Listener\AgendaExcluidaListener'
         ]
     ];
 

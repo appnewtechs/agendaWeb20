@@ -15,9 +15,14 @@ use Session;
 use Validator;
 
 use App\Models\evento;    
+use App\Models\usuario;
 use App\Models\calendar;    
+
 use App\Events\AgendaCriada;
 use App\Events\AgendaExcluida;
+
+use App\Notifications\AgendaInsert;
+use App\Notifications\AgendaDelete;
 
 class eventosController extends Controller
 {
@@ -56,7 +61,24 @@ class eventosController extends Controller
                 }
 
                 evento::gerarAgendas($request);
-                event(new AgendaCriada($request));
+                if($request->status=="1"){
+                    $user = usuario::find($request->id_usuario);
+                    if($user->notificacao_agenda=="S"){
+        
+                        $empresa = DB::table('usuario_empresa')
+                                    ->where([
+                                        ['id_usuario', '=', $request->id_usuario],
+                                        ['id_empresa', '=', $request->empresa],
+                                    ])->first();
+        
+                        if($empresa->status==0){
+                            $user->email = $empresa->email;
+                            $user->notify( new AgendaInsert($request->all()) );
+                        }
+                    }
+                }
+        
+                //event(new AgendaCriada( $request->all() ));
                 return response()->json(['code'=>'200']);
 
             } catch (\Exception $e) {
@@ -76,8 +98,24 @@ class eventosController extends Controller
                      select('events.*', 'trabalho.descricao as descricao')->
                      join('trabalho','id_trabalho', '=', 'events.tipo_trabalho')->
                      where('id', '=', $request->id_evento)->first();
-            event(new AgendaExcluida( $event ));
 
+            if($event->status=="1"){
+                $user = usuario::find($event->id_usuario);
+                if($user->notificacao_agenda=="S"){
+    
+                    $empresa = DB::table('usuario_empresa')
+                            ->where([
+                                ['id_usuario', '=', $event->id_usuario],
+                                ['id_empresa', '=', $event->empresa],
+                            ])->first();
+    
+                    if($empresa->status==0){
+                        $user->email = $empresa->email;
+                        $user->notify( new AgendaDelete( $event ));
+                    }
+                }
+            }
+    
             DB::table('events')->where('id', '=', $request->id_evento)->delete();
             return response()->json(['code'=>'200']);
 
@@ -95,8 +133,26 @@ class eventosController extends Controller
                      select('events.*', 'trabalho.descricao as descricao')->
                      join('trabalho','id_trabalho', '=', 'events.tipo_trabalho')->
                      where('id_evento', '=', $request->id_geral)->first();
-            event(new AgendaExcluida( $event ));
 
+            $event->start = DB::table('events')->where('id_evento', '=', $request->id_geral)->min('start');
+            $event->end   = DB::table('events')->where('id_evento', '=', $request->id_geral)->max('end');
+            if($event->status=="1"){
+                $user = usuario::find($event->id_usuario);
+                if($user->notificacao_agenda=="S"){
+    
+                    $empresa = DB::table('usuario_empresa')
+                            ->where([
+                                ['id_usuario', '=', $event->id_usuario],
+                                ['id_empresa', '=', $event->empresa],
+                            ])->first();
+    
+                    if($empresa->status==0){
+                        $user->email = $empresa->email;
+                        $user->notify( new AgendaDelete( $event ));
+                    }
+                }
+            }
+        
             DB::table('events')->where([
                     ['id_evento', '=', $request->id_geral],
                     ['start', '>', now()]

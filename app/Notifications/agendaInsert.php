@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class AgendaInsert extends Notification
+class AgendaInsert extends Notification implements ShouldQueue
 {
     use Queueable;
     public $event;
@@ -20,7 +20,7 @@ class AgendaInsert extends Notification
      *
      * @return void
      */
-    public function __construct(Request $event)
+    public function __construct($event)
     {
         $this->event = $event;
     }
@@ -46,13 +46,13 @@ class AgendaInsert extends Notification
     {
 
         $aux = $this->event;
-        $trabalho = DB::table('trabalho')->where('id_trabalho', '=', $aux->tipo_trabalho)->first(); 
-        $arrDatas = explode(',', trim($aux->datas));
+        $trabalho = DB::table('trabalho')->where('id_trabalho', '=', $aux['tipo_trabalho'])->first(); 
+        $arrDatas = explode(',', trim( $aux['datas'] ));
 
         return (new MailMessage)
                     ->subject("Nova Agenda incluída para você!")
                     ->line('Identificamos que foi incluída uma agenda para você em nosso sistema.')
-                    ->line('Descrição: '.$aux->title)
+                    ->line('Descrição: '.$aux['title'])
                     ->line('Tipo: '.$trabalho->descricao)
                     ->line('Período: '.reset($arrDatas).'-'.end($arrDatas) )
                     ->action('Acompanhe sua agenda!', url( env('APP_URL') ));
