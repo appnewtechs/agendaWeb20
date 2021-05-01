@@ -4,16 +4,23 @@
 <link  href="{{ asset('assets/fullcalendar/main.css') }}" rel="stylesheet">
 <link  href="{{ asset('css/customCalendar.css') }}" rel="stylesheet">
 
-
 <script src="{{ asset('assets/MultipleDatesPicker/jquery-ui.multidatespicker.js') }}"></script>
 <link  href="{{ asset('assets/MultipleDatesPicker/jquery-ui.multidatespicker.css') }}" rel="stylesheet">
+
+
+<!-- Div para Spinner -->
+<div class="d-none justify-content-center align-items-center" id="spinner-div">
+    <div class="spinner-border text-light" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+
 
 <div id="main" class="container-fluid pt-2 pb-3">
     <div class="row">
 
         @if(Auth::user()->id_perfil=='1')
-
-
             <div id="filtros" class="col-md-2 border border-dark rounded pt-3 pb-1" style='background: white'>
                 
                 {!! Form::open(['method'=>'get', 'id'=>'btnRelat', 'target'=>'_blank', 'action'=>'eventosController@relatorio']) !!}
@@ -206,7 +213,10 @@
 @include('cadastros.eventos.modal')
 @include('cadastros.eventos.delete')
 @include('cadastros.eventos.delAll')
+
 <script type='text/javascript'>
+
+    $("#spinner-div").removeClass("d-flex").addClass("d-none");
 
     $(document).ready(function(){
 
@@ -266,9 +276,6 @@
 
     function callendarRender(){
 
-        $("#usuarios").prop('readonly', true);
-        $("#divPesqUsuario *").prop('disabled',true);
-
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
 
@@ -297,7 +304,6 @@
                 }
             },
             
-
 
             headerToolbar: {
                 left: 'prev,next today',
@@ -342,6 +348,14 @@
                 failure: function() {
                     window.location.href = '/';
                 },
+            },
+
+
+
+            loading: function(isLoading) {
+
+                if(isLoading){ $("#spinner-div").removeClass("d-none").addClass("d-flex"); }
+                else{ $("#spinner-div").removeClass("d-flex").addClass("d-none"); }
             },
 
             eventClick: function(info) {
@@ -526,9 +540,6 @@
         };
 
         calendar.render();
-        $("#usuarios").prop('readonly', false);
-        $("#divPesqUsuario *").prop('disabled', false);
-
     };
 
 
