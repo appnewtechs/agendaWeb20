@@ -217,7 +217,6 @@
 <script type='text/javascript'>
 
     $("#spinner-div").removeClass("d-flex").addClass("d-none");
-
     $(document).ready(function(){
 
         $('#btnRelat').bind("keypress", function(e) {
@@ -269,8 +268,9 @@
 
 
     function selecaoDatas($maxPicks){
-        $('#datepicker').multiDatesPicker({ maxPicks: $maxPicks});
-        $('#datepicker').multiDatesPicker('resetDates', 'picked');
+        $('#modalAgenda #datepicker').datepicker('setDate', 'today');
+        $('#modalAgenda #datepicker').multiDatesPicker({ maxPicks: $maxPicks});
+        $('#modalAgenda #datepicker').multiDatesPicker('resetDates', 'picked');
     };
 
 
@@ -404,7 +404,7 @@
                                     dataIni = response[0].start.substr(8,2)+'/'+response[0].start.substr(5,2)+'/'+response[0].start.substr(0,4);
                                     dataFim = response[0].end.substr(8,2)+'/'+response[0].end.substr(5,2)+'/'+response[0].end.substr(0,4);
 
-                                    $('#modalAgenda #datepicker').datepicker('setDate', dataIni );
+                                    $('#modalAgenda #datepicker').datepicker('setDate', dataFim );
                                     $('#modalAgenda #datepicker').multiDatesPicker({ addDates: [dataIni, dataFim] });
                                     $('#modalAgenda #datepicker').multiDatesPicker({ maxPicks: 2});
 
@@ -415,7 +415,7 @@
                                         dataIni[i] = response[i].start.substr(8,2)+'/'+response[i].start.substr(5,2)+'/'+response[i].start.substr(0,4);
                                     }
 
-                                    $('#modalAgenda #datepicker').datepicker('setDate', dataIni[0]);
+                                    $('#modalAgenda #datepicker').datepicker('setDate', dataIni[response.length-1]);
                                     $('#modalAgenda #datepicker').multiDatesPicker({ addDates: dataIni });
                                     $('#modalAgenda #datepicker').multiDatesPicker({ maxPicks: 999});
                                 }
