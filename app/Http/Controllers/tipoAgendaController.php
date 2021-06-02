@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Validator;
 use Session;
 
-use App\Models\tipoAgenda;    
+use App\Models\TipoAgenda;    
 class tipoAgendaController extends Controller
 {
     /**
@@ -25,34 +25,26 @@ class tipoAgendaController extends Controller
         $this->middleware('auth');
     }
 
-
-
     public function index(Request $request)
     {
 
         $search = $request->get('search');
-        $field  = $request->get('field')  != '' ? $request->get('field') : 'descricao';
-        $sort   = $request->get('sort')   != '' ? $request->get('sort')  : 'asc';
-        $status = $request->get('status') != '' ? $request->get('status'): '0';
+        $field  = $request->get('field')  ?? 'descricao';
+        $sort   = $request->get('sort')   ?? 'asc';
+        $status = $request->get('status') ?? '0';
 
         $tiposAgenda = DB::table('trabalho')
                         ->where('descricao' , 'like', '%' . $search . '%')                
-                        ->where(function ($query) use ($status) {
-                            if ($status!='2'){
-                                $query->where('status', '=' , $status);
-                            }
-                        })
+                        ->where(function ($query) use ($status) { if ($status!='2'){ $query->where('status', '=', $status); }})
                         ->orderBy($field, $sort)
                         ->get();
                         
         return view("cadastros.tipoAgenda.index")->with('tiposAgenda', $tiposAgenda);
     }
 
-
-    public function create(Request $request)
+    public function store(Request $request)
     {
 
-        session::put('id_modal','insert');
         $validator = Validator::make($request->all(), [
                      'descricao'   => ['required'],
                      'colorpicker' => ['required'],
@@ -62,64 +54,45 @@ class tipoAgendaController extends Controller
                      ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->with('errors', $validator->messages());
+        return response()->json(['code'=>'401', 'erros'=>$validator->messages()]);
         } else {  
 
             try {
 
-                $tipoAgenda = new tipoAgenda();
-                $tipoAgenda->id_trabalho = tipoAgenda::getId();
-                $tipoAgenda->descricao   = $request->descricao;
-                $tipoAgenda->cor    = substr($request->colorpicker,1,6);
-                $tipoAgenda->codigo = tipoAgenda::getCod();
-                $tipoAgenda->status = '0';
-                $tipoAgenda->save();
+                TipoAgenda::updateOrCreate(
+                ['id_trabalho' => $request->id_trabalho],
+                [
+                'descricao' => $request->descricao,
+                'cor'       => substr($request->colorpicker,1,6),
+                'status'    => '0',
+                ],
+                ); 
                 
             } catch (\Exception $e) {
-                session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            }
-
-            return redirect($request->header('referer'));
+            log::Debug('ERRO: '.$e);
+            return response()->json(['code'=>'401', 'erros'=>array(Config::get('app.messageError'))] );
+            }        
+            return response()->json(['code'=>'200']);
         }
     }
 
-
-    public function status(Request $request)
-    {
-
-        $status = $request->status=="0" ?? "1";
-        try {
-
-            DB::table('trabalho')
-            ->where('id_trabalho', '=', $request->id_trabalho)
-            ->update(['status' => $status]);
-            return redirect($request->header('referer'));
-
-        } catch (\Exception $e) {
-
-            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            return redirect($request->header('referer'))->with('errors', $e->getMessage());
-        }
-    }    
-
-    
     public function delete(Request $request)
     {
-        try {
 
+        try {
+            
             $eventos = DB::table('events')->where('tipo_trabalho', '=', $request->id_trabalho)->get();
             if($eventos){
                 session::put('erros', 'Não é possível excluir esse registro. - MOTIVO: Esse Tipo de Agenda já está sendo usado.'); 
             } else {
                 DB::table('trabalho')->where('id_trabalho', '=', $request->id_trabalho)->delete();
             }
-            return redirect($request->header('referer'));
 
         } catch (\Exception $e) {
-
-            session::put('erros', Config::get('app.messageError').' - ERRO: '.$e->getMessage() ); 
-            return redirect($request->header('referer'))->with('errors', $e->getMessage());
+            session::put('erros', "Esse registro já está sendo usado por outro cadastro e não pode ser excluído!"); 
+            log::Debug('ERRO: '.$e);
         }
+        return redirect($request->header('referer'));
     }    
 
 }

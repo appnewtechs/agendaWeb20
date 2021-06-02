@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/padrao.css') }}">
         <script src="{{ asset('js/app.js') }}"></script>
-        <script src="{{ asset('js/utils.js') }}"></script>
 
         <style>
             html, body {

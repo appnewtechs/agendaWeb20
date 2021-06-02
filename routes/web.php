@@ -60,7 +60,7 @@ Route::group(['prefix' => 'tipoServico'], function () {
 // Rotas de Cadastros - Tipo de Agenda
 Route::group(['prefix' => 'tipoAgenda'], function () {
     Route::get('/'      , 'tipoAgendaController@index');
-    Route::post('create', 'tipoAgendaController@create');
+    Route::post('store' , 'tipoAgendaController@store');
     Route::post('status', 'tipoAgendaController@status');
     Route::post('delete', 'tipoAgendaController@delete');
 });
