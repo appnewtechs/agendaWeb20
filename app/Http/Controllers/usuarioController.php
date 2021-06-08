@@ -124,7 +124,7 @@ class usuarioController extends Controller
             'id_perfil' => 'required',
             'id_empresa'=> 'required',
             'id_linha_produto' => 'required',
-            ], [], usuario::$translate);
+            ], [], Usuario::$translate);
 
 
         if ($validator->fails()) {
@@ -162,8 +162,8 @@ class usuarioController extends Controller
 
                 } else {
 
-                    $idUsuario = usuario::getId();
-                    $usuario   = new usuario();
+                    $idUsuario = Usuario::getId();
+                    $usuario   = new Usuario();
                     $usuario->id_usuario = $idUsuario; 
                     $usuario->nome   = $request->nome;
                     $usuario->email  = $request->email;
@@ -254,7 +254,7 @@ class usuarioController extends Controller
 
     public function updateUser(Request $request){
 
-        $validator = Validator::make( $request->all(), usuario::$updUserRules, [], usuario::$updUserTranslate);
+        $validator = Validator::make( $request->all(), Usuario::$updUserRules, [], Usuario::$updUserTranslate);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('errors', $validator->messages());
         } else {  

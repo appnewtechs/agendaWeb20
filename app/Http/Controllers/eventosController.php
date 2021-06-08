@@ -14,8 +14,8 @@ use DateTime;
 use Session;
 use Validator;
 
-use App\Models\evento;    
-use App\Models\usuario;
+use App\Models\Evento;    
+use App\Models\Usuario;
 use App\Models\calendar;    
 
 use App\Events\AgendaCriada;
@@ -47,7 +47,7 @@ class eventosController extends Controller
     public function create(Request $request)
     {
 
-        $validator = Validator::make( $request->all(), evento::$rules, [], evento::$translate);
+        $validator = Validator::make( $request->all(), Evento::$rules, [], Evento::$translate);
         if ($validator->fails()) {
         return response()->json(['code'=>'401', 'erros'=>$validator->messages()]);
         } else {  
@@ -55,14 +55,14 @@ class eventosController extends Controller
             try {
                 
                 if($request->dataSelecao=='2'){
-                DB::table('events')->where('id', '=', $request->id_evento)->delete();
+                Evento::where('id', '=', $request->id_evento)->delete();
                 } else {
-                DB::table('events')->where('id_evento', '=', $request->id_geral)->delete();
+                Evento::where('id_evento', '=', $request->id_geral)->delete();
                 }
 
-                evento::gerarAgendas($request);
+                Evento::gerarAgendas($request);
                 if($request->status=="1"){
-                    $user = usuario::find($request->id_usuario);
+                    $user = Usuario::find($request->id_usuario);
                     if($user->notificacao_agenda=="S"){
         
                         $empresa = DB::table('usuario_empresa')
@@ -100,7 +100,7 @@ class eventosController extends Controller
                      where('id', '=', $request->id_evento)->first();
 
             if($event->status=="1"){
-                $user = usuario::find($event->id_usuario);
+                $user = Usuario::find($event->id_usuario);
                 if($user->notificacao_agenda=="S"){
     
                     $empresa = DB::table('usuario_empresa')
@@ -116,7 +116,7 @@ class eventosController extends Controller
                 }
             }
     
-            DB::table('events')->where('id', '=', $request->id_evento)->delete();
+            Evento::where('id', '=', $request->id_evento)->delete();
             return response()->json(['code'=>'200']);
 
         } catch (\Exception $e) {
@@ -127,6 +127,7 @@ class eventosController extends Controller
  
     public function deleteAll(Request $request)
     {
+
         try {
 
             $event = DB::table('events')->
@@ -137,7 +138,7 @@ class eventosController extends Controller
             $event->start = DB::table('events')->where('id_evento', '=', $request->id_geral)->min('start');
             $event->end   = DB::table('events')->where('id_evento', '=', $request->id_geral)->max('end');
             if($event->status=="1"){
-                $user = usuario::find($event->id_usuario);
+                $user = Usuario::find($event->id_usuario);
                 if($user->notificacao_agenda=="S"){
     
                     $empresa = DB::table('usuario_empresa')
@@ -153,7 +154,7 @@ class eventosController extends Controller
                 }
             }
         
-            DB::table('events')->where([
+            Evento::where([
                     ['id_evento', '=', $request->id_geral],
                     ['start', '>', now()]
                     ])->delete();

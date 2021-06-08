@@ -4,6 +4,7 @@
 <link  href="{{ asset('assets/fullcalendar/main.css') }}" rel="stylesheet">
 <link  href="{{ asset('css/customCalendar.css') }}" rel="stylesheet">
 
+<script src="{{ asset('assets/datepicker.js') }}"></script>
 <script src="{{ asset('assets/MultipleDatesPicker/jquery-ui.multidatespicker.js') }}"></script>
 <link  href="{{ asset('assets/MultipleDatesPicker/jquery-ui.multidatespicker.css') }}" rel="stylesheet">
 
