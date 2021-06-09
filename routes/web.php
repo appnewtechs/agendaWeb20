@@ -83,12 +83,12 @@ Route::group(['prefix' => 'eventos'], function () {
     Route::post('delete', 'eventosController@delete');
     Route::delete('deleteAll', 'eventosController@deleteAll');
 
+    Route::get('dashboard', 'eventosController@dashboard');
     Route::get('relatorio', 'eventosController@relatorio');
     Route::get('consulta' , 'eventosController@consulta')->name('loadEvents');
 
     Route::get('carregaMultiplasDatas/{id}', function($id){
     return response()->json( DB::table('events')->where('id_evento', '=', $id)->get() );  });
-
     Route::get('carregaIntervaloDatas/{id}', function($id){
     return response()->json( DB::table('events')->where('id', '=', $id)->get() );  });
 });

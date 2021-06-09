@@ -264,4 +264,19 @@ class eventosController extends Controller
                 
         return view("cadastros.eventos.relatorio")->with('dates', $dates)->with('events', $events);
     }
+
+    public function dashboard(Request $request)
+    {
+ 
+        $dataDe  = $request->dataInicial ?? Carbon::now()->firstOfMonth()->startOfWeek();
+        $dataAte = $request->dataFinal   ?? Carbon::now()->endOfMonth()->endOfWeek();
+
+
+        $usuarios = DB::table('usuario')
+                    ->where('status'    , '=' , '0')
+                    ->where('id_usuario', '<>', '1')
+                    ->orderBy('nome','asc')->get();
+
+        return view("cadastros.eventos.dashboard")->with('usuarios', $usuarios);
+    }
 }
