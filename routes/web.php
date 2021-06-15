@@ -87,10 +87,10 @@ Route::group(['prefix' => 'eventos'], function () {
     Route::get('consulta' , 'eventosController@consulta')->name('loadEvents');
 
     Route::get('carregaMultiplasDatas/{id}', function($id){
-    return response()->json( DB::table('events')->where('id_evento', '=', $id)->get() );  });
+    return response()->json( DB::table('events')->where('id_evento', '=', $id)->whereNull('deleted_at')->get() );  });
 
     Route::get('carregaIntervaloDatas/{id}', function($id){
-    return response()->json( DB::table('events')->where('id', '=', $id)->get() );  });
+    return response()->json( DB::table('events')->where('id', '=', $id)->whereNull('deleted_at')->get() );  });
 });
 
 
