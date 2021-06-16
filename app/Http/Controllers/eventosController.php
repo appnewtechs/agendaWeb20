@@ -194,25 +194,9 @@ class eventosController extends Controller
         } else {
 
             $usuario = Auth::user()->id_usuario;
-            $events = DB::table('events')
-                        ->select(
-                            DB::raw("CONCAT(usuario.nome,' - ',events.title) AS title"),
-                            DB::raw("CONCAT('#',trabalho.cor) AS backgroundColor"),
-                            DB::raw("CONCAT('#',trabalho.cor) AS borderColor"),
-                            
-                            'empresa', 'tipo_trabalho', 'start', 'end', 'tipo_data', 
-                            'id_evento AS id', 
-                            'events.status AS status',
-                            'events.title AS descricao', 
-                            'start AS datainicial', 
-                            'usuario.id_usuario AS usuario',
-                            'trabalho.descricao AS descTrabalho',
-                            'usuario_empresa.status AS statusEmpresa'
-                        )
-                        ->join('usuario' , 'usuario.id_usuario',   '=', 'events.id_usuario')
-                        ->join('trabalho', 'trabalho.id_trabalho', '=', 'events.tipo_trabalho')
+            $events  = DB::table('consultaagendas')
                         ->join('usuario_empresa', function($join) use ($usuario) {
-                            $join->on('usuario_empresa.id_empresa', '=', 'events.empresa')
+                            $join->on('usuario_empresa.id_empresa', '=', 'empresa')
                                 ->where([
                                     ['usuario_empresa.status',     '=', '0'],
                                     ['usuario_empresa.id_usuario', '=', $usuario],
@@ -220,7 +204,7 @@ class eventosController extends Controller
                             }
                         )
         
-                        ->where('events.id_usuario', '=', Auth::user()->id_usuario)
+                        ->where('usuario', '=', Auth::user()->id_usuario)
                         ->whereBetween('start', [ $request->start, $request->end ])
                         ->get();
 
