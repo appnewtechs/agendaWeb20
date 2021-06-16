@@ -384,6 +384,7 @@
                     $('#modalAgenda #status').val( info.event.extendedProps.status );
                     $('#modalAgenda #empresa').val( info.event.extendedProps.empresa );
                     $('#modalAgenda #id_usuario').val( info.event.extendedProps.usuario );
+                    $('#modalAgenda #tipo_periodo').val( info.event.extendedProps.tipo_periodo);
                     $('#modalAgenda #tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
 
                     $radio = (info.event.extendedProps.tipo_data=='1') ? '#modalAgenda #radio2' : '#modalAgenda #radio1';
@@ -455,9 +456,11 @@
 
                 $(info.el).tooltip({
                     title: info.event.title+
+                    '\n\n Período: '+info.event.extendedProps.periodo+
                     '\n Data Inicial: '+dataInicial+
                     '\n Data Final: '+dataFinal+
-                    '\n Tipo: '+info.event.extendedProps.descTrabalho,
+                    '\n\n Tipo: '+info.event.extendedProps.descTrabalho+
+                    '\n Gestor: '+info.event.extendedProps.nomeGestor,
 
                     placement: 'top',
                     trigger: 'hover',

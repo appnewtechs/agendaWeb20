@@ -147,6 +147,7 @@ class Evento extends Model
         $empresas->title         = $request->title;
         $empresas->empresa       = $request->empresa;
         $empresas->tipo_trabalho = $request->tipo_trabalho;
+        $empresas->tipo_periodo  = $request->tipo_periodo;
         $empresas->status        = $request->status;
         $empresas->id_usuario    = $request->id_usuario;
         $empresas->tipo_data     = $request->dataSelecao;
