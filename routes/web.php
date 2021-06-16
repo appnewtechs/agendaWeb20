@@ -16,16 +16,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-Route::get('/', function () {
-    return view('auth.login');
-});
-Route::get('/update-user', function() {
-    return view('auth.update');
-});
-Route::get('/mailMessage', function () {
-    return view('auth.mailMessage');
-});
+Route::get('/', function () { return view('auth.login'); });
+Route::get('/update-user', function() { return view('auth.update'); });
+Route::get('/mailMessage', function (){ return view('auth.mailMessage'); });
 
 
 
