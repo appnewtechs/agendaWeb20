@@ -268,15 +268,70 @@ class eventosController extends Controller
     public function dashboard(Request $request)
     {
  
-        $dataDe  = $request->dataInicial ?? Carbon::now()->firstOfMonth()->startOfWeek();
-        $dataAte = $request->dataFinal   ?? Carbon::now()->endOfMonth()->endOfWeek();
-
+        $totalAlocadas = 0;
+        $dataDe  = $request->dataInicial ?? Carbon::now()->startOfWeek();
+        $dataAte = $request->dataFinal   ?? Carbon::now()->endOfMonth()->endOfWeek(Carbon::FRIDAY);
+        
+        $feriados = DB::table('feriados')
+                    ->whereBetween('data', [ $dataDe, $dataAte ])->count()*8;
 
         $usuarios = DB::table('usuario')
                     ->where('status'    , '=' , '0')
+                    ->where('id_perfil' , '<>', '1')
                     ->where('id_usuario', '<>', '1')
                     ->orderBy('nome','asc')->get();
 
-        return view("cadastros.eventos.dashboard")->with('usuarios', $usuarios);
+        foreach($usuarios as $usuario){
+
+            $integralMultipla = DB::table('events')
+                                ->whereBetween('start', [ $dataDe, $dataAte ])
+                                ->where('id_usuario'  , '=', 127)
+                                ->where('status'      , '=', '1')
+                                ->where('tipo_data'   , '=', '1')
+                                ->where('tipo_periodo', '=', '0')
+                                ->whereNull('deleted_at')
+                                ->count()*8;
+
+            $partTimeMultipla  = DB::table('events')
+                                ->whereBetween('start', [ $dataDe, $dataAte ])
+                                ->where('id_usuario'  , '=', 127)
+                                ->where('status'      , '=', '1')
+                                ->where('tipo_data'   , '=', '1')
+                                ->whereIn('tipo_periodo', ['1','2'])
+                                ->whereNull('deleted_at')
+                                ->count()*4;
+
+            $eventosIntervalo  = DB::table('events')
+                                ->where('start', '>=', $dataDe)
+                                ->where('end',   '<=', $dataAte)
+                                ->where('id_usuario'  , '=', 127)
+                                ->where('status'      , '=', '1')
+                                ->where('tipo_data'   , '=', '2')
+                                ->whereNull('deleted_at')
+                                ->get();
+            
+            $integralIntervalo = 0;
+            $partTimeIntervalo = 0;
+            
+            foreach($eventosIntervalo as $intervalo){
+                
+                if($intervalo->tipo_periodo=='0'){
+                    $integralIntervalo += (Carbon::parse( $intervalo->start )->diffInWeekdays( Carbon::parse($intervalo->end) ))*8;
+                } else {
+                    $partTimeIntervalo += (Carbon::parse( $intervalo->start )->diffInWeekdays( Carbon::parse($intervalo->end) ))*4;
+                }
+            }
+
+            $totalAlocadas += ($integralMultipla+$integralIntervalo+$partTimeMultipla+$partTimeIntervalo);
+        }
+
+        $diffDays   = Carbon::parse($dataDe)->diffInWeekdays( Carbon::parse($dataAte) );   
+        $totalHoras = $diffDays*8*$usuarios->count()-$feriados;
+
+
+        return view("cadastros.eventos.dashboard")
+            ->with('usuarios', $usuarios)
+            ->with('totalHoras', $totalHoras)
+            ->with('totalAlocadas', $totalAlocadas);
     }
 }

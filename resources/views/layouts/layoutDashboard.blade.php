@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <title>{{config('app.name') }} - @yield('page-title')</title> 
 
+        <link rel='icon' href="{{ asset('images/favicon.png') }}">
         <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' crossorigin='anonymous'
             integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/'>
 
