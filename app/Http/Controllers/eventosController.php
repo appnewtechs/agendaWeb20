@@ -47,6 +47,10 @@ class eventosController extends Controller
     public function create(Request $request)
     {
 
+
+
+        log::Debug($request);
+
         $validator = Validator::make( $request->all(), Evento::$rules, [], Evento::$translate);
         if ($validator->fails()) {
         return response()->json(['code'=>'401', 'erros'=>$validator->messages()]);
@@ -54,22 +58,23 @@ class eventosController extends Controller
 
             try {
                 
-                if($request->dataSelecao=='2'){
-                Evento::where('id', '=', $request->id_evento)->delete();
-                } else {
-                Evento::where('id_evento', '=', $request->id_geral)->delete();
+                if($request->id_geral){
+                    $evento = Evento::where('id_evento', '=', $request->id_geral)->first();
+                    if($evento->tipo_data=='1' && $request->tipo_data=="2"){
+                        Evento::where('id_evento', '=', $request->id_geral)->delete();
+                    }
                 }
 
+                
                 Evento::gerarAgendas($request);
                 if($request->status=="1"){
                     $user = Usuario::find($request->id_usuario);
                     if($user->notificacao_agenda=="S"){
         
                         $empresa = DB::table('usuario_empresa')
-                                    ->where([
-                                        ['id_usuario', '=', $request->id_usuario],
-                                        ['id_empresa', '=', $request->empresa],
-                                    ])->first();
+                                    ->where('id_usuario', '=', $request->id_usuario)
+                                    ->where('id_empresa', '=', $request->empresa)
+                                    ->first();
         
                         if($empresa->status==0){
                             $user->email = $empresa->email;
