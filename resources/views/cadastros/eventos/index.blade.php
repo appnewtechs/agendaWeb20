@@ -374,7 +374,6 @@
                     $('#datepicker').multiDatesPicker('resetDates', 'picked');
 
                     $('#modalAgenda #modal-title').text("Alterar Evento");
-                    $('#modalAgenda #delete-btn').css('display','inline-block');
                     $('#modalAgenda #del-all-btn').css('display','inline-block');
 
                     $('#modalAgenda #id_evento').val( info.event.id );
@@ -387,6 +386,7 @@
                     $('#modalAgenda #tipo_periodo').val( info.event.extendedProps.tipo_periodo);
                     $('#modalAgenda #tipo_trabalho').val( info.event.extendedProps.tipo_trabalho );
 
+                    $('#modalAgenda #delete-btn').css('display', info.event.extendedProps.tipo_data=='2' ? 'inline-block':'none');
                     $radio = (info.event.extendedProps.tipo_data=='1') ? '#modalAgenda #radio2' : '#modalAgenda #radio1';
                     $url   = (info.event.extendedProps.tipo_data=='2') ? '{{ env("APP_URL") }}/eventos/carregaIntervaloDatas/'+info.event.id :
                                                                          '{{ env("APP_URL") }}/eventos/carregaMultiplasDatas/'+info.event.extendedProps.id_geral;
@@ -557,6 +557,7 @@
             $('#modalAgenda #del-all-btn').css('display','none');
 
             selecaoDatas(2);
+            $('#modalAgenda #id_geral').val('');
             $('#modalAgenda #id_evento').val('');
             $('#modalAgenda').modal('show');
 

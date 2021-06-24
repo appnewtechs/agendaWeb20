@@ -58,13 +58,22 @@ class eventosController extends Controller
 
             try {
                 
+                /*
                 if($request->id_geral){
                     $evento = Evento::where('id_evento', '=', $request->id_geral)->first();
                     if($evento->tipo_data=='1' && $request->tipo_data=="2"){
                         Evento::where('id_evento', '=', $request->id_geral)->delete();
                     }
                 }
+                */
 
+                
+                if($request->dataSelecao=='2'){
+                    Evento::where('id', '=', $request->id_evento)->delete();
+                } else {
+                    Evento::where('id_evento', '=', $request->id_geral)->delete();
+                } 
+                
                 
                 Evento::gerarAgendas($request);
                 if($request->status=="1"){
