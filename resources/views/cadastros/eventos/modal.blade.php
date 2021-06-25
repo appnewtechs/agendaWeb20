@@ -59,14 +59,14 @@
                                 <div class="row pt-1">
                                     <div class="col-md-6">
                                         <label class="radio">
-                                            <input type="radio" name="dataSelecao" id="radio1" value="2" checked
+                                            <input type="radio" name="data_selecao" id="radio1" value="2" checked
                                              onChange="selecaoDatas(2);"> Intervalo</input>
                                         </label>
                                     </div>
                                 
                                     <div class="col-md-6">
                                         <label class="radio inline">
-                                        <input type="radio" name="dataSelecao" id="radio2" value="1" 
+                                        <input type="radio" name="data_selecao" id="radio2" value="1" 
                                         onChange="selecaoDatas(999);"> Múltiplas Datas</input>
                                         </label>
                                     </div>

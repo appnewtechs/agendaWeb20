@@ -24,7 +24,7 @@ use App\Events\AgendaExcluida;
 use App\Notifications\AgendaInsert;
 use App\Notifications\AgendaDelete;
 
-class eventosController extends Controller
+class EventosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -47,35 +47,50 @@ class eventosController extends Controller
     public function create(Request $request)
     {
 
-
-
-        log::Debug($request);
-
         $validator = Validator::make( $request->all(), Evento::$rules, [], Evento::$translate);
         if ($validator->fails()) {
         return response()->json(['code'=>'401', 'erros'=>$validator->messages()]);
         } else {  
 
             try {
-                
-                /*
-                if($request->id_geral){
-                    $evento = Evento::where('id_evento', '=', $request->id_geral)->first();
-                    if($evento->tipo_data=='1' && $request->tipo_data=="2"){
-                        Evento::where('id_evento', '=', $request->id_geral)->delete();
-                    }
-                }
-                */
 
-                
-                if($request->dataSelecao=='2'){
-                    Evento::where('id', '=', $request->id_evento)->delete();
+                // Caso seja alteração de Registro.
+                if($request->id_geral){
+                    
+                    // Caso evento original seja Múltiplas datas.
+                    $evento = Evento::where('id_evento', '=', $request->id_geral)->first();
+                    if($evento->tipo_data=='1'){
+
+                        Evento::where('id_evento', '=', $request->id_geral)->delete();
+                        Evento::gerarAgendas($request);
+                    
+                    // Caso evento original seja de Intervalo.
+                    } else {
+                        
+                        Evento::where('id', '=', $request->id_evento)->delete();
+                        if($request->data_selecao=='1'){
+
+                            // Caso evento atual seja Múltiplas datas.
+                            Evento::gerarAgendas($request);
+                        } else {
+        
+                            // Caso evento atual seja Intervalo
+                            $arrDatas    = explode(',', trim($request->datas));
+                            $qtdeDatas   = (count($arrDatas)>1 ? 1 : 0); 
+                            $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
+                            $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[$qtdeDatas]))->endOfDay();
+                            Evento::datasIntervaloEvento($dataInicial, $dataFinal, $request);
+                        }
+                    }
+
+                // Caso seja inclusão de Novas Agendas.
                 } else {
-                    Evento::where('id_evento', '=', $request->id_geral)->delete();
-                } 
-                
-                
-                Evento::gerarAgendas($request);
+                    Evento::gerarAgendas($request);
+                }
+
+
+
+                // Envio de notificação por e-mail.
                 if($request->status=="1"){
                     $user = Usuario::find($request->id_usuario);
                     if($user->notificacao_agenda=="S"){
@@ -91,8 +106,6 @@ class eventosController extends Controller
                         }
                     }
                 }
-        
-                //event(new AgendaCriada( $request->all() ));
                 return response()->json(['code'=>'200']);
 
             } catch (\Exception $e) {
