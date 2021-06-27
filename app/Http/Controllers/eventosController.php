@@ -267,12 +267,23 @@ class EventosController extends Controller
                 ->get();
 
 
-        $events =  DB::table('relatorioAgendas')
+        $usuarios = DB::table('relatorioAgendas')
+                    ->select('LINHA', 'USUARIO', 'NOME')
+                    ->whereBetween('DATACAL', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
+                    ->where(function ($query) use ($usuario) { if ($usuario) { $query->whereIn('USUARIO', $usuario  ); } })
+                    ->groupBy('LINHA')->groupBy('USUARIO')->groupBy('NOME')
+                    ->orderBy('LINHA')->orderBy('NOME')
+                    ->get();
+    
+        $eventos =  DB::table('relatorioAgendas')
                     ->whereBetween('DATACAL', [ Carbon::parse($request->data_rel_ini), Carbon::parse($request->data_rel_fin) ])
                     ->where(function ($query) use ($usuario) { if ($usuario) { $query->whereIn('USUARIO', $usuario  ); } })
                     ->orderBy('LINHA')->orderBy('NOME')->orderBy('DATACAL')
                     ->get();
                 
-        return view("cadastros.eventos.relatorio")->with('dates', $dates)->with('events', $events);
+        return view("cadastros.eventos.relatorio")
+               ->with('dates'   , $dates)
+               ->with('eventos' , $eventos)
+               ->with('usuarios', $usuarios);
     }
 }
