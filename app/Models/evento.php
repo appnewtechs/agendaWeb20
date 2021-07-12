@@ -44,22 +44,86 @@ class Evento extends Model
     public static function gerarAgendas(Request $request) 
     {
 
-        $arrDatas = explode(',', trim($request->datas));
-
         // Caso seja Intervalo
         if($request->data_selecao=='2'){ 
 
-            // Caso a quantidade de datas retornadas seja maior que 1
-            $arrDatas    = explode(',', trim($request->datas));
-            $qtdeDatas   = (count($arrDatas)>1 ? 1 : 0); 
-            $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
-            $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[$qtdeDatas]))->endOfDay();
-            Evento::datasIntervaloEvento($dataInicial, $dataFinal, $request);
+            $idEvento = Evento::getId();
+            $arrDatas = explode(',', trim($request->datas));
+    
+            if (count($arrDatas)>1){
+    
+                $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
+                $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[1]))->endOfDay();
+    
+                $feriado = DB::table('feriados')->where('data', '=', substr($dataInicial,0,10))->first();
+                if($feriado){ $dataInicial->addDay(); };
+                if($dataInicial->isSaturday()) { $dataInicial->addDay(2); }
+                elseif ($dataInicial->isSunday()){ $dataInicial->addDay(); };
+    
+                $feriado = DB::table('feriados')->where('data', '=', substr($dataFinal,0,10))->first();
+                if($feriado){ $dataFinal->subDay(); };
+                if ($dataFinal->isSaturday()) { $dataFinal->subDay(); } 
+                elseif ($dataFinal->isSunday()){ $dataFinal->subDay(2); };
+    
+    
+                $dataControle = Carbon::parse($dataInicial);
+                $totalDias    = ($dataInicial->diffInDays($dataFinal));
+    
+                for($i=1; $i<=$totalDias; $i++) {
+    
+                    $dataControle->addDay()->endOfDay();
+                    $feriado = DB::table('feriados')->where('data', '=', substr($dataControle,0,10))->first();
+    
+    
+                    if ($dataControle->isSaturday() || $dataControle==$dataFinal || $feriado) {
+    
+                        $dataFimEvento = ($dataControle->isSaturday() || $feriado) ? $dataControle->subDay() : $dataFinal; 
+                        Evento::createEvento( $idEvento, $dataInicial, $dataFimEvento, $request);
+                        if ($dataControle==$dataFinal){ break; }
+    
+    
+                        $dataInicial = Carbon::parse($dataFimEvento);
+                        $dataInicial->addDay()->startOfDay();
+                        $dataControle->addDay()->endOfDay();
+    
+    
+                        if ($dataInicial->isSaturday() && $feriado){
+                            $dataInicial->addDay(2)->startOfDay();
+                            $dataControle->addDay()->endOfDay();
+                        } else {
+    
+                            if($feriado){
+                                $dataInicial->addDay()->startOfDay();
+                                $dataControle->addDay()->endOfDay();
+                            };
+    
+                            if($dataInicial->isSaturday()){
+                                $dataInicial->addDay(2)->startOfDay();
+                                $dataControle->addDay()->endOfDay();
+                            };
+                            
+                            if(DB::table('feriados')->where('data', '=', substr($dataInicial,0,10))->first()){
+                                $dataInicial->addDay()->startOfDay();
+                                $dataControle->addDay()->endOfDay();
+                            };
+                        };
+                    }; 
+                };
+    
+            } else {
+    
+                $idEvento = Evento::getId();
+                $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
+                $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[0]))->endOfDay();
+                evento::createEvento( $idEvento, $dataInicial, $dataFinal, $request );
+            };
 
         // Caso sejam Múltiplas
         } else {
 
             $idEvento = Evento::getId();
+            $arrDatas = explode(',', trim($request->datas));
+
             if (count($arrDatas)>1){
 
                 for ($i = 0; $i < count($arrDatas); $i++) { 
@@ -73,7 +137,7 @@ class Evento extends Model
                 $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
                 $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[0]))->endOfDay();
                 Evento::createEvento( $idEvento, $dataInicial, $dataFinal, $request );
-            }
+            };
         };
     }
 
@@ -93,69 +157,6 @@ class Evento extends Model
         $evento->start         = $dtIni;
         $evento->end           = $dtFim;
         $evento->save();
-    }
-
-    public static function datasIntervaloEvento($dataInicial, $dataFinal, $request)
-    {
-
-        $idEvento = Evento::getId();
-
-        $feriado = DB::table('feriados')->where('data', '=', substr($dataInicial,0,10))->first();
-        if($feriado){ $dataInicial->addDay(); };
-        if($dataInicial->isSaturday()) { $dataInicial->addDay(2); }
-        elseif ($dataInicial->isSunday()){ $dataInicial->addDay(); };
-
-        $feriado = DB::table('feriados')->where('data', '=', substr($dataFinal,0,10))->first();
-        if($feriado){ $dataFinal->subDay(); };
-        if ($dataFinal->isSaturday()) { $dataFinal->subDay(); } 
-        elseif ($dataFinal->isSunday()){ $dataFinal->subDay(2); };
-
-
-        $dataControle = Carbon::parse($dataInicial);
-        $totalDias    = ($dataInicial->diffInDays($dataFinal));
-
-        for($i=1; $i<=$totalDias; $i++) {
-
-            $dataControle->addDay()->endOfDay();
-            $feriado = DB::table('feriados')->where('data', '=', substr($dataControle,0,10))->first();
-
-
-            if ($dataControle->isSaturday() || $dataControle==$dataFinal || $feriado) {
-
-                $dataFimEvento = ($dataControle->isSaturday() || $feriado) ? $dataControle->subDay() : $dataFinal; 
-                Evento::createEvento( $idEvento, $dataInicial, $dataFimEvento, $request);
-                if ($dataControle==$dataFinal){ break; }
-
-
-                $dataInicial = Carbon::parse($dataFimEvento);
-                $dataInicial->addDay()->startOfDay();
-                $dataControle->addDay()->endOfDay();
-
-
-                if ($dataInicial->isSaturday() && $feriado){
-                    $dataInicial->addDay(2)->startOfDay();
-                    $dataControle->addDay()->endOfDay();
-                } else {
-
-                    if($feriado){
-                        $dataInicial->addDay()->startOfDay();
-                        $dataControle->addDay()->endOfDay();
-                    };
-
-                    if($dataInicial->isSaturday()){
-                        $dataInicial->addDay(2)->startOfDay();
-                        $dataControle->addDay()->endOfDay();
-                    };
-                    
-                    if(DB::table('feriados')->where('data', '=', substr($dataInicial,0,10))->first()){
-                        $dataInicial->addDay()->startOfDay();
-                        $dataControle->addDay()->endOfDay();
-                    };
-                };
-            }; 
-
-        };
-
     }
 
 }

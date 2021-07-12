@@ -66,21 +66,8 @@ class EventosController extends Controller
                     
                     // Caso evento original seja de Intervalo.
                     } else {
-                        
                         Evento::where('id', '=', $request->id_evento)->delete();
-                        if($request->data_selecao=='1'){
-
-                            // Caso evento atual seja Múltiplas datas.
-                            Evento::gerarAgendas($request);
-                        } else {
-        
-                            // Caso evento atual seja Intervalo
-                            $arrDatas    = explode(',', trim($request->datas));
-                            $qtdeDatas   = (count($arrDatas)>1 ? 1 : 0); 
-                            $dataInicial = Carbon::parse(str_replace('/', '-', $arrDatas[0]));
-                            $dataFinal   = Carbon::parse(str_replace('/', '-', $arrDatas[$qtdeDatas]))->endOfDay();
-                            Evento::datasIntervaloEvento($dataInicial, $dataFinal, $request);
-                        }
+                        Evento::gerarAgendas($request);
                     }
 
                 // Caso seja inclusão de Novas Agendas.
